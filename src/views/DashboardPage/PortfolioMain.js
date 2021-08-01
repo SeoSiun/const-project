@@ -2,10 +2,10 @@ import React from 'react';
 
 import { withRouter } from 'react-router';
 
-import { IconButton } from "@material-ui/core";
+import { IconButton } from '@material-ui/core';
 import Menu from '@material-ui/icons/Menu';
 import { Row, Col, Button, Container } from 'react-bootstrap'; 
-import logo_img from "static/img/logo_img.png";
+import logo_img from 'static/img/logo_img.png';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 function PortfolioMain(props) {
@@ -13,17 +13,17 @@ function PortfolioMain(props) {
   return ( 
     <>
       <Row
-        className="align-items-end"
+        className='align-items-end'
         style={{
-          height: "90px",
+          height: '90px',
           paddingBottom: '10px'
         }}
       >
-        <Col xs={4} style={{ textAlign: "left" }}>
-          <img src={logo_img} style={{ width: "100%" }} />
+        <Col xs={2} style={{ height: '50px' }}>
+          <img src={logo_img} style={{ height: '100%' }} alt='logo'/>
         </Col>
-        <Col style={{ textAlign: "right" }}>
-          <IconButton color="black" component="span" size="large" >
+        <Col xs={{ span: 2, offset: 8 }} style={{ textAlign: 'right' }}>
+          <IconButton color='black' component='span' size='large' >
             <Menu style={{fontSize: '120%'}} />
           </IconButton>
         </Col>
@@ -35,7 +35,7 @@ function PortfolioMain(props) {
       </Row>
       <Row>
         <Col align='center' style={{ marginTop: '20px' }}>
-          <div style={{ width: '90vw', backgroundColor: '#615EFF', borderRadius: '3px', boxShadow: '0px 0px 14px -1px rgba(0,0,0,0.4)' }}>
+          <div style={{ backgroundColor: '#615EFF', borderRadius: '3px', boxShadow: '0px 0px 14px -1px rgba(0,0,0,0.4)' }}>
             <span 
               style={{ 
                 padding: '20px',
@@ -83,6 +83,9 @@ function PortfolioMain(props) {
             </span>
           </div>
         </Col>
+      </Row>
+
+      <Row>
         <Col style={{ margin: '20px 0' }}>
           <h5>stacked bar chart 넣는 자리</h5>
         </Col>
