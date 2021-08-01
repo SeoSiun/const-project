@@ -2,9 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 const { Wallet } = require('../models/Wallet'); 
-const { getKlaytnBalanceWallet } = require('./smart_contract/klaytn'); 
-const { BSCBalanceWallet } = require('./smart_contract/bsc');
-const { BSCLending } = require('./smart_contract/bsc_lending'); 
+const { getKlaytnBalanceWallet } = require('./smart_contract/Klaytn/wallet'); 
+const { identifyPool, depositOnlyKLAY, getEarnedReward } = require('./smart_contract/Klaytn/farming'); 
 
 
 router.get('/:user_id', (req, res) => { 
@@ -69,13 +68,6 @@ router.post('/balance', (req, res) => {
             }))
             break;
         
-        case "BSC": 
-            BSCBalanceWallet(address)
-            .then((result => { 
-                res.json({status: true, result})
-            }))
-            break;
-    
         default:
             res.json({status: false, 'msg': 'wrong atype variable'})
             break;
@@ -83,22 +75,14 @@ router.post('/balance', (req, res) => {
 })
 
 
-router.post('/lending', (req, res) => {
-    const { address, atype } = req.body; 
-    console.log(req.body) 
-
-    switch (atype) { 
-        case "BSC": 
-            BSCLending(address)
-            .then((result => { 
-                res.json({status: true, result})
-            }))
-            break;
-    
-        default:
-            res.json({status: false, 'msg': 'wrong atype variable'})
-            break;
-    }
-})
+// router.post('/farming', (req, res) => { 
+//     const { user_id } = req.body; 
+//     Wallet.findOne({user_id}, (err, wallet) => { 
+//         const { address } = wallet; 
+//         identifyPool(address)
+//             .then(result => console.log(result)) 
+//         res.json({status: true})
+//     })
+// })
 
 module.exports = router;

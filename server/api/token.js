@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // const { Token } = require('../models/Token'); 
-const { getKlaytnTokenPrice } = require('./smart_contract/klaytn'); 
+const { getKlaytnTokenPrice } = require('./smart_contract/Klaytn/wallet'); 
 
 router.get('/klaytnTokenPrice', (req, res) => {
     getKlaytnTokenPrice().then(
