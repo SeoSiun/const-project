@@ -27,7 +27,7 @@ function ContentsPage(props) {
   }, [])
 
   const logoutHandler = () => { 
-    axios.get('/api/user/logout')
+    axios.get('/api/users/logout')
       .then(response => { 
         if(response.data.success) { 
           props.history.push('/')

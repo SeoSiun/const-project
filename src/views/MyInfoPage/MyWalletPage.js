@@ -106,7 +106,7 @@ function MyWalletPage(props) {
     dispatch(auth()).then(res => { 
       if (res.payload) { 
         const { _id } = res.payload; 
-        axios.get(`/api/wallet/${_id}`).then((res) => { 
+        axios.get(`/api/wallets/${_id}`).then((res) => { 
           const {wallets} = res.data; 
           let klaytn_wallet = []; 
           let bsc_wallet = []; 

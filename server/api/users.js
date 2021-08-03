@@ -33,9 +33,19 @@ router.post('/signup', (req, res) => {
     })
 })
 
-router.post('/checkemail', (req, res) => {
+router.get('/checkEmail/:email', (req, res) => {
+    
+	User.findOne({email: req.params.email}, (err, user) => {
+		if(!user) {
+			return res.json({result: false})
+		}
+		return res.json({result: true})
+	})
+})
 
-	User.findOne({email: req.body.email}, (err, user) => {
+router.get('/checkName/:name', (req, res) => {
+    
+	User.findOne({name: req.params.name}, (err, user) => {
 		if(!user) {
 			return res.json({result: false})
 		}

@@ -155,24 +155,24 @@ function DashboardPage(props) {
     dispatch(auth()).then((res) => {
       if (res.payload) {
         setUserInfo(res.payload);
-        axios.get(`/api/wallet/${res.payload._id}`).then((res) => {
+        axios.get(`/api/wallets/${res.payload._id}`).then((res) => {
           res.data.wallets.forEach((wallet) => {
             const { address, atype } = wallet;
             if (atype == "Klaytn") {
               axios
-                .post("/api/wallet/balance", { address, atype })
+                .post("/api/wallets/balance", { address, atype })
                 .then((res) => {
                   setKlayBalance(res.data.result);
                 });
               // setKlayWallet(wallet)
             } else if (atype == "BSC") {
               axios
-                .post("/api/wallet/balance", { address, atype })
+                .post("/api/wallets/balance", { address, atype })
                 .then((res) => {
                   setBSCBalance(res.data.result);
                 });
               axios
-                .post("/api/wallet/lending", { address, atype })
+                .post("/api/wallets/lending", { address, atype })
                 .then((res) => {
                   setBSCLending(res.data.result);
                 });
