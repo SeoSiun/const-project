@@ -66,7 +66,7 @@ function SigninPage(props) {
     event.preventDefault();
     const user_data = { email, password };
     dispatch(signinUser(user_data)).then((res) => {
-      if (res.payload.success) {
+      if (res.payload.status == "success") {
         history.push("/dashboard");
       } else {
         setStatusMessage(

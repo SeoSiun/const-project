@@ -33,29 +33,6 @@ router.post('/import', (req, res) => {
 
 })
 
-router.post('/balanceAll', (req, res) => { 
-    const { user_id } = req.body; 
-    Wallet.find({user_id}, (err, wallets) => { 
-
-        // wallets.forEach(wallet => {
-        //     const {address, atype} = wallet; 
-
-        //     switch (atype) {
-        //         case "KLAY":
-        //             KlaytnBalanceWallet(address)
-        //             .then((result => { 
-        //                 res.json({status: true, result})
-        //             }))
-        //             break;
-        //         default:
-        //             res.json({status: false, 'msg': 'unexpected error'})
-        //             break;
-        //     }
-        // });
-        res.json({status: true, result: wallets})
-    })
-})
-
 router.post('/balance', (req, res) => { 
     const { address, atype } = req.body; 
     console.log(req.body)

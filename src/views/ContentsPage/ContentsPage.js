@@ -29,7 +29,7 @@ function ContentsPage(props) {
   const logoutHandler = () => { 
     axios.get('/api/users/logout')
       .then(response => { 
-        if(response.data.success) { 
+        if(response.data.status == "success") { 
           props.history.push('/')
           alert('로그아웃 되었습니다.')
         } else { 

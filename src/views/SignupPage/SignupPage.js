@@ -82,14 +82,16 @@ class Signup extends React.Component {
     }
 
     // TODO: 이메일 형식 확인(Regular Expression)
-    axios.get("/api/users/checkEmail/"+email).then((res) => {
-      if (!res.data.result) {
-        // 사용가능한 이름
-        this.setState({ email_check: true, email: email });
-        return;
-      }
-      this.setState({ email_check: false, email: email });
-    });
+    axios.get(`/api/users/checkEmail/${email}`)
+         .then(res => res.data)
+         .then(res => {
+            if (!res.result) {
+              // 사용가능한 이름
+              this.setState({ email_check: true, email });
+              return;
+            }
+            this.setState({ email_check: false, email });
+          });
   };
 
   // Step3 => 이름 입력 Handler
@@ -101,8 +103,17 @@ class Signup extends React.Component {
     }
 
     // TODO: 공백, 한글, 영어, 숫자 최대 20자 검증
-
-    this.setState({ name_check: true, name: name });
+    axios.get(`/api/users/checkName/${name}`)
+         .then(res => res.data)
+         .then(res => {
+            if (!res.result) {
+              // 사용가능한 이름
+              this.setState({ name_check: true, name });
+              return;
+            }
+            this.setState({ name_check: false, name });
+          });
+    this.setState({ name_check: true, name });
   };
 
   // Step4 => 비밀번호 입력 Handler
@@ -155,7 +166,6 @@ class Signup extends React.Component {
       .then((res) => {
         if (res.data.status === "success") {
           this.handleNextStep();
-          console.log("success");
         }
       })
       .catch((error) => {
