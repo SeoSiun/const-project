@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-import { Container, Row, Col, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Button, Alert, Offcanvas} from "react-bootstrap";
+
 import axios from "axios";
 
 import { useHistory } from "react-router-dom";
@@ -101,6 +102,34 @@ function DashboardPage(props) {
     setNetworkType(newType);
   };
 
+  //메뉴핸들링
+  function Menu() {
+    const [show, setShow] = useState(false);
+  
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+  
+    return (
+      <>
+        <IconButton color="black" component="span" size="large" onClick={handleShow} >
+  <Menu style={{fontSize: '120%'}} />
+</IconButton>
+  
+        {/* <Offcanvas show={show} onHide={handleClose}>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            Some text as placeholder. In real life you can have the elements you
+            have chosen. Like, text, images, lists, etc.
+          </Offcanvas.Body>
+        </Offcanvas> */}
+      </>
+    );
+  }
+
+
+  
   const getAssetGraphValue = (periodOpt) => {
     // DB에서 새로운 그래프 데이터 불러오기
 
@@ -155,24 +184,24 @@ function DashboardPage(props) {
     dispatch(auth()).then((res) => {
       if (res.payload) {
         setUserInfo(res.payload);
-        axios.get(`/api/wallet/${res.payload._id}`).then((res) => {
+        axios.get(`/api/wallets/${res.payload._id}`).then((res) => {
           res.data.wallets.forEach((wallet) => {
             const { address, atype } = wallet;
             if (atype == "Klaytn") {
               axios
-                .post("/api/wallet/balance", { address, atype })
+                .post("/api/wallets/balance", { address, atype })
                 .then((res) => {
                   setKlayBalance(res.data.result);
                 });
               // setKlayWallet(wallet)
             } else if (atype == "BSC") {
               axios
-                .post("/api/wallet/balance", { address, atype })
+                .post("/api/wallets/balance", { address, atype })
                 .then((res) => {
                   setBSCBalance(res.data.result);
                 });
               axios
-                .post("/api/wallet/lending", { address, atype })
+                .post("/api/wallets/lending", { address, atype })
                 .then((res) => {
                   setBSCLending(res.data.result);
                 });
@@ -196,9 +225,7 @@ function DashboardPage(props) {
           <img src={logo_img} style={{ width: "100%" }} />
         </Col>
         <Col style={{ textAlign: "right" }}>
-          <IconButton color="black" component="span" size="large" >
-            <Menu style={{fontSize: '120%'}} />
-          </IconButton>
+          <Menu/>
         </Col>
         {/* <Col
           xs={5}

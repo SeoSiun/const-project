@@ -17,7 +17,6 @@ dotenv.config({
     )
 })
 
-
 app.use('/api', bodyParser.urlencoded({extended: false})); 
 app.use('/api', bodyParser.json()); 
 app.use(cookieParser()); 
@@ -53,14 +52,14 @@ mongoose.connect(DB_URI, {
 }).then( () => console.log("MongoDB Connected..")).catch(err => console.log(err)) 
 
 
-var userRouter = require('./api/user');
-app.use('/api/user', userRouter);
+var userRouter = require('./api/users');
+app.use('/api/users', userRouter);
 
-var walletRouter = require('./api/wallet'); 
-app.use('/api/wallet', walletRouter)
+var walletRouter = require('./api/wallets'); 
+app.use('/api/wallets', walletRouter)
 
-var tokenRouter = require('./api/token'); 
-app.use('/api/token', tokenRouter)
+var tokenRouter = require('./api/tokens'); 
+app.use('/api/tokens', tokenRouter)
 
 const port = process.env.PORT || 5000; 
 app.listen(port, () => { 
