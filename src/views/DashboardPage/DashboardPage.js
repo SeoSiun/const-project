@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-import { Container, Row, Col, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Button, Alert} from "react-bootstrap";
+import Offcanvas from "react-bootstrap/Offcanvas";
+
 import axios from "axios";
 
 import { useHistory } from "react-router-dom";
@@ -101,6 +103,11 @@ function DashboardPage(props) {
     setNetworkType(newType);
   };
 
+  //메뉴핸들링
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const getAssetGraphValue = (periodOpt) => {
     // DB에서 새로운 그래프 데이터 불러오기
 
@@ -196,9 +203,18 @@ function DashboardPage(props) {
           <img src={logo_img} style={{ width: "100%" }} />
         </Col>
         <Col style={{ textAlign: "right" }}>
-          <IconButton color="black" component="span" size="large" >
+          <IconButton color="black" component="span" size="large" onClick={handleShow} >
             <Menu style={{fontSize: '120%'}} />
           </IconButton>
+          <Offcanvas show={show} onHide={handleClose} placement='end'>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you
+          have chosen. Like, text, images, lists, etc.
+        </Offcanvas.Body>
+      </Offcanvas>
         </Col>
         {/* <Col
           xs={5}
