@@ -7,27 +7,13 @@ import Menu from '@material-ui/icons/Menu';
 import { Row, Col, Button, Container } from 'react-bootstrap'; 
 import logo_img from 'static/img/logo_img.png';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import Header from 'components/Header';
 
 function PortfolioMain(props) {
 
   return ( 
     <>
-      <Row
-        className='align-items-end'
-        style={{
-          height: '90px',
-          paddingBottom: '10px'
-        }}
-      >
-        <Col xs={2} style={{ height: '50px' }}>
-          <img src={logo_img} style={{ height: '100%' }} alt='logo'/>
-        </Col>
-        <Col xs={{ span: 2, offset: 8 }} style={{ textAlign: 'right' }}>
-          <IconButton color='black' component='span' size='large' >
-            <Menu style={{fontSize: '120%'}} />
-          </IconButton>
-        </Col>
-      </Row>
+      <Header />
       <Row>
         <Col style={{ marginTop: '20px', marginLeft: '10px', textAlign: 'left' }}>
           <h5 style={{ fontWeight: '600' }}>반가워요, 춤추는 올빼미 님</h5>
