@@ -9,6 +9,8 @@ import logo_img from 'static/img/logo_img.png';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Header from 'components/Header';
 
+import StackedBarChart from '../../components/charts/StackedBarChart'
+
 function PortfolioMain(props) {
 
   return ( 
@@ -73,7 +75,7 @@ function PortfolioMain(props) {
 
       <Row>
         <Col style={{ margin: '20px 0' }}>
-          <h5>stacked bar chart 넣는 자리</h5>
+          <StackedBarChart />
         </Col>
       </Row>
 
