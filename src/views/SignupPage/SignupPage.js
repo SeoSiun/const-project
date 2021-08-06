@@ -81,10 +81,14 @@ class Signup extends React.Component {
       return;
     }
 
-    // TODO: 이메일 형식 확인(Regular Expression)
+    // 이메일 형식 확인(Regular Expression)
+    const emailRegex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+    if (!email.match(emailRegex)) { return; }
+
     axios.get(`/api/users/checkEmail/${email}`)
-         .then(res => res.data)
-         .then(res => {
+        .then(res => res.data)
+        .then(res => {
             if (!res.result) {
               // 사용가능한 이름
               this.setState({ email_check: true, email });
@@ -102,10 +106,14 @@ class Signup extends React.Component {
       return;
     }
 
-    // TODO: 공백, 한글, 영어, 숫자 최대 20자 검증
+    // 공백없이 한글, 영어, 숫자 최대 20자 검증
+    const nameRegex = /^[0-9a-zA-Z가-힣]{2,20}$/;
+
+    if (!name.match(nameRegex)) { return; }
+
     axios.get(`/api/users/checkName/${name}`)
-         .then(res => res.data)
-         .then(res => {
+        .then(res => res.data)
+        .then(res => {
             if (!res.result) {
               // 사용가능한 이름
               this.setState({ name_check: true, name });
