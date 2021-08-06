@@ -103,7 +103,7 @@ function DashboardPage(props) {
   };
 
   //메뉴핸들링
-  function Menu() {
+  function MenuComponent() {
     const [show, setShow] = useState(false);
   
     const handleClose = () => setShow(false);
@@ -112,9 +112,8 @@ function DashboardPage(props) {
     return (
       <>
         <IconButton color="black" component="span" size="large" onClick={handleShow} >
-  <Menu style={{fontSize: '120%'}} />
-</IconButton>
-  
+        <Menu style={{fontSize: '120%'}} />
+        </IconButton>
         {/* <Offcanvas show={show} onHide={handleClose}>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Offcanvas</Offcanvas.Title>
@@ -225,7 +224,7 @@ function DashboardPage(props) {
           <img src={logo_img} style={{ width: "100%" }} />
         </Col>
         <Col style={{ textAlign: "right" }}>
-          <Menu/>
+          <MenuComponent/>
         </Col>
         {/* <Col
           xs={5}
