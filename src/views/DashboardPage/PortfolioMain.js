@@ -1,17 +1,21 @@
-import React from 'react'; 
+import React, { useState } from 'react'; 
 
 import { withRouter } from 'react-router';
 
 import { IconButton } from '@material-ui/core';
 import Menu from '@material-ui/icons/Menu';
-import { Row, Col, Button, Container } from 'react-bootstrap'; 
+import { Row, Col, Modal, Button, Container } from 'react-bootstrap'; 
 import logo_img from 'static/img/logo_img.png';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Header from 'components/Header';
 
 import StackedBarChart from '../../components/charts/StackedBarChart'
 
+import './PortfolioMain.css';
+
 function PortfolioMain(props) {
+
+  const [ isEmpty, setEmpty ] = useState(true);
 
   return ( 
     <>
@@ -165,10 +169,26 @@ function PortfolioMain(props) {
               <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : 20,000 원</span>
             </div>
           </Col>
-          <Col xs='2' style={{alignSelf: 'center', paddingRight: '0', color: '#BDBDBD'}}>
+          <Col xs='2' style={{ alignSelf: 'center', paddingRight: '0', color: '#BDBDBD' }}>
             <NavigateNextIcon />
           </Col>
         </Row>
+
+        <Modal
+          show={isEmpty}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Body style={{ fontSize: '14px', textAlign: 'center', padding: '3em 0'}}>
+            아직 추가된 지갑이 없습니다.<br/>
+            자산 포트폴리오를 추적하기 위해<br/>
+            먼저 지갑 주소를 추가해 주세요.<br/>
+            <Button 
+              onClick={() => {setEmpty(false)}}
+              style={{ width: '90%', height: '50px', marginTop: '2em', backgroundColor: '#615EFF', color: '#FFFFFF', fontWeight: 'bold' }}
+            >지갑 주소 추가하기</Button>
+          </Modal.Body>
+        </Modal> 
       </Container>
     </>
   )
