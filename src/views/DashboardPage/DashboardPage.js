@@ -141,9 +141,7 @@ function DashboardPage(props) {
         <Menu style={{fontSize: '120%'}} />
         </IconButton>
 
-      <Offcanvas show={show} onHide={handleClose} placement='end'>
-        <Offcanvas.Header closeButton>
-        </Offcanvas.Header>
+      <Offcanvas style={{width:"300px"}} show={show} onHide={handleClose} placement='end'>
         <Offcanvas.Body>
         <List
       component="nav"
@@ -151,13 +149,15 @@ function DashboardPage(props) {
       className={classes.root}
     >
       <ListItem button>
-        <ListItemText primary="홈" />
+        <ListItemText primary="홈"  style={{fontWeight:"700"}}/>
         <ListItemIcon>
           <NavigateNextIcon />
         </ListItemIcon>
+        
       </ListItem>
-      <ListItem button>
-        <ListItemText primary="포트폴리오" />
+      <hr/>
+      <ListItem>
+        <ListItemText primary="포트폴리오" style={{fontWeight:"700"}}/>
        
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
@@ -188,8 +188,9 @@ function DashboardPage(props) {
           </ListItem>
         </List>
       </Collapse>
-      <ListItem button>
-        <ListItemText primary="DeFi" />
+      <hr/>
+      <ListItem>
+        <ListItemText primary="DeFi"   style={{fontWeight:"700"}}/>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
@@ -213,8 +214,9 @@ function DashboardPage(props) {
           </ListItem>
         </List>
       </Collapse>
+      <hr/>
       <ListItem button>
-        <ListItemText primary="내 정보" />
+        <ListItemText primary="내 정보"  style={{fontWeight:"700"}}/>
         <ListItemIcon>
           <NavigateNextIcon />
         </ListItemIcon>
