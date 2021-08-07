@@ -5,7 +5,6 @@ import {Container, Row, Col} from 'react-bootstrap';
 import { useHistory } from 'react-router-dom'; 
 import { withRouter } from 'react-router';
 
-import NavBar from 'components/NavBar';
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
@@ -75,7 +74,6 @@ function WalletAddMainPage(props) {
           </div>
         </Col>
       </Row>
-      <NavBar myinfo={true} />
     </Container>
   )
 }

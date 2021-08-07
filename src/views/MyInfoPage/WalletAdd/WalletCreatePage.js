@@ -8,7 +8,6 @@ import { auth } from '_actions/user_action';
 import { withRouter } from 'react-router'; 
 
 import {Container, Row, Col, Button} from 'react-bootstrap'; 
-import NavBar from 'components/NavBar';
 import { 
 	FormControl, 
 	InputLabel,
@@ -176,7 +175,6 @@ function WalletCreatePage(props) {
           >지갑 생성</Button>
         </Col>
       </Row>
-      <NavBar myinfo={true} />
     </Container>
 	);
 }

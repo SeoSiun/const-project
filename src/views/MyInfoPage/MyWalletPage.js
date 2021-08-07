@@ -13,7 +13,6 @@ import SwipeableViews from 'react-swipeable-views';
 import PropTypes from 'prop-types'; 
 
 import { auth } from '_actions/user_action'; 
-import NavBar from 'components/NavBar';
 
 import WalletAddMainPage from "views/MyInfoPage/WalletAdd/WalletAddMainPage";
 import WalletImportPage from "views/MyInfoPage/WalletAdd/WalletImportPage";
@@ -314,7 +313,6 @@ function MyWalletPage(props) {
         </Col>
       </Row>
 
-      <NavBar myinfo={true} />
       <Switch>
         <Route exact path="/" component={Auth(MyWalletPage, true)} />
         <Route path="/new" component={Auth(WalletAddMainPage, true)} />

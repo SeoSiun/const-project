@@ -9,15 +9,13 @@ import promiseMiddleware from "redux-promise";
 import ReducThunk from "redux-thunk";
 import Reducer from "./_reducers";
 
-import MainPage from "views/MainPage/MainPage";
+import SplashPage from "views/SplashPage/SplashPage";
 import SignupPage from "views/SignupPage/SignupPage";
 import SigninPage from "views/SigninPage/SigninPage";
 
 import DashboardPage from "views/DashboardPage/DashboardPage";
-import ContentsPage from "views/ContentsPage/ContentsPage";
 import MyInfoPage from "views/MyInfoPage/MyInfoPage";
 import MyWalletPage from "views/MyInfoPage/MyWalletPage";
-import LoginSetupPage from "views/MyInfoPage/LoginSetupPage";
 
 import FarmingDetailInfo from "views/DashboardPage/FarmingDetailInfo";
 import PortfolioMain from "views/DashboardPage/PortfolioMain";
@@ -38,7 +36,6 @@ const MyInfoRouter = () => {
   return (
     <Switch>
       <Route path={`${basePath}/`} exact component={Auth(MyInfoPage, true)} />
-      <Route path={`${basePath}/loginsetting`} component={Auth(LoginSetupPage, true)} />
       <Route path={`${basePath}/wallet`} component={Auth(MyWalletPage, true)} />
       {/* <Route path={`${basePath}/wallet/new`} component={Auth(WalletAddMainPage, true)} />
       <Route path={`${basePath}/wallet/import`} component={Auth(WalletImportPage, true)} />
@@ -67,7 +64,7 @@ class App extends React.Component {
         >
           <Container fluid="md">
             <Switch>
-              <Route exact path="/" component={Auth(MainPage, false)} />
+              <Route exact path="/" component={Auth(SplashPage, false)} />
               <Route path="/signup" component={Auth(SignupPage, false)} />
               <Route path="/signin" component={Auth(SigninPage, false)} />
               <Route path="/dashboard" component={Auth(DashboardPage, true)} />
@@ -78,8 +75,6 @@ class App extends React.Component {
               />
 
               <Route path="/portfolio" component={Auth(PortfolioMain, true)} />
-
-              <Route path="/contents" component={Auth(ContentsPage, true)} />
               <MyInfoRouter />
               {/* <Route exact path="/myinfo" component={Auth(MyInfoPage, true)} />
               <Route

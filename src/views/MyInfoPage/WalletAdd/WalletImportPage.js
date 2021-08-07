@@ -9,7 +9,6 @@ import { withRouter } from 'react-router';
 
 
 import { auth } from '_actions/user_action'; 
-import NavBar from 'components/NavBar';
 
 import './wallet_add_page.css'
 
@@ -244,7 +243,6 @@ function WalletImportPage(props) {
           >지갑 생성</Button>
         </Col>
       </Row>
-      <NavBar myinfo={true} />
     </Container>
   )
 }

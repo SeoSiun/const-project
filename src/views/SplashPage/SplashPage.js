@@ -5,7 +5,7 @@ import {Container, Row, Col, Button} from 'react-bootstrap';
 import logoImg from 'static/img/logo_large.png'; 
 import Anime from 'react-anime'; 
 
-const MainPage = () => {
+const SplashPage = () => {
 
   return  ( 
     <div style={{display: 'table'}}>
@@ -112,4 +112,4 @@ const MainPage = () => {
   );
 }
 
-export default MainPage;
+export default SplashPage;

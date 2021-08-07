@@ -1,12 +1,11 @@
 import React from 'react';
+import { Link } from "react-router-dom"; 
 
 import { Row, Col } from 'react-bootstrap'; 
-import { IconButton } from '@material-ui/core';
-import Menu from '@material-ui/icons/Menu';
-
 import logo_img from 'static/img/logo_img.png';
 
-import './navbar.css'; 
+import MenuBar from './MenuBar';
+import './Header.css'; 
 
 
 function Header(props) {
@@ -18,13 +17,13 @@ function Header(props) {
         paddingBottom: '10px'
       }}
     >
-      <Col xs={2} style={{ height: '50px' }}>
-        <img src={logo_img} style={{ height: '100%' }} alt='logo'/>
+      <Col xs={2} style={{ height: '40px' }}>
+        <Link to="./dashboard">
+          <img src={logo_img} style={{ height: '100%' }} alt='logo'/>
+        </Link>
       </Col>
       <Col xs={{ span: 2, offset: 8 }} style={{ textAlign: 'right' }}>
-        <IconButton color='black' component='span' size='large' >
-          <Menu style={{fontSize: '120%'}} />
-        </IconButton>
+        <MenuBar /> 
       </Col>
     </Row>
   )

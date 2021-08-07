@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Container, Row, Col, Button, Alert, Offcanvas} from "react-bootstrap";
+import { Container, Row, Col, Button, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from "axios";
@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 
 import { auth } from "_actions/user_action";
 
-import NavBar from "components/NavBar";
+import Header from "components/Header"; 
 import WalletInfo from "./WalletInfo";
 import LendingInfo from "./LendingInfo";
 import FarmingInfo from "./FarmingInfo";
@@ -35,19 +35,11 @@ import {
   Divider,
   IconButton
 } from "@material-ui/core";
-import Menu from '@material-ui/icons/Menu';
 
 
 import logo_img from "static/img/logo_img.png";
 import "./dashboard_page.css";
 
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 function a11yProps(index) {
   return {
@@ -111,125 +103,6 @@ function DashboardPage(props) {
     setNetworkType(newType);
   };
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
-    },
-    nested: {
-      paddingLeft: theme.spacing(4),
-    },
-  }));
-
-  //메뉴핸들링
-  function MenuComponent() {
-    const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-    const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true);;
-
-  return (
-    <>
-      <IconButton color="black" component="span" size="large" onClick={handleShow} >
-        <Menu style={{fontSize: '120%'}} />
-        </IconButton>
-
-      <Offcanvas style={{width:"300px"}} show={show} onHide={handleClose} placement='end'>
-        <Offcanvas.Body>
-        <List
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      className={classes.root}
-    >
-      <ListItem button>
-        <ListItemText primary="홈"  style={{fontWeight:"700"}}/>
-        <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-        
-      </ListItem>
-      <hr/>
-      <ListItem>
-        <ListItemText primary="포트폴리오" style={{fontWeight:"700"}}/>
-       
-      </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
-            <ListItemText primary="종합 요약" />
-            <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText primary="지갑" />
-            <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText primary="파밍" />
-            <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText primary="스테이킹" />
-            <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-          </ListItem>
-        </List>
-      </Collapse>
-      <hr/>
-      <ListItem>
-        <ListItemText primary="DeFi"   style={{fontWeight:"700"}}/>
-      </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
-            <ListItemText primary="스왑" />
-            <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText primary="유동성 공급" />
-            <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText primary="스테이킹" />
-            <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-          </ListItem>
-        </List>
-      </Collapse>
-      <hr/>
-      <ListItem button>
-        <ListItemText primary="내 정보"  style={{fontWeight:"700"}}/>
-        <ListItemIcon>
-          <NavigateNextIcon />
-        </ListItemIcon>
-      </ListItem>
-    </List>
-        </Offcanvas.Body>
-      </Offcanvas>
-    </>
-  );
-  }
-
-
-  
   const getAssetGraphValue = (periodOpt) => {
     // DB에서 새로운 그래프 데이터 불러오기
 
@@ -293,18 +166,6 @@ function DashboardPage(props) {
                 .then((res) => {
                   setKlayBalance(res.data.result);
                 });
-              // setKlayWallet(wallet)
-            } else if (atype == "BSC") {
-              axios
-                .post("/api/wallets/balance", { address, atype })
-                .then((res) => {
-                  setBSCBalance(res.data.result);
-                });
-              axios
-                .post("/api/wallets/lending", { address, atype })
-                .then((res) => {
-                  setBSCLending(res.data.result);
-                });
             }
           });
         });
@@ -313,511 +174,463 @@ function DashboardPage(props) {
   }, []);
 
   return (
-    
-    <Container style={{ padding: "0" }}>
-      
-      <Row
-        className="align-items-end"
-        style={{
-          height: "90px",
-          paddingBottom: '10px'
-        }}
-      >
-        <Col xs={4} style={{ textAlign: "left" }}>
-          <img src={logo_img} style={{ width: "100%" }} />
-        </Col>
-        <Col style={{ textAlign: "right" }}> 
-        <MenuComponent/>
-        </Col>
-        {/* <Col
-          xs={5}
+    <>
+      <Header />
+      <Container style={{ padding: "0" }}>
+        <Row
+          className="align-items-center"
           style={{
-            textAlign: "right",
-            color: "white",
+            textAlign: "left",
+            margin: "0 auto",
+            height: "60px",
+            // position: 'absolute',
+            left: "0",
+            width: "100%",
           }}
         >
-          <FormControl variant="outlined" fullWidth={true}>
-            <Select
-              onChange={onNetworkTypeHandler}
-              value={networkType}
-              style={{
-                textAlign: "left",
-                height: "40px",
-                backgroundColor: "#615EFF",
-                borderColor: "#615EFF",
-                color: "white",
-                marginBottom: "10px",
-              }}
-            >
-              <MenuItem style={{}} value="All">
-                All
-              </MenuItem>
-              <MenuItem style={{}} value="Klaytn">
-                Klaytn
-              </MenuItem>
-              <MenuItem style={{}} value="Venus">
-                Venus
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </Col> */}
-      </Row>
-
-      <Row
-        className="align-items-center"
-        style={{
-          textAlign: "left",
-          margin: "0 auto",
-          height: "60px",
-          // position: 'absolute',
-          left: "0",
-          width: "100%",
-        }}
-      >
-        <Col style={{ padding: "0" }}>
-          <AppBar position="static" color="white" elevation={0}>
-            <Tabs
-              value={cardIndex}
-              onChange={handleCardIndexChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="fullWidth"
-              scrollButtons="on"
-            >
-              <Tab label="요약" {...a11yProps(0)} />
-              <Tab label="지갑" {...a11yProps(1)} />
-              <Tab label="파밍" {...a11yProps(2)} />
-              <Tab label="스테이킹" disabled {...a11yProps(2)} />
-            </Tabs>
-          </AppBar>
-          <Divider />
-          <SwipeableViews
-            // axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            index={cardIndex}
-            onChangeIndex={handleCardIndexChange}
-            style={{ margin: "0px" }}
-          >
-            {/* 전체 */}
-            <TabPanel value={cardIndex} index={0}>
-              {/* <div style={{height: '1080px'}}>
-                전체
-              </div> */}
-              <div
-                className="container-border"
-                style={{ marginBottom: "20px" }}
+          <Col style={{ padding: "0" }}>
+            <AppBar position="static" color="white" elevation={0}>
+              <Tabs
+                value={cardIndex}
+                onChange={handleCardIndexChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="fullWidth"
+                scrollButtons="on"
               >
+                <Tab label="요약" {...a11yProps(0)} />
+                <Tab label="지갑" {...a11yProps(1)} />
+                <Tab label="파밍" {...a11yProps(2)} />
+                <Tab label="스테이킹" disabled {...a11yProps(2)} />
+              </Tabs>
+            </AppBar>
+            <Divider />
+            <SwipeableViews
+              // axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+              index={cardIndex}
+              onChangeIndex={handleCardIndexChange}
+              style={{ margin: "0px" }}
+            >
+              {/* 전체 */}
+              <TabPanel value={cardIndex} index={0}>
+                {/* <div style={{height: '1080px'}}>
+                  전체
+                </div> */}
                 <div
-                  style={{
-                    height: "2rem",
-                    display: "flex",
-                    flexDirection: "row",
-                    // padding: '5px',
-                    justifyContent: "space-between",
-                  }}
+                  className="container-border"
+                  style={{ marginBottom: "20px" }}
                 >
                   <div
                     style={{
-                      // padding: '5px',
-                      fontSize: "14px",
-                      flex: "1",
-                    }}
-                  >
-                    <FormControl>
-                      <Select
-                        // onChange={onNetworkTypeHandler}
-                        value={"netWorth"}
-                        style={{
-                          textAlign: "left",
-                          // height: '40px',
-                          backgroundColor: "",
-                          borderColor: "none",
-                          border: "none",
-                          color: "#4F4F4F",
-                          // marginBottom: '10px'
-                          padding: "0",
-                        }}
-                      >
-                        <MenuItem style={{}} value="netWorth">
-                          순 자산
-                        </MenuItem>
-                        <MenuItem style={{}} value="totalAssets">
-                          총 자산
-                        </MenuItem>
-                        <MenuItem style={{}} value="totalDebts">
-                          총 부채
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
-                  <ul
-                    style={{
-                      flex: "1",
+                      height: "2rem",
                       display: "flex",
                       flexDirection: "row",
-                      listStyleType: "none",
-                      fontSize: "0.7em",
-                      justifyContent: "space-around",
+                      // padding: '5px',
+                      justifyContent: "space-between",
                     }}
                   >
-                    {periodOptions.map((opt, index) => {
-                      return (
-                        <li
-                          className={
-                            opt.type === periodType
-                              ? "selected-period"
-                              : "default-period"
-                          }
-                          key={`periodOpt${index}`}
-                          onClick={() => getAssetGraphValue(opt.type)}
+                    <div
+                      style={{
+                        // padding: '5px',
+                        fontSize: "14px",
+                        flex: "1",
+                      }}
+                    >
+                      <FormControl>
+                        <Select
+                          // onChange={onNetworkTypeHandler}
+                          value={"netWorth"}
+                          style={{
+                            textAlign: "left",
+                            // height: '40px',
+                            backgroundColor: "",
+                            borderColor: "none",
+                            border: "none",
+                            color: "#4F4F4F",
+                            // marginBottom: '10px'
+                            padding: "0",
+                          }}
                         >
-                          {opt.type}
-                        </li>
-                      );
-                    })}
-                  </ul>
+                          <MenuItem style={{}} value="netWorth">
+                            순 자산
+                          </MenuItem>
+                          <MenuItem style={{}} value="totalAssets">
+                            총 자산
+                          </MenuItem>
+                          <MenuItem style={{}} value="totalDebts">
+                            총 부채
+                          </MenuItem>
+                        </Select>
+                      </FormControl>
+                    </div>
+                    <ul
+                      style={{
+                        flex: "1",
+                        display: "flex",
+                        flexDirection: "row",
+                        listStyleType: "none",
+                        fontSize: "0.7em",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      {periodOptions.map((opt, index) => {
+                        return (
+                          <li
+                            className={
+                              opt.type === periodType
+                                ? "selected-period"
+                                : "default-period"
+                            }
+                            key={`periodOpt${index}`}
+                            onClick={() => getAssetGraphValue(opt.type)}
+                          >
+                            {opt.type}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  <div
+                    style={{
+                      padding: "5px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "18px",
+                        display: "inline",
+                      }}
+                    >
+                      ₩ 31,000,000
+                    </div>
+                    {/* 상승시 */}
+                    <div
+                      style={{
+                        margin: "0 0 0 10px",
+                        padding: "1px 3px",
+                        fontSize: "12px",
+                        display: "inline",
+                        color: "#615EFF",
+                        border: "0.5px solid #615EFF",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      ▾ 3.2 %
+                    </div>
+                  </div>
+                  <LineChart />
                 </div>
 
                 <div
-                  style={{
-                    padding: "5px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
+                  className="container-border"
+                  style={{ marginBottom: "20px" }}
                 >
-                  <div
+                  <p
                     style={{
-                      fontSize: "18px",
-                      display: "inline",
+                      color: "#828282",
+                      fontSize: "12px",
+                      marginBottom: "0",
                     }}
                   >
-                    ₩ 31,000,000
+                    순 자산
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <p style={{ flex: "1", marginTop: "5px" }}>₩ 31,000,000</p>
+                    <p
+                      className="rise"
+                      style={{
+                        flex: "1",
+                        textAlign: "right",
+                        fontSize: "12px",
+                        alignSelf: "center",
+                        fontWeight: "lighter",
+                        marginTop: "5px",
+                      }}
+                    >
+                      + ₩ 30,000
+                    </p>
                   </div>
-                  {/* 상승시 */}
-                  <div
+                  {/* </div>
+                <div className='container-border' style={{ marginBottom: '20px'}}> */}
+                  <p
                     style={{
-                      margin: "0 0 0 10px",
-                      padding: "1px 3px",
+                      color: "#828282",
                       fontSize: "12px",
-                      display: "inline",
-                      color: "#615EFF",
-                      border: "0.5px solid #615EFF",
-                      borderRadius: "5px",
+                      marginBottom: "0",
                     }}
                   >
-                    ▾ 3.2 %
+                    총 자산
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <p style={{ flex: "1", marginTop: "5px" }}>₩ 34,000,000</p>
+                    <p
+                      className="rise"
+                      style={{
+                        flex: "1",
+                        textAlign: "right",
+                        fontSize: "12px",
+                        alignSelf: "center",
+                        fontWeight: "lighter",
+                        marginTop: "5px",
+                      }}
+                    >
+                      + ₩ 30,000
+                    </p>
+                  </div>
+                  {/* </div>
+                <div className='container-border' style={{ marginBottom: '20px'}}> */}
+                  <p
+                    style={{
+                      color: "#828282",
+                      fontSize: "12px",
+                      marginBottom: "0",
+                    }}
+                  >
+                    총 부채
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <p style={{ flex: "1", marginTop: "5px" }}>₩ 3,000,000</p>
+                    <p
+                      className="drop"
+                      style={{
+                        flex: "1",
+                        textAlign: "right",
+                        fontSize: "12px",
+                        alignSelf: "center",
+                        fontWeight: "lighter",
+                        marginTop: "5px",
+                      }}
+                    >
+                      - ₩ 30,000
+                    </p>
                   </div>
                 </div>
-                <LineChart />
-              </div>
+              </TabPanel>
 
-              <div
-                className="container-border"
-                style={{ marginBottom: "20px" }}
-              >
-                <p
-                  style={{
-                    color: "#828282",
-                    fontSize: "12px",
-                    marginBottom: "0",
-                  }}
-                >
-                  순 자산
-                </p>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <p style={{ flex: "1", marginTop: "5px" }}>₩ 31,000,000</p>
-                  <p
-                    className="rise"
-                    style={{
-                      flex: "1",
-                      textAlign: "right",
-                      fontSize: "12px",
-                      alignSelf: "center",
-                      fontWeight: "lighter",
-                      marginTop: "5px",
-                    }}
-                  >
-                    + ₩ 30,000
-                  </p>
-                </div>
-                {/* </div>
-              <div className='container-border' style={{ marginBottom: '20px'}}> */}
-                <p
-                  style={{
-                    color: "#828282",
-                    fontSize: "12px",
-                    marginBottom: "0",
-                  }}
-                >
-                  총 자산
-                </p>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <p style={{ flex: "1", marginTop: "5px" }}>₩ 34,000,000</p>
-                  <p
-                    className="rise"
-                    style={{
-                      flex: "1",
-                      textAlign: "right",
-                      fontSize: "12px",
-                      alignSelf: "center",
-                      fontWeight: "lighter",
-                      marginTop: "5px",
-                    }}
-                  >
-                    + ₩ 30,000
-                  </p>
-                </div>
-                {/* </div>
-              <div className='container-border' style={{ marginBottom: '20px'}}> */}
-                <p
-                  style={{
-                    color: "#828282",
-                    fontSize: "12px",
-                    marginBottom: "0",
-                  }}
-                >
-                  총 부채
-                </p>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <p style={{ flex: "1", marginTop: "5px" }}>₩ 3,000,000</p>
-                  <p
-                    className="drop"
-                    style={{
-                      flex: "1",
-                      textAlign: "right",
-                      fontSize: "12px",
-                      alignSelf: "center",
-                      fontWeight: "lighter",
-                      marginTop: "5px",
-                    }}
-                  >
-                    - ₩ 30,000
-                  </p>
-                </div>
-              </div>
-            </TabPanel>
-
-            {/* 지갑 */}
-            <TabPanel value={cardIndex} index={1}>
-              <div className="container-border">
-                <div
-                  style={{
-                    height: "2rem",
-                    display: "flex",
-                    flexDirection: "row",
-                    // padding: '5px',
-                    justifyContent: "space-between",
-                  }}
-                >
+              {/* 지갑 */}
+              <TabPanel value={cardIndex} index={1}>
+                <div className="container-border">
                   <div
                     style={{
+                      height: "2rem",
+                      display: "flex",
+                      flexDirection: "row",
                       // padding: '5px',
-                      fontSize: "14px",
-                      flex: "1",
+                      justifyContent: "space-between",
                     }}
                   >
-                    지갑 총액
+                    <div
+                      style={{
+                        // padding: '5px',
+                        fontSize: "14px",
+                        flex: "1",
+                      }}
+                    >
+                      지갑 총액
+                    </div>
+                    {/* <ul style={{
+                      flex: '1',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      listStyleType: 'none',
+                      fontSize: '0.7em',
+                      justifyContent: 'space-around'
+                    }}>
+                      { periodOptions.map((opt, index) => {
+                        return <li 
+                          className={opt.type === periodType ? 'selected-period' : 'default-period'} 
+                          key={`periodOpt${index}`} 
+                          onClick={() => getAssetGraphValue(opt.type)}
+                          >{opt.type}</li>
+                      }) }
+                    </ul> */}
                   </div>
-                  {/* <ul style={{
-                    flex: '1',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    listStyleType: 'none',
-                    fontSize: '0.7em',
-                    justifyContent: 'space-around'
-                  }}>
-                    { periodOptions.map((opt, index) => {
-                      return <li 
-                        className={opt.type === periodType ? 'selected-period' : 'default-period'} 
-                        key={`periodOpt${index}`} 
-                        onClick={() => getAssetGraphValue(opt.type)}
-                        >{opt.type}</li>
-                    }) }
-                  </ul> */}
-                </div>
-                <div
-                  style={{
-                    padding: "5px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
                   <div
                     style={{
-                      fontSize: "18px",
-                      display: "inline",
+                      padding: "5px",
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    ₩ 10,000,000
+                    <div
+                      style={{
+                        fontSize: "18px",
+                        display: "inline",
+                      }}
+                    >
+                      ₩ 10,000,000
+                    </div>
+                    {/* 상승시 */}
+                    <div
+                      style={{
+                        margin: "0 0 0 10px",
+                        padding: "1px 3px",
+                        fontSize: "12px",
+                        display: "inline",
+                        color: "#E64743",
+                        border: "0.5px solid #E64743",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      ▴ 100.00 %
+                    </div>
                   </div>
-                  {/* 상승시 */}
+                  <LineChart />
+                </div>
+
+                <div className="container-border">
+                  {/* TODO: fontSize 어쩌지.... */}
+                  <p style={{ fontSize: "0.8rem" }}>지갑 자산 구성</p>
+                  <DoughnutChart />
+                </div>
+
+                {/* <div className='ㅈallet-grid-container container-border'>
+                  <div className='wallet-grid'>
+                    <p style={{ flex: '1'}}>총 평가</p> <p style={{ flex: '1', textAlign: 'right'}}> ₩10,000,000</p>
+                  </div>
+                  <div className='wallet-grid'>
+                    <p style={{ flex: '1'}}>총 매수</p> <p style={{ flex: '1', textAlign: 'right'}}> ₩5,000,000</p>
+                  </div>
+                  <div className='wallet-grid'>
+                    <p style={{ flex: '1'}}>평가 손익</p> <p style={{ flex: '1', textAlign: 'right'}}> ₩5,000,000</p>
+                  </div>
+                  <div className='wallet-grid'>
+                    <p style={{ flex: '1'}}>수익률</p> <p className="rise" style={{ flex: '1', textAlign: 'right'}}> ▴ 300.00 %</p>
+                  </div>
+                </div> */}
+
+                <div className="container-border grid-row-offset">
+                  {KlayBalance && (
+                    <WalletInfo balance={KlayBalance} atype="Klaytn" />
+                  )}
+                  {BSCBalance && <WalletInfo balance={BSCBalance} atype="BSC" />}
+                </div>
+              </TabPanel>
+              {/* <TabPanel value={cardIndex} index={2}>
+                {BSCLending && 
+                  <LendingInfo lending={BSCLending} marginBottom='50px' /> }
+              </TabPanel> */}
+              {/* 파밍 */}
+              <TabPanel value={cardIndex} index={2}>
+                <div className="container-border">
                   <div
                     style={{
-                      margin: "0 0 0 10px",
-                      padding: "1px 3px",
-                      fontSize: "12px",
-                      display: "inline",
-                      color: "#E64743",
-                      border: "0.5px solid #E64743",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    ▴ 100.00 %
-                  </div>
-                </div>
-                <LineChart />
-              </div>
-
-              <div className="container-border">
-                {/* TODO: fontSize 어쩌지.... */}
-                <p style={{ fontSize: "0.8rem" }}>지갑 자산 구성</p>
-                <DoughnutChart />
-              </div>
-
-              {/* <div className='ㅈallet-grid-container container-border'>
-                <div className='wallet-grid'>
-                  <p style={{ flex: '1'}}>총 평가</p> <p style={{ flex: '1', textAlign: 'right'}}> ₩10,000,000</p>
-                </div>
-                <div className='wallet-grid'>
-                  <p style={{ flex: '1'}}>총 매수</p> <p style={{ flex: '1', textAlign: 'right'}}> ₩5,000,000</p>
-                </div>
-                <div className='wallet-grid'>
-                  <p style={{ flex: '1'}}>평가 손익</p> <p style={{ flex: '1', textAlign: 'right'}}> ₩5,000,000</p>
-                </div>
-                <div className='wallet-grid'>
-                  <p style={{ flex: '1'}}>수익률</p> <p className="rise" style={{ flex: '1', textAlign: 'right'}}> ▴ 300.00 %</p>
-                </div>
-              </div> */}
-
-              <div className="container-border grid-row-offset">
-                {KlayBalance && (
-                  <WalletInfo balance={KlayBalance} atype="Klaytn" />
-                )}
-                {BSCBalance && <WalletInfo balance={BSCBalance} atype="BSC" />}
-              </div>
-            </TabPanel>
-            {/* <TabPanel value={cardIndex} index={2}>
-              {BSCLending && 
-                <LendingInfo lending={BSCLending} marginBottom='50px' /> }
-            </TabPanel> */}
-            {/* 파밍 */}
-            <TabPanel value={cardIndex} index={2}>
-              <div className="container-border">
-                <div
-                  style={{
-                    height: "2rem",
-                    display: "flex",
-                    flexDirection: "row",
-                    // padding: '5px',
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div
-                    style={{
+                      height: "2rem",
+                      display: "flex",
+                      flexDirection: "row",
                       // padding: '5px',
-                      fontSize: "14px",
-                      flex: "1",
+                      justifyContent: "space-between",
                     }}
                   >
-                    총 평가 금액
+                    <div
+                      style={{
+                        // padding: '5px',
+                        fontSize: "14px",
+                        flex: "1",
+                      }}
+                    >
+                      총 평가 금액
+                    </div>
+                    {/* <ul style={{
+                      flex: '1',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      listStyleType: 'none',
+                      fontSize: '0.7em',
+                      justifyContent: 'space-around'
+                    }}>
+                      { periodOptions.map((opt, index) => {
+                        return <li 
+                          className={opt.type === periodType ? 'selected-period' : 'default-period'} 
+                          key={`periodOpt${index}`} 
+                          onClick={() => getAssetGraphValue(opt.type)}
+                          >{opt.type}</li>
+                      }) }
+                    </ul> */}
                   </div>
-                  {/* <ul style={{
-                    flex: '1',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    listStyleType: 'none',
-                    fontSize: '0.7em',
-                    justifyContent: 'space-around'
-                  }}>
-                    { periodOptions.map((opt, index) => {
-                      return <li 
-                        className={opt.type === periodType ? 'selected-period' : 'default-period'} 
-                        key={`periodOpt${index}`} 
-                        onClick={() => getAssetGraphValue(opt.type)}
-                        >{opt.type}</li>
-                    }) }
-                  </ul> */}
-                </div>
-                <div
-                  style={{
-                    padding: "5px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
                   <div
                     style={{
-                      fontSize: "18px",
-                      display: "inline",
+                      padding: "5px",
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    ₩ 10,000,000
+                    <div
+                      style={{
+                        fontSize: "18px",
+                        display: "inline",
+                      }}
+                    >
+                      ₩ 10,000,000
+                    </div>
+                    {/* 상승시 */}
+                    <div
+                      style={{
+                        margin: "0 0 0 10px",
+                        padding: "1px 3px",
+                        fontSize: "12px",
+                        display: "inline",
+                        color: "#E64743",
+                        border: "0.5px solid #E64743",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      ▴ 100.00 %
+                    </div>
                   </div>
-                  {/* 상승시 */}
-                  <div
-                    style={{
-                      margin: "0 0 0 10px",
-                      padding: "1px 3px",
-                      fontSize: "12px",
-                      display: "inline",
-                      color: "#E64743",
-                      border: "0.5px solid #E64743",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    ▴ 100.00 %
+                  <LineChart />
+                </div>
+
+                <div className="container-border">
+                  <p style={{ fontSize: "0.8rem" }}>종합 요약</p>
+                  <div className="farming-grid">
+                    <p>총 매수 금액</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
+                  </div>
+                  <div className="farming-grid">
+                    <p>총 평가 금액</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
+                  </div>
+                  <div className="farming-grid">
+                    <p>리워드 합계</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
+                  </div>
+                  <div className="farming-grid">
+                    <p>수확된 리워드</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> ₩600,000</p>
+                  </div>
+                  <div className="farming-grid">
+                    <p>예상 APR 평균</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
+                  </div>
+                  <div className="farming-grid">
+                    <p>현재 수익륜 평균</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
                   </div>
                 </div>
-                <LineChart />
-              </div>
 
-              <div className="container-border">
-                <p style={{ fontSize: "0.8rem" }}>종합 요약</p>
-                <div className="farming-grid">
-                  <p>총 매수 금액</p> <AlertInfo />
-                  <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
+                <div className="container-border">
+                  <p style={{ fontSize: "0.8rem" }}>프로토콜별 요약</p>
+                  {KlayBalance && (
+                    <FarmingInfo balance={KlayBalance} atype="Klaytn" />
+                  )}
+                  {BSCBalance && <FarmingInfo balance={BSCBalance} atype="BSC" />}
                 </div>
-                <div className="farming-grid">
-                  <p>총 평가 금액</p> <AlertInfo />
-                  <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
-                </div>
-                <div className="farming-grid">
-                  <p>리워드 합계</p> <AlertInfo />
-                  <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
-                </div>
-                <div className="farming-grid">
-                  <p>수확된 리워드</p> <AlertInfo />
-                  <p style={{ flex: "1", textAlign: "right" }}> ₩600,000</p>
-                </div>
-                <div className="farming-grid">
-                  <p>예상 APR 평균</p> <AlertInfo />
-                  <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
-                </div>
-                <div className="farming-grid">
-                  <p>현재 수익륜 평균</p> <AlertInfo />
-                  <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
-                </div>
-              </div>
-
-              <div className="container-border">
-                <p style={{ fontSize: "0.8rem" }}>프로토콜별 요약</p>
-                {KlayBalance && (
-                  <FarmingInfo balance={KlayBalance} atype="Klaytn" />
-                )}
-                {BSCBalance && <FarmingInfo balance={BSCBalance} atype="BSC" />}
-              </div>
-            </TabPanel>
-            <TabPanel value={cardIndex} index={3}>
-              파밍
-            </TabPanel>
-            <TabPanel value={cardIndex} index={4}>
-              예금
-            </TabPanel>
-          </SwipeableViews>
-        </Col>
-      </Row>
-
-      <NavBar dashboard={true} />
-    </Container>
+              </TabPanel>
+              <TabPanel value={cardIndex} index={3}>
+                파밍
+              </TabPanel>
+              <TabPanel value={cardIndex} index={4}>
+                예금
+              </TabPanel>
+            </SwipeableViews>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 
