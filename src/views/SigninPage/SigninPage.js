@@ -172,7 +172,7 @@ function SigninPage(props) {
                 type="password"
                 style={{ padding: "0 0 5px 8px" }}
                 onChange={onPasswordHandler}
-                keyDown={{ onPasswordKeyDown }}
+                keydown={{ onPasswordKeyDown }}
               ></Input>
             </FormControl>
             <div style={{ float: "right", padding: "6px 0" }}>
