@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 
 import {Container, Row, Col, } from 'react-bootstrap'; 
-import logoImg from 'static/img/logo_large.png'; 
+import logoImg from 'static/img/logo_img.png'; 
 import Anime from 'react-anime'; 
 
 const SplashPage = () => {
