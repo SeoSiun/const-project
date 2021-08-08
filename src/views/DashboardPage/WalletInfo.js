@@ -14,6 +14,8 @@ function WalletInfo(props) {
 
   const {balance, atype} = props;
 
+  console.log("balance: ", balance); 
+
   return ( 
       <div className='wallet-coin-item'>
         <Row style={{height: '40px'}}>

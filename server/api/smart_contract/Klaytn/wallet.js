@@ -1,19 +1,10 @@
-const CaverExtKAS = require('caver-js-ext-kas');
-const caver = new CaverExtKAS();
-
-const access_key_array = ["KASKQO63SLJW75Q0FJB61B4N", "KASKBDIFAXVXK14IEVRJDFVS"]; //  
-const ACCESS_KEY = access_key_array[0]; 
-
-const private_key_array = ["QAXbYjYlXCf5BAgax7Dm-C0j-kk8RRcW0yfJYNcH", "xW5VfL4rS6lOuEENPBs5jt0UeVDYMxgRIA14EAoS"]; 
-const PRIVATE_KEY = private_key_array[0]; 
-
-caver.initKASAPI(8217, ACCESS_KEY, PRIVATE_KEY);
-
-const Web3 = require('web3');
-const web3 = new Web3();
-web3.setProvider(new Web3.providers.HttpProvider()); 
-
 const { Token } = require('../../../models/Token');
+
+const { 
+    callContract, decodeParameterSimple, 
+    getCurrentPool, 
+    caverGetBalance, isAddress 
+} = require('./functions');
 
 const fetch = require('node-fetch');
 
@@ -26,17 +17,9 @@ async function getKLAYCurrency() {
   return klay_price_krw; 
 }
 
-async function getCurrentPool(address) { 
-    let current_pool = await caver.kas.wallet.callContract(address, 'getCurrentPool')
-                                           .then(res => res.result)
-                                           .catch(err => console.log(err)); 
-    let tokenA_decimal = web3.eth.abi.decodeParameter("uint256", current_pool.substring(0, 66));
-    let tokenB_decimal = web3.eth.abi.decodeParameter("uint256", "0x"+current_pool.substring(66, 132));
-    return tokenA_decimal/tokenB_decimal; 
-}
-
 async function calcTokenPriceB(address, tokenA_price, diff_decimal, to_fixed=2) { 
-    let tokenAB_ratio = await getCurrentPool(address);
+    let [tokenA_decimal, tokenB_decimal] = await getCurrentPool(address);
+    let tokenAB_ratio = tokenA_decimal / tokenB_decimal; 
     let tokenB_price = tokenA_price * tokenAB_ratio; 
     tokenB_price *= Math.pow(10, diff_decimal); 
     return Number(tokenB_price.toFixed(to_fixed)); 
@@ -80,31 +63,48 @@ async function getKlaytnTokenPrice(){
     return price_obj;
 };
 
-async function getKlaytnBalanceWallet(USER_ADDRESS, to_krw=true){
-    let wallet_balance = {};
+async function getKlaytnBalanceWallet(USER_ADDRESS){
 
     const USER_DATA = [ { type: 'address', value: USER_ADDRESS } ];
-    let amount_KLAY = await caver.rpc.klay.getBalance(USER_DATA[0].value);
-    amount_KLAY = Math.floor(amount_KLAY/1e12) / 1e6;
+    let KLAY_amount = await caverGetBalance(USER_ADDRESS);
+    KLAY_amount = Math.floor(KLAY_amount/1e12) / 1e6;
+    if (KLAY_amount < 1e-6) KLAY_amount = 0; 
 
     let tokens = await Token.find({atype: 'SINGLE', network: 'Klaytn'}) 
-                            .then(tokens => tokens.reduce((obj, t) => Object.assign(obj, { [t.token]: t}), {}))
+    
+    let {klay_price} = tokens.filter(t => t.token === 'KLAY')[0]; 
+    let KLAY_balance = {
+        token: 'KLAY', 
+        amount: KLAY_amount, 
+        token_price: klay_price,
+        value: KLAY_amount * klay_price
+    }
 
-    wallet_balance.KLAY = to_krw ? amount_KLAY * tokens.KLAY.price : amount_KLAY; 
-
-    for(let token_name in tokens){
-        if (token_name === 'KLAY') continue; 
-        const token = tokens[token_name]; 
-
-        const balanceOf = await caver.kas.wallet.callContract(token.address, 'balanceOf',USER_DATA)
-                                                .then(res => res.result);
-        let tokenBalance_decimal = web3.eth.abi.decodeParameter("uint256", balanceOf.substring(0,66));
-        let token_amount = tokenBalance_decimal / Math.pow(10, Number(token.decimal));
+    const arrayPromises = tokens.map(async function(token) { 
+        const { token: token_name, address, price, decimal } = token; 
+        if (token_name === 'KLAY') return {value: 0}; 
+        let token_amount = await callContract(address, 'balanceOf', USER_DATA)
+                                    .then(res => res.result)
+                                    .then(res => decodeParameterSimple(res) / Math.pow(10, Number(decimal))); 
         
-        if(token_amount < 1e-6) continue;
-        wallet_balance[token_name] = to_krw ? token_amount * token.price : token_amount;
-    };
-    return wallet_balance;
+        if(token_amount < 1e-6) token_amount = 0; 
+        return {
+            token: token_name, 
+            amount: token_amount, 
+            token_price: price,
+            value: token_amount * price
+        } 
+        
+    }); 
+
+    let total_balance = await Promise.all(arrayPromises); 
+    total_balance.push(KLAY_balance);
+    total_balance = total_balance.filter(token => token.value > 0); 
+    return total_balance
 };
 
-module.exports = { getKlaytnTokenPrice, getKlaytnBalanceWallet }; 
+async function checkAddress(address) { 
+    return await isAddress(address); 
+}
+
+module.exports = { checkAddress, getKlaytnTokenPrice, getKlaytnBalanceWallet }; 

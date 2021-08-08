@@ -37,7 +37,6 @@ import {
 } from "@material-ui/core";
 
 
-import logo_img from "static/img/logo_img.png";
 import "./dashboard_page.css";
 
 
@@ -157,18 +156,10 @@ function DashboardPage(props) {
     dispatch(auth()).then((res) => {
       if (res.payload) {
         setUserInfo(res.payload);
-        axios.get(`/api/wallets/${res.payload._id}`).then((res) => {
-          res.data.wallets.forEach((wallet) => {
-            const { address, atype } = wallet;
-            if (atype == "Klaytn") {
-              axios
-                .post("/api/wallets/balance", { address, atype })
-                .then((res) => {
-                  setKlayBalance(res.data.result);
-                });
-            }
-          });
-        });
+        axios.get(`/api/wallets/${res.payload._id}/asset`)
+              .then(res => { 
+                if (res.status) setKlayBalance(res.data.result);
+              });
       }
     });
   }, []);

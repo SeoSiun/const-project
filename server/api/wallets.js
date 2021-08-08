@@ -2,15 +2,23 @@ var express = require('express');
 var router = express.Router();
 
 const { Wallet } = require('../models/Wallet'); 
-const { getKlaytnBalanceWallet } = require('./smart_contract/Klaytn/wallet'); 
+const { checkAddress, getKlaytnBalanceWallet } = require('./smart_contract/Klaytn/wallet'); 
 const { identifyPool, depositOnlyKLAY, getEarnedReward } = require('./smart_contract/Klaytn/farming'); 
 
 
-router.get('/:user_id', (req, res) => { 
+router.get('/check', (req, res) => { 
+    const {wallet_address: address} = req.query; 
+    checkAddress(address).then(result => { 
+        res.json({status: true, result})
+    }).catch(err => res.json({status: false, msg: err}))
+})
 
-    Wallet.find({user_id: req.params.user_id}, (err, wallets) => { 
-        if (err) return res.json({status: false, err})
-        else { return res.json({status: true, wallets}) }
+router.get('/:user_id', (req, res) => { 
+    const { user_id } = req.params; 
+
+    Wallet.find({ user_id }, (err, wallets) => { 
+        if (err) res.json({status: false, err})
+        else res.json({status: true, result: wallets})
     })
 })
 
@@ -22,44 +30,38 @@ router.post('/import', (req, res) => {
 
         if (err) return res.json({status: false, err })
         if (wallet) { res.json({status: false, msg: 'duplicated wallet'})}
-        else { 
-            const wallet = new Wallet(req.body); 
-            wallet.save((err, _) => { 
-                if (err) return res.json({status: false, msg: err })
-                else { res.json({status: true}) }
-            })
-        }
+        
+        wallet.save((err, _) => { 
+            if (err) return res.json({status: false, msg: err })
+            else { res.json({status: true}) }
+        })
     })
 
 })
 
-router.post('/balance', (req, res) => { 
-    const { address, atype } = req.body; 
-    console.log(req.body)
+router.get('/:user_id/asset', (req, res) => { 
+    const { user_id } = req.params; 
 
-    switch (atype) {
-        case "Klaytn":
-            getKlaytnBalanceWallet(address, to_krw=true)
-            .then((wallet_balance => { 
-                res.json({status: true, result: wallet_balance})
-            }))
-            break;
+    Wallet.findOne({user_id, atype: 'Klaytn'}, (err, wallet) => { 
         
-        default:
-            res.json({status: false, 'msg': 'wrong atype variable'})
-            break;
-    }
+        if (err) return res.json({status: false, err })
+        const { address } = wallet; 
+        if (!wallet) return res.json({status: false, msg: "doesn't exist wallet"})
+        getKlaytnBalanceWallet(address)
+            .then(result => res.json({status: true, result}))
+            .catch(err => console.log(err))
+    })
 })
 
 
-// router.post('/farming', (req, res) => { 
-//     const { user_id } = req.body; 
-//     Wallet.findOne({user_id}, (err, wallet) => { 
-//         const { address } = wallet; 
-//         identifyPool(address)
-//             .then(result => console.log(result)) 
-//         res.json({status: true})
-//     })
-// })
+router.get('/:user_id/farming', (req, res) => { 
+    const { user_id } = req.params; 
+    Wallet.findOne({user_id}, (err, wallet) => { 
+        const { address } = wallet; 
+        identifyPool(address)
+            .then(result => res.json({status: true, result})) 
+            .catch(err => console.log(err)); 
+    }).catch(err => console.log(err)); 
+})
 
 module.exports = router;
