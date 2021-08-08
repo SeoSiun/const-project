@@ -86,11 +86,9 @@ function SigninPage(props) {
         style={{ height: "120px", paddingTop: "30px" }}
       >
         <Col style={{ textAlign: "end" }}>
-          <CloseIcon
-            onClick={() => {
-              props.history.goBack();
-            }}
-          />
+          <Link to="./">
+            <CloseIcon />
+          </Link>
         </Col>
       </Row>
       <Row

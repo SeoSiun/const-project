@@ -27,23 +27,25 @@ const SplashPage = () => {
               </Col>
             </Anime>
           </Row>
-          <Row className="align-items-end" style={{height: '200px', paddingTop: '100px'}}>
+          <Row className="align-items-end" style={{height: '200px', width: '100%', paddingTop: '100px'}}>
             <Col style={{textAlign: 'center'}}>
               <Anime
                 easing="easeInSine"
                 duration={1000}
                 delay={500}
                 direction="normal"
-                translateX="-32%"
-                translateY="-10%"
-                scale={[1, .6]}
+                // translateX="-40%"
+                translateX={window.innerWidth * (-0.27)}
+                translateY="-50px"
+                // scale={[1, .6]}
               >
                 <img 
                   src={logoImg} 
                   style={{
-                    marginTop: '50%',
-                    width: '70%', 
-                    height: '70%'
+                    marginTop: '150px',
+                    width: '50%', 
+                    height: '50%', 
+                    maxWidth: '200px'
                   }}/>
               </Anime>
             </Col>
@@ -58,7 +60,7 @@ const SplashPage = () => {
                 duration={500}
                 delay={1500}
                 direction="normal"
-                translateY="-10%"
+                translateY="-10px"
                 opacity={[0, 1]}
               >
                 <div style={{
