@@ -31,7 +31,6 @@ router.post('/import', (req, res) => {
         if (err) return res.json({status: false, err })
         if (wallet) { res.json({status: false, msg: 'duplicated wallet'})}
         else { 
-            console.log(req.body); 
             const wallet = new Wallet(req.body); 
             wallet.save((err, _) => { 
                 if (err) return res.json({status: false, msg: err })
