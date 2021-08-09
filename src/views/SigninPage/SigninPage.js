@@ -25,6 +25,7 @@ function SigninPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [statusMessage, setStatusMessage] = useState(setFormStatusMessage(""));
+  const [autoLogin, setAutoLogin] = useState(false); 
 
   // React.useEffect(() => { })
 
@@ -62,11 +63,18 @@ function SigninPage(props) {
     );
   }
 
+  const onAutoLoginHandler = () => { 
+    setAutoLogin(!autoLogin); 
+  }
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
     const user_data = { email, password };
     dispatch(signinUser(user_data)).then((res) => {
       if (res.payload.status == "success") {
+        if (autoLogin) {
+          window.localStorage.setItem("user", JSON.stringify(res.payload))
+        }
         history.push("/dashboard");
       } else {
         setStatusMessage(
@@ -189,7 +197,12 @@ function SigninPage(props) {
           {statusMessage}
         </Col>
         <Col xs={4} style={{ textAlign: "right" }}>
-          <Checkbox size="small" color="primary" style={{ padding: "0" }} />
+          <Checkbox 
+            size="small" 
+            color="primary" 
+            style={{ padding: "0" }}
+            onClick={onAutoLoginHandler} 
+          />
           <span style={{ fontSize: "12px", paddingLeft: "5px" }}>
             자동로그인
           </span>
@@ -217,9 +230,9 @@ function SigninPage(props) {
         <Col>
           <span style={{ fontSize: "13px" }}>비밀번호를 잃으셨나요?</span>
           <Link to="/resetpassword">
-          <span
-            style={{ fontSize: "13px", marginLeft: "8px", color: "#95B1F9" }}
-          >
+            <span
+              style={{ fontSize: "13px", marginLeft: "8px", color: "#95B1F9" }}
+            >
             비밀번호 재설정
           </span>
           </Link>

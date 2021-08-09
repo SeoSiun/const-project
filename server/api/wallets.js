@@ -45,8 +45,8 @@ router.get('/:user_id/asset', (req, res) => {
     Wallet.findOne({user_id, atype: 'Klaytn'}, (err, wallet) => { 
         
         if (err) return res.json({status: false, err })
-        const { address } = wallet; 
         if (!wallet) return res.json({status: false, msg: "doesn't exist wallet"})
+        const { address } = wallet; 
         getKlaytnBalanceWallet(address)
             .then(result => res.json({status: true, result}))
             .catch(err => console.log(err))

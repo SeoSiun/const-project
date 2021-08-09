@@ -70,10 +70,11 @@ function MyInfoPage(props) {
   const logoutHandler = () => { 
     axios.get('/api/users/logout')
       .then(res => { 
-        if(res.data.status == "success") { 
+        if (res.data.status == "success" || !res.data.isAuth) { 
+          window.localStorage.clear(); 
           props.history.push('/')
           alert('로그아웃 되었습니다.')
-        } else { 
+        }else { 
           alert('Failed to Log Out!')
         }
       })

@@ -27,7 +27,23 @@ export function signupUser(dataToSubmit) {
 	}
 }
 
-export function auth() { 
+export async function auth() { 
+	let local_data = await window.localStorage.getItem("user")
+
+	if (local_data) { 
+		local_data = JSON.parse(local_data); 
+		const { status, user_id, email, name } = local_data; 
+		return {
+			type: AUTH_USER, 
+			payload: {
+				isAuth: true,
+				status,
+				user_id, 
+				email,
+				name
+			}
+		}
+	}
 	const request = axios.get('/api/users/auth')
 		.then(response => response.data)
 	return { 

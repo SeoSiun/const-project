@@ -75,7 +75,9 @@ router.post('/signin', (req, res) => {
                 // Save token in Cookie
                 res.cookie("x_auth", user.token).status(200).json({ 
                     status: "success", 
-                    userId: user._id
+                    userId: user._id, 
+                    email: user.email, 
+                    name: user.name 
                 })
             }) 
         })
@@ -94,7 +96,6 @@ router.get('/auth', auth, (req, res) => {
 })
 
 router.get('/logout', auth, (req, res) => { 
-
     User.findOneAndUpdate({_id: req.user._id}, 
         { token: "" }, 
         (err, user) => { 
