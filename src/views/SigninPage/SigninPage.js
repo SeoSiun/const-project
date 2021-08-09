@@ -216,11 +216,13 @@ function SigninPage(props) {
       <Row style={{ paddingTop: "15px" }}>
         <Col>
           <span style={{ fontSize: "13px" }}>비밀번호를 잃으셨나요?</span>
+          <Link to="/resetpassword">
           <span
             style={{ fontSize: "13px", marginLeft: "8px", color: "#95B1F9" }}
           >
             비밀번호 재설정
           </span>
+          </Link>
         </Col>
       </Row>
 
