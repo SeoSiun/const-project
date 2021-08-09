@@ -32,13 +32,13 @@ export async function auth() {
 
 	if (local_data) { 
 		local_data = JSON.parse(local_data); 
-		const { status, user_id, email, name } = local_data; 
+		const { status, userId, email, name } = local_data; 
 		return {
 			type: AUTH_USER, 
 			payload: {
 				isAuth: true,
 				status,
-				user_id, 
+				_id: userId, 
 				email,
 				name
 			}

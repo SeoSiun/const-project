@@ -105,59 +105,62 @@ function MyWalletPage(props) {
     dispatch(auth()).then(res => { 
       if (res.payload) { 
         const { _id } = res.payload; 
-        axios.get(`/api/wallets/${_id}`).then((res) => { 
-          const {wallets} = res.data; 
-          let klaytn_wallet = []; 
-          let bsc_wallet = []; 
+        axios.get(`/api/wallets/${_id}`)
+             .then(res => res.data)
+             .then(res => { 
+               console.log("res: ", res)
+                const wallets = res.result; 
+                let klaytn_wallet = []; 
+                let bsc_wallet = []; 
 
-          wallets.forEach(wallet => {
-            if (wallet.atype === 'Klaytn') klaytn_wallet.push(wallet) 
-            else if (wallet.atype === 'BSC') bsc_wallet.push(wallet)
-          });
-          
+                wallets.forEach(wallet => {
+                  if (wallet.atype === 'Klaytn') klaytn_wallet.push(wallet) 
+                  else if (wallet.atype === 'BSC') bsc_wallet.push(wallet)
+                });
+              
 
-          let klaytn_wallet_jsx = klaytn_wallet.map(wallet => { 
-            return (
-              <Row 
-                key={wallet.address} 
-                className='align-items-center'
-                style={{
-                  height: '30px'
-                }}
-              >
-                <Col style={{fontSize: '13px', textDecoration: 'underline'}}>
-                  {addressParsing(wallet.address)}
-                </Col>
-                <Col style={{textAlign: 'right', padding: '0 15px 5px 0'}}>
-                  {/* {wallet.new ? 'new' : 'imported'} */}
-                  {ImportedBox}
-                </Col>
-              </Row>
-            );
-          })
-          setKlaytnWallet(klaytn_wallet_jsx);
+                let klaytn_wallet_jsx = klaytn_wallet.map(wallet => { 
+                  return (
+                    <Row 
+                      key={wallet.address} 
+                      className='align-items-center'
+                      style={{
+                        height: '30px'
+                      }}
+                    >
+                      <Col style={{fontSize: '13px', textDecoration: 'underline'}}>
+                        {addressParsing(wallet.address)}
+                      </Col>
+                      <Col style={{textAlign: 'right', padding: '0 15px 5px 0'}}>
+                        {/* {wallet.new ? 'new' : 'imported'} */}
+                        {ImportedBox}
+                      </Col>
+                    </Row>
+                  );
+                })
+                setKlaytnWallet(klaytn_wallet_jsx);
 
-          let bsc_wallet_jsx = bsc_wallet.map(wallet => { 
-            return (
-              <Row 
-                key={wallet.address} 
-                className='align-items-center'
-                style={{
-                  height: '30px'
-                }}
-              >
-                <Col style={{fontSize: '13px', textDecoration: 'underline'}}>
-                  {addressParsing(wallet.address)}
-                </Col>
-                <Col style={{textAlign: 'right', padding: '0 15px 5px 0'}}>
-                  {/* {wallet.new ? 'new' : 'imported'} */}
-                  {ImportedBox}
-                </Col>
-              </Row>
-            );
-          })
-          setBSCWallet(bsc_wallet_jsx);
-        })
+                let bsc_wallet_jsx = bsc_wallet.map(wallet => { 
+                  return (
+                    <Row 
+                      key={wallet.address} 
+                      className='align-items-center'
+                      style={{
+                        height: '30px'
+                      }}
+                    >
+                      <Col style={{fontSize: '13px', textDecoration: 'underline'}}>
+                        {addressParsing(wallet.address)}
+                      </Col>
+                      <Col style={{textAlign: 'right', padding: '0 15px 5px 0'}}>
+                        {/* {wallet.new ? 'new' : 'imported'} */}
+                        {ImportedBox}
+                      </Col>
+                    </Row>
+                  );
+                })
+                setBSCWallet(bsc_wallet_jsx);
+              })
       }
     })
   }, [])
@@ -313,12 +316,12 @@ function MyWalletPage(props) {
         </Col>
       </Row>
 
-      <Switch>
+      {/* <Switch>
         <Route exact path="/" component={Auth(MyWalletPage, true)} />
         <Route path="/new" component={Auth(WalletAddMainPage, true)} />
         <Route path="/import" component={Auth(WalletImportPage, true)} />
         <Route path="/create" component={Auth(WalletCreatePage, true)} />
-      </Switch>
+      </Switch> */}
     </Container>
   )
 }

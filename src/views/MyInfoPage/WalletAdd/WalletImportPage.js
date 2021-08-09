@@ -66,15 +66,19 @@ function WalletImportPage(props) {
 
     // TODO 
     // address 유효성 검사
-
-    setAddress(address); 
-    if (address) { 
-      setStatusMessage(setFormStatusMessage('올바른 주소입니다')); 
-      if (networkType) { setCheck(true) }
-    } else { 
-      setStatusMessage(setFormStatusMessage(''));
-      setCheck(false); 
-    }
+    axios.get('/api/wallets/check', {params: {wallet_address: address}})
+      .then(res => res.data) 
+      .then(res => {
+        console.log(res)
+        if (res.result) { 
+          setStatusMessage(setFormStatusMessage('올바른 주소입니다')); 
+          setAddress(address); 
+          if (networkType) { setCheck(true) }
+        } else { 
+          setStatusMessage(setFormStatusMessage('잘못된 주소입니다.'));
+          setCheck(false); 
+        }
+      }); 
   }
 
   const onAddressNameHandler = (e) => { setAddressName(e.target.value) };

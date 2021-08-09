@@ -15,15 +15,17 @@ import SigninPage from "views/SigninPage/SigninPage";
 import ResetpasswordPage from "views/ResetpasswordPage/ResetpasswordPage";
 
 import DashboardPage from "views/DashboardPage/DashboardPage";
-import MyInfoPage from "views/MyInfoPage/MyInfoPage";
-import MyWalletPage from "views/MyInfoPage/MyWalletPage";
+// import MyInfoPage from "views/MyInfoPage/MyInfoPage";
+// import MyWalletPage from "views/MyInfoPage/MyWalletPage";
+
+import MyInfoRouter from "views/MyInfoPage/MyInfoRouter"; 
 
 import FarmingDetailInfo from "views/DashboardPage/FarmingDetailInfo";
 import PortfolioMain from "views/DashboardPage/PortfolioMain";
 
-import WalletAddMainPage from "views/MyInfoPage/WalletAdd/WalletAddMainPage";
-import WalletImportPage from "views/MyInfoPage/WalletAdd/WalletImportPage";
-import WalletCreatePage from "views/MyInfoPage/WalletAdd/WalletCreatePage";
+// import WalletAddMainPage from "views/MyInfoPage/WalletAdd/WalletAddMainPage";
+// import WalletImportPage from "views/MyInfoPage/WalletAdd/WalletImportPage";
+// import WalletCreatePage from "views/MyInfoPage/WalletAdd/WalletCreatePage";
 
 import Auth from "./hoc/auth";
 
@@ -32,18 +34,18 @@ const createStoreWithMiddleware = applyMiddleware(
   ReducThunk
 )(createStore);
 
-const MyInfoRouter = () => {
-  const basePath = "/myinfo";
-  return (
-    <Switch>
-      <Route path={`${basePath}/`} exact component={Auth(MyInfoPage, true)} />
-      <Route path={`${basePath}/wallet`} component={Auth(MyWalletPage, true)} />
-      {/* <Route path={`${basePath}/wallet/new`} component={Auth(WalletAddMainPage, true)} />
-      <Route path={`${basePath}/wallet/import`} component={Auth(WalletImportPage, true)} />
-      <Route path={`${basePath}/wallet/create`} component={Auth(WalletCreatePage, true)} /> */}
-    </Switch>
-  );
-};
+// const MyInfoRouter = () => {
+//   const basePath = "/myinfo";
+//   return (
+//     <Switch>
+//       <Route path={`${basePath}/`} exact component={Auth(MyInfoPage, true)} />
+//       <Route path={`${basePath}/wallet`} component={Auth(MyWalletPage, true)} />
+//       {/* <Route path={`${basePath}/wallet/new`} component={Auth(WalletAddMainPage, true)} />
+//       <Route path={`${basePath}/wallet/import`} component={Auth(WalletImportPage, true)} />
+//       <Route path={`${basePath}/wallet/create`} component={Auth(WalletCreatePage, true)} /> */}
+//     </Switch>
+//   );
+// };
 
 class App extends React.Component {
   constructor(props) {
@@ -77,6 +79,7 @@ class App extends React.Component {
               />
 
               <Route path="/portfolio" component={Auth(PortfolioMain, true)} />
+              
               <MyInfoRouter />
               {/* <Route exact path="/myinfo" component={Auth(MyInfoPage, true)} />
               <Route
