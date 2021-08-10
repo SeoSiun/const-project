@@ -5,11 +5,9 @@ import { withRouter, Link } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import CloseIcon from "@material-ui/icons/Close";
-import CheckIcon from "@material-ui/icons/Check";
-
 import IconButton from "@material-ui/core/IconButton";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import ClearIcon from "@material-ui/icons/Clear";
 
 import { InputLabel, Checkbox, FormControl, Input } from "@material-ui/core";
@@ -18,14 +16,14 @@ import SwipeableViews from "react-swipeable-views";
 
 import "./resetpassword_page.css";
 
-class Signup extends React.Component {
+class Resetpassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       email_check: false,
       name: "",
-      name_check: false,
+      auth_check: false,
       password: "",
       password_check: false,
       password_confirmed: "",
@@ -70,33 +68,33 @@ class Signup extends React.Component {
           });
   };
 
-  // Step3 => 이름 입력 Handler
-  handleName = (e) => {
-    let name = e.target.value;
-    if (!name) {
-      this.setState({ name_check: false, name: "" });
+  // Step2 => 인증번호 Handler
+  handleAuth = (e) => {
+    let auth = e.target.value;
+    if (!auth) {
+      this.setState({ auth_check: false, auth: "" });
       return;
     }
 
-    // 공백없이 한글, 영어, 숫자 최대 20자 검증
-    const nameRegex = /^[0-9a-zA-Z가-힣]{2,20}$/;
+    // 공백없이 숫자 4자리
+    const authRegex = /^[0-9]{4,4}$/;
 
-    if (!name.match(nameRegex)) { return; }
-
-    axios.get(`/api/users/checkName/${name}`)
-        .then(res => res.data)
-        .then(res => {
-            if (!res.result) {
-              // 사용가능한 이름
-              this.setState({ name_check: true, name });
-              return;
-            }
-            this.setState({ name_check: false, name });
-          });
-    this.setState({ name_check: true, name });
+    if (!auth.match(authRegex)) { return; }
+    /* TODO : 인증번호 개발 후 api연동하기 */
+    // axios.get(`/api/users/checkName/${auth}`)
+    //     .then(res => res.data)
+    //     .then(res => {
+    //         if (!res.result) {
+    //           // 사용가능한 이름
+    //           this.setState({ auth_check: true, auth });
+    //           return;
+    //         }
+    //         this.setState({ auth_check: false, auth });
+    //       });
+    this.setState({ auth_check: true, auth });
   };
 
-  // Step4 => 비밀번호 입력 Handler
+  // Step3 => 비밀번호 입력 Handler
   handlePassword = (e) => {
     let password = e.target.value;
     if (!password || password.length < 6) {
@@ -106,7 +104,7 @@ class Signup extends React.Component {
     this.setState({ password_check: true, password: password });
   };
 
-  // Step4-1 => 비밀번호 재입력 Handler
+  // Step3-1 => 비밀번호 재입력 Handler
   handlePasswordConfirmed = (e) => {
     let password_confirmed = e.target.value;
     const prev_password = this.state.password;
@@ -124,11 +122,11 @@ class Signup extends React.Component {
     });
   };
 
-  // Step4-2 => 회원가입 요청(비밀번호 재입력 이후 "계속하기" 버튼 클릭시 수행)
-  submitSignUp = () => {
+  // Step3-2 => 비밀번호 재설정 요청(비밀번호 재입력 이후 "계속하기" 버튼 클릭시 수행)
+  submitResetPassword = () => {
     const {
       email,
-      name,
+      auth,
       password,
       agree_clause_essential,
       agree_collect_personalinfo_essential,
@@ -139,7 +137,7 @@ class Signup extends React.Component {
       agree_collect_personalinfo_essential,
     };
 
-    const user_data = { email, name, password, agree_section };
+    const user_data = { email, auth, password, agree_section };
 
     axios
       .post("/api/users/signup", user_data)
@@ -172,14 +170,11 @@ class Signup extends React.Component {
   // Rendering
   render() {
     const {
-      stepIndex, // 회원가입 Step 화면 view Index
-      agree_clause_essential, // 이용약관(필수)
-      agree_collect_personalinfo_essential, // 개인정보수집(필수)
-      agree_all, // 약관 전체 동의
+      stepIndex, // 비밀번호 재설정 Step 화면 view Index
       email,
       email_check,
-      name,
-      name_check,
+      auth,
+      auth_check,
       password,
       password_check,
       password_confirmed,
@@ -194,9 +189,9 @@ class Signup extends React.Component {
       <span style={{ fontSize: "12px" }}>&nbsp;</span>
     );
 
-    let name_check_msg = name_check ? (
+    let auth_check_msg = auth_check ? (
       <span className="success-msg"></span>
-    ) : name ? (
+    ) : auth ? (
       <span className="warning-msg">잘못된 인증번호입니다.</span>
     ) : (
       <span style={{ fontSize: "12px" }}>&nbsp;</span>
@@ -209,7 +204,7 @@ class Signup extends React.Component {
       );
     } else if (0 < password.length && password.length < 6) {
       password_check_msg = (
-        <span className="warning-msg">6자리 이상 입력해 주세요</span>
+        <span className="warning-msg">6자리 이상 입력해 주세요.</span>
       );
     }
 
@@ -250,11 +245,11 @@ class Signup extends React.Component {
           <Button
             className="next-button"
             style={{
-              backgroundColor: name_check ? "#615EFF" : "#BDBDBD",
-              borderColor: name_check ? "#615EFF" : "#BDBDBD",
+              backgroundColor: auth_check ? "#615EFF" : "#BDBDBD",
+              borderColor: auth_check ? "#615EFF" : "#BDBDBD",
             }}
             block
-            disabled={!name_check}
+            disabled={!auth_check}
             onClick={this.handleNextStep}
           >
             계속하기
@@ -287,7 +282,7 @@ class Signup extends React.Component {
             }}
             block
             disabled={!password_confirmed_check}
-            onClick={this.submitSignUp}
+            onClick={this.submitResetPassword}
           >
             계속하기
           </Button>
@@ -325,9 +320,10 @@ class Signup extends React.Component {
           <SwipeableViews
             index={stepIndex}
             onChangeIndex={this.handleChangeStep}
+            style={{paddingLeft:"0", paddingRight:"0"}}
           >
             {/* Step1 => 이메일 입력 */}
-           <div style={Object.assign({})}>
+           <div style={{overflow:"hidden"}}>
               <Row
                 style={{
                   paddingTop: "20px",
@@ -354,7 +350,7 @@ class Signup extends React.Component {
               >
                 <Col>
                   <div className="input-box">
-                    <FormControl fullWidth={true}>
+                    <FormControl fullWidth={true} style={{ width: "calc(100% - 50px)" }}>
                       <InputLabel style={{ padding: "5px 0 0 8px" }}>
                         이메일
                       </InputLabel>
@@ -364,18 +360,12 @@ class Signup extends React.Component {
                         style={{ padding: "0 0 5px 8px" }}
                         onChange={this.handleEmail}
                       ></Input>
-                      <IconButton
-                        aria-label="visibilityIcon"
-                        component="span"
-                        style={{
-                          position: "absolute",
-                          right: "0px",
-                          top: "10px",
-                        }}
-                      >
+                    </FormControl>
+                    <div style={{ float: "right", padding: "6px 0" }}>
+                      <IconButton aria-label="clearIcon" component="span">
                         <ClearIcon />
                       </IconButton>
-                    </FormControl>
+                    </div>
                   </div>
                 </Col>
               </Row>
@@ -387,7 +377,7 @@ class Signup extends React.Component {
             {/* TODO: Step2-1 => 이메일 인증 작업 */}
 
             {/* Step2 => 인증번호 입력 */}
-            <div style={Object.assign({})}>
+            <div style={{overflow:"hidden"}}>
               <Row
                 style={{
                   paddingTop: "20px",
@@ -414,16 +404,21 @@ class Signup extends React.Component {
               >
                 <Col>
                   <div className="input-box">
-                    <FormControl fullWidth={true}>
+                    <FormControl fullWidth={true} style={{ width: "calc(100% - 50px)" }}>
                       <InputLabel style={{ padding: "5px 0 0 8px" }}>
                         인증번호 4자리
                       </InputLabel>
                       <Input
                         disableUnderline={true}
                         style={{ padding: "0 0 5px 8px" }}
-                        onChange={this.handleName}
+                        onChange={this.handleAuth}
                       ></Input>
                     </FormControl>
+                    <div style={{ float: "right", padding: "6px 0" }}>
+                      <IconButton aria-label="clearIcon" component="span">
+                        <ClearIcon />
+                      </IconButton>
+                    </div>
                   </div>
                   <div style={{fontSize:"12px", color:"#828282", marginTop:"50px"}}>
                   인증번호를 받지 못하셨나요?<span style={{paddingLeft:"10px"}}>재발송</span>
@@ -431,12 +426,12 @@ class Signup extends React.Component {
                 </Col>
               </Row>
               <Row style={{ textAlign: "left" }}>
-                <Col>{name_check_msg}</Col>
+                <Col>{auth_check_msg}</Col>
               </Row>
             </div>
 
             {/* Step3 => 비밀번호 재설정 입력 */}
-            <div style={Object.assign({})}>
+            <div style={{overflow:"hidden"}}>
               <Row
                 style={{
                   paddingTop: "20px",
@@ -463,7 +458,7 @@ class Signup extends React.Component {
               >
                 <Col>
                   <div className="input-box">
-                    <FormControl fullWidth={true}>
+                    <FormControl fullWidth={true} style={{ width: "calc(100% - 100px)" }}>
                       <InputLabel style={{ padding: "5px 0 0 8px" }}>
                         비밀번호 6자리 이상
                       </InputLabel>
@@ -474,6 +469,14 @@ class Signup extends React.Component {
                         onChange={this.handlePassword}
                       ></Input>
                     </FormControl>
+                    <div style={{ float: "right", padding: "6px 0" }}>
+                    <IconButton aria-label="visibilityIcon" component="span">
+                      <VisibilityIcon />
+                    </IconButton>
+                      <IconButton aria-label="clearIcon" component="span">
+                        <ClearIcon />
+                      </IconButton>
+                    </div>
                   </div>
                 </Col>
               </Row>
@@ -482,8 +485,8 @@ class Signup extends React.Component {
               </Row>
             </div>
 
-            {/* Step4-1, Step4-2 => 비밀번호 재입력 이후 회원가입 요청 */}
-            <div style={Object.assign({})}>
+            {/* Step3-1, Step3-2 => 비밀번호 재입력 이후 로그인 요청 */}
+            <div style={{overflow:"hidden"}}>
               <Row
                 style={{
                   paddingTop: "20px",
@@ -510,7 +513,7 @@ class Signup extends React.Component {
               >
                 <Col>
                   <div className="input-box">
-                    <FormControl fullWidth={true}>
+                    <FormControl fullWidth={true} style={{ width: "calc(100% - 100px)" }}>
                       <InputLabel style={{ padding: "5px 0 0 8px" }}>
                         비밀번호
                       </InputLabel>
@@ -521,6 +524,14 @@ class Signup extends React.Component {
                         onChange={this.handlePasswordConfirmed}
                       ></Input>
                     </FormControl>
+                    <div style={{ float: "right", padding: "6px 0" }}>
+                    <IconButton aria-label="visibilityIcon" component="span">
+                      <VisibilityIcon />
+                    </IconButton>
+                      <IconButton aria-label="clearIcon" component="span">
+                        <ClearIcon />
+                      </IconButton>
+                    </div>
                   </div>
                 </Col>
               </Row>
@@ -529,8 +540,8 @@ class Signup extends React.Component {
               </Row>
             </div>
 
-            {/* Step5 => 비밀번호 변경 완료 */}
-            <div style={Object.assign({})}>
+            {/* Step4 => 비밀번호 변경 완료 */}
+            <div style={{overflow:"hidden"}}>
               <Row
                 style={{
                   paddingTop: "20px",
@@ -582,4 +593,4 @@ class Signup extends React.Component {
   }
 }
 
-export default withRouter(Signup);
+export default withRouter(Resetpassword);
