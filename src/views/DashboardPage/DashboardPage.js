@@ -199,7 +199,7 @@ function DashboardPage(props) {
                 <Tab label="요약" {...a11yProps(0)} />
                 <Tab label="지갑" {...a11yProps(1)} />
                 <Tab label="파밍" {...a11yProps(2)} />
-                <Tab label="스테이킹" disabled {...a11yProps(2)} />
+                <Tab label="스테이킹" {...a11yProps(3)} />
               </Tabs>
             </AppBar>
             <Divider />
@@ -504,7 +504,7 @@ function DashboardPage(props) {
                 </div>
               </TabPanel>
               <TabPanel value={cardIndex} index={3}>
-                파밍
+                스테이킹
               </TabPanel>
               <TabPanel value={cardIndex} index={4}>
                 예금
