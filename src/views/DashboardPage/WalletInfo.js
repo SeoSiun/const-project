@@ -1,6 +1,6 @@
-import React from 'react'; 
+import React, { useState } from 'react'; 
 
-import {Row, Col, Button} from 'react-bootstrap'; 
+import {Row, Col, Button, Modal} from 'react-bootstrap'; 
 
 import { withRouter } from 'react-router';
 
@@ -13,6 +13,7 @@ import bsc_img from 'static/img/token_icon/bsc_logo.png';
 function WalletInfo(props) {
 
   const {balance, atype} = props;
+  const [ doTrade, setTrade ] = useState(false);
   // const [ tokens, setTokens ] = useState([
   //   { amount: '4,662.7712',
   //     currentPrice: '1,198원',
@@ -58,6 +59,7 @@ function WalletInfo(props) {
                 borderRadius: '1px',
                 padding: '3px 10px'
               }}
+              onClick={()=>{setTrade(true)}}
             >
               Trade
             </Button>
@@ -95,6 +97,27 @@ function WalletInfo(props) {
             <p style={{ textAlign: 'right'}}>5,860,000원</p>
           </Col>
         </Row>
+
+        <Modal
+          show={doTrade}
+          backdrop="static"
+          keyboard={false}
+          onHide={()=>{setTrade(false)}}
+        > 
+          <Modal.Header closeButton style={{ border: 'none' }}>
+            Trade에 사용할 프로토콜 사용하세요.
+          </Modal.Header>
+          <Modal.Body style={{ fontSize: '14px', textAlign: 'center', padding: '3em 0'}}>
+            <Row>
+              <Col>
+                <span>Definix</span>
+              </Col>
+              <Col>
+                <span>klayswap</span>
+              </Col>
+            </Row>
+          </Modal.Body>
+        </Modal> 
       </div>
   )
 }
