@@ -260,32 +260,6 @@ function DashboardPage(props) {
                         </Select>
                       </FormControl>
                     </div>
-                    {/* <ul
-                      style={{
-                        flex: "1",
-                        display: "flex",
-                        flexDirection: "row",
-                        listStyleType: "none",
-                        fontSize: "0.7em",
-                        justifyContent: "space-around",
-                      }}
-                    >
-                      {periodOptions.map((opt, index) => {
-                        return (
-                          <li
-                            className={
-                              opt.type === periodType
-                                ? "selected-period"
-                                : "default-period"
-                            }
-                            key={`periodOpt${index}`}
-                            onClick={() => getAssetGraphValue(opt.type)}
-                          >
-                            {opt.type}
-                          </li>
-                        );
-                      })}
-                    </ul> */}
                     <div
                       style={{
                         flex: 2,
@@ -352,8 +326,7 @@ function DashboardPage(props) {
                     </Col>
                   </Row>
                   <Divider/>
-                    {/* </div>
-                  <div className='container-border' style={{ marginBottom: '20px'}}> */}
+                
                   <Row style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "80px" }}>
                     <Col>
                       <span
@@ -424,6 +397,7 @@ function DashboardPage(props) {
                       flexDirection: "row",
                       // padding: '5px',
                       justifyContent: "space-between",
+                      alignItems: "center"
                     }}
                   >
                     <div
@@ -435,59 +409,42 @@ function DashboardPage(props) {
                     >
                       지갑 총액
                     </div>
-                    {/* <ul style={{
-                      flex: '1',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      listStyleType: 'none',
-                      fontSize: '0.7em',
-                      justifyContent: 'space-around'
-                    }}>
-                      { periodOptions.map((opt, index) => {
-                        return <li 
-                          className={opt.type === periodType ? 'selected-period' : 'default-period'} 
-                          key={`periodOpt${index}`} 
-                          onClick={() => getAssetGraphValue(opt.type)}
-                          >{opt.type}</li>
-                      }) }
-                    </ul> */}
-                  </div>
-                  <div
-                    style={{
-                      padding: "5px",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
                     <div
                       style={{
-                        fontSize: "18px",
-                        display: "inline",
+                        flex: 2,
+                        padding: "5px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-evenly"
                       }}
                     >
-                      ₩ 10,000,000
-                    </div>
-                    {/* 상승시 */}
-                    <div
-                      style={{
-                        margin: "0 0 0 10px",
-                        padding: "1px 3px",
-                        fontSize: "12px",
-                        display: "inline",
-                        color: "#E64743",
-                        border: "0.5px solid #E64743",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      ▴ 100.00 %
+                      <div
+                        style={{
+                          margin: "0 0 0 10px",
+                          padding: "1px 3px",
+                          fontSize: "12px",
+                          display: "inline",
+                          color: "#E64743",
+                        }}
+                      >
+                        ▴ 200.0 %
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          display: "inline",
+                        }}
+                      >
+                        ₩ 10,000,000
+                      </div>                      
                     </div>
                   </div>
                   <LineChart />
                 </div>
 
+                <p style={{ fontSize: "14px" }}>지갑 자산 구성</p>
                 <div className="container-border">
                   {/* TODO: fontSize 어쩌지.... */}
-                  <p style={{ fontSize: "0.8rem" }}>지갑 자산 구성</p>
                   <DoughnutChart />
                 </div>
 
@@ -506,11 +463,14 @@ function DashboardPage(props) {
                   </div>
                 </div> */}
 
-                <div className="container-border grid-row-offset">
-                  {KlayBalance && (
+                <p style={{ fontSize: "14px" }}>보유 토큰</p>
+                <div>
+                  {/* {KlayBalance && ( */}
                     <WalletInfo balance={KlayBalance} atype="Klaytn" />
-                  )}
-                  {BSCBalance && <WalletInfo balance={BSCBalance} atype="BSC" />}
+                  {/* )}
+                  {BSCBalance &&  */}
+                    <WalletInfo balance={BSCBalance} atype="BSC" />
+                  {/* } */}
                 </div>
               </TabPanel>
               {/* <TabPanel value={cardIndex} index={2}>
