@@ -17,7 +17,6 @@ import { auth } from "_actions/user_action";
 import Header from "components/Header"; 
 import WalletSummary from "./WalletSummary";
 import WalletInfo from "./WalletInfo";
-import LendingInfo from "./LendingInfo";
 import FarmingInfo from "./FarmingInfo";
 
 import LineChart from "components/charts/LineChart";
