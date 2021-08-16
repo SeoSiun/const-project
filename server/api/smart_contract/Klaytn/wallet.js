@@ -107,4 +107,14 @@ async function checkAddress(address) {
     return await isAddress(address); 
 }
 
-module.exports = { checkAddress, getKlaytnTokenPrice, getKlaytnBalanceWallet }; 
+async function staticsUserWallet(USER_ADDRESS) { 
+    const wallet_result = await getKlaytnBalanceWallet(USER_ADDRESS); 
+    let total_price = 0; 
+    wallet_result.forEach(token => { 
+        total_price += token.value; 
+    })
+    return {total_price}; 
+    
+}
+
+module.exports = { checkAddress, getKlaytnTokenPrice, getKlaytnBalanceWallet, staticsUserWallet }; 

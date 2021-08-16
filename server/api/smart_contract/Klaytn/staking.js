@@ -212,7 +212,7 @@ async function staticsUserStakingPool(USER_ADDRESS) {
         total_price, 
         minable_price, 
         rewarded_price, 
-        apr
+        avg_apr: apr
     }; 
 }
 

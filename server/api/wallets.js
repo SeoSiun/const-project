@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const { Wallet } = require('../models/Wallet'); 
-const { checkAddress, getKlaytnBalanceWallet } = require('./smart_contract/Klaytn/wallet'); 
+const { checkAddress, getKlaytnBalanceWallet, staticsUserWallet } = require('./smart_contract/Klaytn/wallet'); 
 const { getUserFarmingPool, staticsUserFarmingPool } = require('./smart_contract/Klaytn/farming'); 
 const { getUserStakedKSP, getUserVotingPool, staticsUserStakingPool } = require('./smart_contract/Klaytn/staking'); 
 
@@ -42,24 +42,86 @@ router.post('/import', (req, res) => {
 
 })
 
-router.get('/:user_id/asset', (req, res) => { 
+router.get('/:user_id/summary', async (req, res) => { 
+    const { atype } = req.query; 
     const { user_id } = req.params; 
+    const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
+                                .then(wallet => wallet.address) 
+                                .catch(err => res.json({status: false, err})); 
+    switch (atype) {
+        case 'asset': 
+            staticsUserWallet(address) 
+                .then(result => res.json({statis: true, result}))
+                .catch(err => res.json({status: false, err}));
+            break; 
 
-    Wallet.findOne({user_id, atype: 'Klaytn'}, (err, wallet) => { 
-        
-        if (err) return res.json({status: false, err })
-        if (!wallet) return res.json({status: false, msg: "doesn't exist wallet"})
-        const { address } = wallet; 
-        getKlaytnBalanceWallet(address)
-            .then(result => res.json({status: true, result}))
-            .catch(err => console.log(err))
-    })
+        case 'farming':
+            staticsUserFarmingPool(address)
+                .then(result => res.json({status: true, result}))
+                .catch(err => res.json({status: false, err}))
+            break;
+
+        case 'staking': 
+            staticsUserStakingPool(address)
+                .then(result => res.json({status: true, result}))
+                .catch(err => res.json({status: false, err}))
+            break; 
+
+        default:
+            try {
+                const [
+                    wallet_result, 
+                    farming_result, 
+                    staking_result
+                ] = await Promise.all([
+                    staticsUserWallet(address), 
+                    staticsUserFarmingPool(address), 
+                    staticsUserStakingPool(address) 
+                ]); 
+                let total_price = wallet_result.total_price + 
+                                    farming_result.total_price + 
+                                        staking_result.total_price; 
+                res.json({status: true, result: {
+                    total_price, 
+                    wallet: wallet_result, 
+                    farming: farming_result, 
+                    staking: staking_result 
+                }})
+            } catch(err) { 
+                res.json({status: false, err})
+            }
+            break;
+    }
 })
+
+router.get('/:user_id/asset', async (req, res) => { 
+    const { user_id } = req.params; 
+    const { atype } = req.query; 
+
+    const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
+                                .then(wallet => wallet.address) 
+                                .catch(err => res.json({status: false, err})); 
+    try{ 
+        let wallet_result = await getKlaytnBalanceWallet(address); 
+        wallet_result.sort(function(a, b) {return b.value - a.value})
+        if (atype === 'chart' && wallet_result.length > 6) { 
+            let top_tokens = wallet_result.slice(0, 5); 
+            let value = wallet_result.slice(5).reduce((sum, token) => sum + token.value, 0); 
+            let result = top_tokens.concat({token: 'OTHERS', value});
+            res.json({status: true, result})
+        } else{ 
+            res.json({status: true, result: wallet_result})
+        }
+    } catch(err) { 
+        res.json({status: false, err})
+    }
+})
+
 
 
 router.get('/:user_id/farming', async (req, res) => { 
     const { user_id } = req.params; 
-    const address = await Wallet.findOne({user_id})
+    const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
                                 .then(wallet => wallet.address) 
                                 .catch(err => res.json({status: false, err})); 
     await getUserFarmingPool(address) 
@@ -67,21 +129,11 @@ router.get('/:user_id/farming', async (req, res) => {
                     .catch(err => res.json({status: false, err}))
 })
 
-router.get('/:user_id/farming/statics', async (req, res) => { 
-    const { user_id } = req.params; 
-    const address = await Wallet.findOne({user_id})
-                                .then(wallet => wallet.address) 
-                                .catch(err => res.json({status: false, err})); 
-    staticsUserFarmingPool(address)
-        .then(result => res.json({status: true, result}))
-        .catch(err => res.json({status: false, err}))
-    
-})
 
 router.get('/:user_id/staking', async (req, res) => { 
     const { user_id } = req.params; 
 
-    const address = await Wallet.findOne({user_id})
+    const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
                                 .then(wallet => wallet.address)
                                 .catch(err => res.json({status: false, err})); 
 
@@ -95,17 +147,7 @@ router.get('/:user_id/staking', async (req, res) => {
     }})
 })
 
-router.get('/:user_id/staking/statics', async (req, res) => { 
-    const { user_id } = req.params; 
 
-    const address = await Wallet.findOne({user_id})
-                                .then(wallet => wallet.address)
-                                .catch(err => res.json({status: false, err})); 
-    staticsUserStakingPool(address)
-        .then(result => res.json({status: true, result}))
-        .catch(err => res.json({status: false, err}))
-
-})
 
 
 module.exports = router;
