@@ -1,4 +1,5 @@
 import React, { useState } from 'react'; 
+import { useHistory } from 'react-router-dom'; 
 
 import { withRouter } from 'react-router';
 
@@ -16,6 +17,8 @@ import './PortfolioMain.css';
 function PortfolioMain(props) {
 
   const [ isEmpty, setEmpty ] = useState(true);
+
+  const history = useHistory(); 
 
   return ( 
     <>
@@ -36,6 +39,7 @@ function PortfolioMain(props) {
                 flexDirection: 'row', 
                 justifyContent: 'space-between',
               }}
+              onClick={() => { history.push('/portfolio/summary', { summaryType: 'netWorth' }) }}
             >
               <p style={{ margin: 'auto 0', fontSize: '1em', alignSelf: 'center' }}>순자산</p>
               <span style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center'}}>
@@ -51,6 +55,7 @@ function PortfolioMain(props) {
                 flexDirection: 'row', 
                 justifyContent: 'space-between',
               }}
+              onClick={() => { history.push('/portfolio/summary', { summaryType: 'totalAssets' }) }}
             >
               <p style={{ margin: 'auto 0', fontSize: '1em', alignSelf: 'center' }}>총자산</p>
               <span style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center'}}>
@@ -66,6 +71,7 @@ function PortfolioMain(props) {
                 flexDirection: 'row', 
                 justifyContent: 'space-between',
               }}
+              onClick={() => { history.push('/portfolio/summary', { summaryType: 'totalDebts' }) }}
             >
               <p style={{ margin: 'auto 0', fontSize: '1em', alignSelf: 'center' }}>총부채</p>
               <span style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center'}}>
@@ -91,7 +97,7 @@ function PortfolioMain(props) {
 
       <Container style={{ paddingLeft: '5px', paddingRight: '5px'}}>
         {/* 지갑 */}
-        <Row style={{ margin: '10px auto', height: '4rem'}}>
+        <Row style={{ margin: '10px auto', height: '4rem'}} onClick={() => { history.push('/portfolio/wallet') }}>
           <Col xs='2' style={{ alignSelf: 'center', padding: '5px'}}>
             {/* 아이콘으로 대체해야함 */}
             <div style={{ backgroundColor: '#DDE8FC', width: '31px', height: '31px', borderRadius: '50%', color: '#615EFF', fontWeight: 'bold' }}>₩</div> 

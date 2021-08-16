@@ -75,13 +75,6 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-// const periodOptions = [
-//   { type: "1D" },
-//   { type: "1W" },
-//   { type: "1M" },
-//   { type: "3M" },
-// ];
-
 function DashboardPage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -94,23 +87,13 @@ function DashboardPage(props) {
   const [cardIndex, setCardIndex] = useState(1);
   // const [networkType, setNetworkType] = useState("All");
 
-  const [periodType, setPeriodType] = useState("1D");
-
   const handleCardIndexChange = (_, newIndex) => {
     setCardIndex(newIndex);
   };
   // const onNetworkTypeHandler = (_, newType) => {
   //   setNetworkType(newType);
   // };
-
-  const getAssetGraphValue = (periodOpt) => {
-    // DB에서 새로운 그래프 데이터 불러오기
-
-    // state에 값저장
-    setPeriodType(periodOpt);
-  };
-
-  const [summaryType, setSummaryType] = useState("netWorth");
+  const [summaryType, setSummaryType] = useState(props.location.state.summaryType || "netWorth");
 
   const onSummaryTypeHandler = (event) => {
     setSummaryType(event.target.value);
@@ -160,6 +143,10 @@ function DashboardPage(props) {
   }
 
   React.useEffect(() => {
+    // console.log(props.location.state.summaryType);
+    // let summaryType = props.location.state.summaryType || "netWorth";
+    // setSummaryType();
+
     dispatch(auth()).then((res) => {
       if (res.payload) {
         setUserInfo(res.payload);
