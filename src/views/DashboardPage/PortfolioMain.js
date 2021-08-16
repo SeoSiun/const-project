@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { withRouter } from 'react-router';
 
-import { IconButton } from '@material-ui/core';
+import { IconButton, Divider } from '@material-ui/core';
 import Menu from '@material-ui/icons/Menu';
 import { Row, Col, Modal, Button, Container } from 'react-bootstrap'; 
 import logo_img from 'static/img/logo_img.png';
@@ -111,7 +111,7 @@ function PortfolioMain(props) {
         </Row>
         
         {/* 경계선 */}
-        <hr></hr>
+        <Divider />
 
         {/* 디파이 */}
         <Row style={{ margin: '10px auto', height: '4rem'}}>
