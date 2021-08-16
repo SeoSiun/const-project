@@ -18,6 +18,7 @@ import Header from "components/Header";
 import WalletSummary from "./WalletSummary";
 import WalletInfo from "./WalletInfo";
 import FarmingInfo from "./FarmingInfo";
+import PortfolioSubMenu from "components/PortfolioSubMenu";
 
 import LineChart from "components/charts/LineChart";
 import DoughnutChart from "components/charts/DoughnutChart";
@@ -173,265 +174,202 @@ function DashboardPage(props) {
   return (
     <>
       <Header />
-      <Container style={{ padding: "0" }}>
-        <Row
-          className="align-items-center"
-          style={{
-            textAlign: "left",
-            margin: "0 auto",
-            height: "60px",
-            // position: 'absolute',
-            left: "0",
-            width: "100%",
-          }}
+      <PortfolioSubMenu menuIndex={0} />
+      <Container>
+        <div
+          className="container-border"
+          style={{ margin: "20px auto" }}
         >
-          <Col style={{ padding: "0" }}>
-            <AppBar position="static" color="white" elevation={0}>
-              <Tabs
-                value={cardIndex}
-                onChange={handleCardIndexChange}
-                indicatorColor="primary"
-                textColor="primary"
-                variant="fullWidth"
-                scrollButtons="on"
-              >
-                <Tab label="요약" {...a11yProps(0)} />
-                <Tab label="지갑" {...a11yProps(1)} />
-                <Tab label="파밍" {...a11yProps(2)} />
-                <Tab label="스테이킹" {...a11yProps(3)} />
-              </Tabs>
-            </AppBar>
-            <Divider />
-            <SwipeableViews
-              // axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-              index={cardIndex}
-              onChangeIndex={handleCardIndexChange}
-              style={{ margin: "0px" }}
+          <div
+            style={{
+              height: "2rem",
+              display: "flex",
+              flexDirection: "row",
+              // padding: '5px',
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              style={{
+                // padding: '5px',
+                fontSize: "14px",
+                flex: "1",
+              }}
             >
-              {/* 전체 */}
-              <TabPanel value={cardIndex} index={0}>
-                {/* <div style={{height: '1080px'}}>
-                  전체
-                </div> */}
-                <div
-                  className="container-border"
-                  style={{ marginBottom: "20px" }}
+              <FormControl>
+                <Select
+                  onChange={(e)=>{onSummaryTypeHandler(e)}}
+                  value={summaryType}
+                  style={{
+                    textAlign: "left",
+                    // height: '40px',
+                    backgroundColor: "",
+                    borderColor: "none",
+                    border: "none",
+                    color: "#4F4F4F",
+                    // marginBottom: '10px'
+                    padding: "0",
+                  }}
                 >
-                  <div
-                    style={{
-                      height: "2rem",
-                      display: "flex",
-                      flexDirection: "row",
-                      // padding: '5px',
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div
-                      style={{
-                        // padding: '5px',
-                        fontSize: "14px",
-                        flex: "1",
-                      }}
-                    >
-                      <FormControl>
-                        <Select
-                          onChange={(e)=>{onSummaryTypeHandler(e)}}
-                          value={summaryType}
-                          style={{
-                            textAlign: "left",
-                            // height: '40px',
-                            backgroundColor: "",
-                            borderColor: "none",
-                            border: "none",
-                            color: "#4F4F4F",
-                            // marginBottom: '10px'
-                            padding: "0",
-                          }}
-                        >
-                          <MenuItem style={{}} value="netWorth">
-                            순 자산
-                          </MenuItem>
-                          <MenuItem style={{}} value="totalAssets">
-                            총 자산
-                          </MenuItem>
-                          <MenuItem style={{}} value="totalDebts">
-                            총 부채
-                          </MenuItem>
-                        </Select>
-                      </FormControl>
-                    </div>
-                    <div
-                      style={{
-                        flex: 2,
-                        padding: "5px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-evenly"
-                      }}
-                    >
-                      <div
-                        style={{
-                          margin: "0 0 0 10px",
-                          padding: "1px 3px",
-                          fontSize: "12px",
-                          display: "inline",
-                          color: "#615EFF",
-                        }}
-                      >
-                        ▾ 3.2 %
-                      </div>
-                      <div
-                        style={{
-                          fontSize: "18px",
-                          display: "inline",
-                        }}
-                      >
-                        ₩ 31,000,000
-                      </div>
-                      {/* 상승시 */}
-                    </div>
-                  </div>
+                  <MenuItem style={{}} value="netWorth">
+                    순 자산
+                  </MenuItem>
+                  <MenuItem style={{}} value="totalAssets">
+                    총 자산
+                  </MenuItem>
+                  <MenuItem style={{}} value="totalDebts">
+                    총 부채
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div
+              style={{
+                flex: 2,
+                padding: "5px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-evenly"
+              }}
+            >
+              <div
+                style={{
+                  margin: "0 0 0 10px",
+                  padding: "1px 3px",
+                  fontSize: "12px",
+                  display: "inline",
+                  color: "#615EFF",
+                }}
+              >
+                ▾ 3.2 %
+              </div>
+              <div
+                style={{
+                  fontSize: "18px",
+                  display: "inline",
+                }}
+              >
+                ₩ 31,000,000
+              </div>
+              {/* 상승시 */}
+            </div>
+          </div>
 
-                  <LineChart />
-                </div>
+          <LineChart />
+        </div>
 
-                <div
-                  style={{ marginBottom: "20px" }}
-                >
-                  <Row style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "80px" }}>
-                    <Col>
-                      <span
-                        style={{
-                          fontSize: "16px",
-                          marginBottom: "0",
-                        }}
-                      >
-                        순 자산
-                      </span>
-                    </Col>
-                    <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-                      <span style={{ flex: "1", marginTop: "5px" }}>₩ 31,000,000</span>
-                      <span
-                        className="rise"
-                        style={{
-                          flex: "1",
-                          textAlign: "right",
-                          fontSize: "12px",
-                          fontWeight: "lighter",
-                          marginTop: "5px",
-                        }}
-                      >
-                        + ₩ 30,000
-                      </span>
-                    </Col>
-                  </Row>
-                  <Divider/>
-                
-                  <Row style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "80px" }}>
-                    <Col>
-                      <span
-                        style={{
-                          fontSize: "16px",
-                          marginBottom: "0",
-                        }}
-                      >
-                        총 자산
-                      </span>
-                    </Col>
-                    <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-                      <span style={{ flex: "1", marginTop: "5px" }}>₩ 34,000,000</span>
-                      <span
-                        className="rise"
-                        style={{
-                          flex: "1",
-                          textAlign: "right",
-                          fontSize: "12px",
-                          fontWeight: "lighter",
-                          marginTop: "5px",
-                        }}
-                      >
-                        + ₩ 30,000
-                      </span>
-                    </Col>
-                  </Row>
+        <div
+          style={{ marginBottom: "20px" }}
+        >
+          <Row style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "80px" }}>
+          <Col style={{ textAlign: 'left' }}>
+              <span
+                style={{
+                  fontSize: "16px",
+                  margin: "0 0 0 15px",
+                }}
+              >
+                순 자산
+              </span>
+            </Col>
+            <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
+              <span style={{ flex: "1", marginTop: "5px" }}>₩ 31,000,000</span>
+              <span
+                className="rise"
+                style={{
+                  flex: "1",
+                  textAlign: "right",
+                  fontSize: "12px",
+                  fontWeight: "lighter",
+                  marginTop: "5px",
+                }}
+              >
+                + ₩ 30,000
+              </span>
+            </Col>
+          </Row>
+          <Divider/>
+        
+          <Row style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "80px" }}>
+            <Col style={{ textAlign: 'left' }}>
+              <span
+                style={{
+                  fontSize: "16px",
+                  margin: "0 0 0 15px",
+                }}
+              >
+                총 자산
+              </span>
+            </Col>
+            <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
+              <span style={{ flex: "1", marginTop: "5px" }}>₩ 34,000,000</span>
+              <span
+                className="rise"
+                style={{
+                  flex: "1",
+                  textAlign: "right",
+                  fontSize: "12px",
+                  fontWeight: "lighter",
+                  marginTop: "5px",
+                }}
+              >
+                + ₩ 30,000
+              </span>
+            </Col>
+          </Row>
 
-                  <Divider/>
-                    
-                  <Row style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "80px" }}>
-                    <Col>
-                      <span
-                        style={{
-                          fontSize: "16px",
-                          marginBottom: "0",
-                        }}
-                      >
-                        총 부채
-                      </span>
-                    </Col>
-                    <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-                      <span style={{ flex: "1", marginTop: "5px" }}>₩ 3,000,000</span>
-                      <span
-                        className="drop"
-                        style={{
-                          flex: "1",
-                          textAlign: "right",
-                          fontSize: "12px",
-                          fontWeight: "lighter",
-                          marginTop: "5px",
-                        }}
-                      >
-                        - ₩ 30,000
-                      </span>
-                    </Col>
-                  </Row>
-                  
-                </div>
-              </TabPanel>
-              {/* 지갑 */}
-              <TabPanel value={cardIndex} index={1}>
-                <WalletSummary />
-              </TabPanel>
-              {/* <TabPanel value={cardIndex} index={2}>
-                {BSCLending && 
-                  <LendingInfo lending={BSCLending} marginBottom='50px' /> }
-              </TabPanel> */}
+          <Divider/>
+            
+          <Row style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "80px" }}>
+            <Col style={{ textAlign: 'left' }}>
+              <span
+                style={{
+                  fontSize: "16px",
+                  margin: "0 0 0 15px",
+                }}
+              >
+                총 부채
+              </span>
+            </Col>
+            <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
+              <span style={{ flex: "1", marginTop: "5px" }}>₩ 3,000,000</span>
+              <span
+                className="drop"
+                style={{
+                  flex: "1",
+                  textAlign: "right",
+                  fontSize: "12px",
+                  fontWeight: "lighter",
+                  marginTop: "5px",
+                }}
+              >
+                - ₩ 30,000
+              </span>
+            </Col>
+          </Row>
+          
+        </div>
+              
+              
               {/* 파밍 */}
-              <TabPanel value={cardIndex} index={2}>
+              {/* <TabPanel value={cardIndex} index={2}>
                 <div className="container-border">
                   <div
                     style={{
                       height: "2rem",
                       display: "flex",
                       flexDirection: "row",
-                      // padding: '5px',
                       justifyContent: "space-between",
                     }}
                   >
                     <div
                       style={{
-                        // padding: '5px',
                         fontSize: "14px",
                         flex: "1",
                       }}
                     >
                       총 평가 금액
                     </div>
-                    {/* <ul style={{
-                      flex: '1',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      listStyleType: 'none',
-                      fontSize: '0.7em',
-                      justifyContent: 'space-around'
-                    }}>
-                      { periodOptions.map((opt, index) => {
-                        return <li 
-                          className={opt.type === periodType ? 'selected-period' : 'default-period'} 
-                          key={`periodOpt${index}`} 
-                          onClick={() => getAssetGraphValue(opt.type)}
-                          >{opt.type}</li>
-                      }) }
-                    </ul> */}
                   </div>
                   <div
                     style={{
@@ -448,7 +386,6 @@ function DashboardPage(props) {
                     >
                       ₩ 10,000,000
                     </div>
-                    {/* 상승시 */}
                     <div
                       style={{
                         margin: "0 0 0 10px",
@@ -507,10 +444,7 @@ function DashboardPage(props) {
               </TabPanel>
               <TabPanel value={cardIndex} index={4}>
                 예금
-              </TabPanel>
-            </SwipeableViews>
-          </Col>
-        </Row>
+              </TabPanel> */}
       </Container>
     </>
   );

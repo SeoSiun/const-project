@@ -12,8 +12,9 @@ import { withRouter } from "react-router";
 import { auth } from "_actions/user_action";
 
 import Header from "components/Header"; 
+import PortfolioSubMenu from "components/PortfolioSubMenu";
+
 import WalletInfo from "./WalletInfo";
-import FarmingInfo from "./FarmingInfo";
 
 import LineChart from "components/charts/LineChart";
 import DoughnutChart from "components/charts/DoughnutChart";
@@ -38,6 +39,8 @@ function WalletSummary(props) {
 
   return (
     <>
+      <Header />
+      <PortfolioSubMenu menuIndex={1} />
       <div className="container-border">
         <div
           style={{
@@ -52,8 +55,9 @@ function WalletSummary(props) {
           <div
             style={{
               // padding: '5px',
-              fontSize: "14px",
+              fontSize: "1em",
               flex: "1",
+              textAlign: 'left'
             }}
           >
             지갑 총액
@@ -91,12 +95,12 @@ function WalletSummary(props) {
         <LineChart />
       </div>
 
-      <p style={{ fontSize: "14px" }}>지갑 자산 구성</p>
+      <p style={{ fontSize: "1em", textAlign: 'left' }}>지갑 자산 구성</p>
       <div className="container-border">
         <DoughnutChart />
       </div>
 
-      <p style={{ fontSize: "14px" }}>보유 토큰</p>
+      <p style={{ fontSize: "1em", textAlign: 'left' }}>보유 토큰</p>
       <div>
         {/* {KlayBalance && ( */}
           <WalletInfo balance={KlayBalance} atype="Klaytn" />
