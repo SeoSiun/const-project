@@ -25,10 +25,11 @@ div[class*="MuiBox-root-"] {
 }
 
 .container-border {
-	border: 1px solid #E0E0E0;
-	border-radius: 5px;
+	/* border: 1px solid #E0E0E0; */
+	border-radius: 3px;
 	margin-bottom: 20px;
 	padding: 10px;
+	box-shadow: rgb(0 0 0 / 20%) 0px 0px 10px -1px;
 }
 
 .selected-period {
@@ -47,8 +48,8 @@ div[class*="MuiBox-root-"] {
 	text-align: center;
 }
 
-.wallet-grid-container {
-	/* padding: 10px; */
+/* .wallet-grid-container {
+	padding: 10px;
 	display: grid;
 	grid-template-columns: auto auto;
 	column-gap: 20px;
@@ -68,7 +69,7 @@ div[class*="MuiBox-root-"] {
 
 .wallet-grid > p:first-child {
 	color: #828282;
-}
+} */
 
 
 /* 파밍 css */

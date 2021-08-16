@@ -26,7 +26,8 @@ function SigninPage(props) {
   const [password, setPassword] = useState("");
   const [statusMessage, setStatusMessage] = useState(setFormStatusMessage(""));
   const [autoLogin, setAutoLogin] = useState(false); 
-  const [passwordType, setPasswordType] = useState("password");
+  const [visibility, setVisibility] = useState("password");
+
 
   // React.useEffect(() => { })
 
@@ -88,26 +89,20 @@ function SigninPage(props) {
     });
   };
 
-  const onDeleteEmailHandler = () =>{
-    setEmail('');
-    setStatusMessage(setFormStatusMessage(''));
-
+  const onEmailClearHandler = () => {
+    setEmail("");
+    setStatusMessage(setFormStatusMessage(""));
   };
 
-  const onDeletePWHandler = () =>{
-    setPassword('');
-    setPasswordType("password");
+  const onPasswordClearHandler = () => {
+    setPassword("");
   };
 
-  const onVisibilityHandler = () =>{
-    setPasswordType(() =>{
-      if(passwordType === "password"){
-        return "text";
-      }
-      return "password";
-    })
-
+  const onVisibilityHandler = () => {
+    if(visibility === "password") setVisibility("text");
+    else setVisibility("password");
   };
+
 
   return (
     <Container style={{ padding: "3px" }}>
@@ -171,7 +166,7 @@ function SigninPage(props) {
                 component="span"
                 style={{ position: "absolute", right: "0px", top: "10px" }}
               >
-                <ClearIcon onClick={onDeleteEmailHandler} />
+                <ClearIcon onClick={onEmailClearHandler}/>
               </IconButton>
             </FormControl>
           </div>
@@ -198,19 +193,19 @@ function SigninPage(props) {
               <Input
                 disableUnderline={true}
                 placeholder="비밀번호"
-                type={passwordType}
+                type={visibility}
                 style={{ padding: "0 0 5px 8px" }}
                 onChange={onPasswordHandler}
                 keydown={{ onPasswordKeyDown }}
-                value = {password}
+                value={password}
               ></Input>
             </FormControl>
             <div style={{ float: "right", padding: "6px 0" }}>
               <IconButton aria-label="visibilityIcon" component="span">
-                <VisibilityIcon onClick={onVisibilityHandler} />
+                <VisibilityIcon onClick={onVisibilityHandler}/>
               </IconButton>
               <IconButton aria-label="clearIcon" component="span">
-                <ClearIcon onClick={onDeletePWHandler} />
+                <ClearIcon onClick={onPasswordClearHandler}/>
               </IconButton>
             </div>
           </div>
