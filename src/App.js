@@ -22,6 +22,7 @@ import MyInfoRouter from "views/MyInfoPage/MyInfoRouter";
 
 import FarmingDetailInfo from "views/DashboardPage/FarmingDetailInfo";
 import PortfolioMain from "views/DashboardPage/PortfolioMain";
+import WalletSummary from "views/DashboardPage/WalletSummary";
 
 // import WalletAddMainPage from "views/MyInfoPage/WalletAdd/WalletAddMainPage";
 // import WalletImportPage from "views/MyInfoPage/WalletAdd/WalletImportPage";
@@ -71,14 +72,16 @@ class App extends React.Component {
               <Route path="/signup" component={Auth(SignupPage, false)} />
               <Route path="/signin" component={Auth(SigninPage, false)} />
               <Route path="/resetpassword" component={Auth(ResetpasswordPage, false)} />
-              <Route path="/dashboard" component={Auth(DashboardPage, true)} />
+              {/* <Route path="/dashboard" component={Auth(DashboardPage, true)} /> */}
 
               <Route
                 path="/FarmingDetailInfo"
                 component={Auth(FarmingDetailInfo, true)}
               />
 
-              <Route path="/portfolio" component={Auth(PortfolioMain, true)} />
+              <Route exact path="/portfolio" component={Auth(PortfolioMain, true)} />
+              <Route path="/portfolio/summary" component={Auth(DashboardPage, true)} />
+              <Route path="/portfolio/wallet" component={Auth(WalletSummary, true)} />
               
               <MyInfoRouter />
               {/* <Route exact path="/myinfo" component={Auth(MyInfoPage, true)} />
