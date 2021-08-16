@@ -26,6 +26,8 @@ function SigninPage(props) {
   const [password, setPassword] = useState("");
   const [statusMessage, setStatusMessage] = useState(setFormStatusMessage(""));
   const [autoLogin, setAutoLogin] = useState(false); 
+  const [visibility, setVisibility] = useState("password");
+
 
   // React.useEffect(() => { })
 
@@ -87,6 +89,21 @@ function SigninPage(props) {
     });
   };
 
+  const onEmailClearHandler = () => {
+    setEmail("");
+    setStatusMessage(setFormStatusMessage(""));
+  };
+
+  const onPasswordClearHandler = () => {
+    setPassword("");
+  };
+
+  const onVisibilityHandler = () => {
+    if(visibility === "password") setVisibility("text");
+    else setVisibility("password");
+  };
+
+
   return (
     <Container style={{ padding: "3px" }}>
       <Row
@@ -142,13 +159,14 @@ function SigninPage(props) {
                 placeholder="example@email.com"
                 style={{ padding: "0 0 2px 8px" }}
                 onChange={onEmailHandler}
+                value={email}
               ></Input>
               <IconButton
                 aria-label="visibilityIcon"
                 component="span"
                 style={{ position: "absolute", right: "0px", top: "10px" }}
               >
-                <ClearIcon />
+                <ClearIcon onClick={onEmailClearHandler}/>
               </IconButton>
             </FormControl>
           </div>
@@ -175,18 +193,19 @@ function SigninPage(props) {
               <Input
                 disableUnderline={true}
                 placeholder="비밀번호"
-                type="password"
+                type={visibility}
                 style={{ padding: "0 0 5px 8px" }}
                 onChange={onPasswordHandler}
                 keydown={{ onPasswordKeyDown }}
+                value={password}
               ></Input>
             </FormControl>
             <div style={{ float: "right", padding: "6px 0" }}>
               <IconButton aria-label="visibilityIcon" component="span">
-                <VisibilityIcon />
+                <VisibilityIcon onClick={onVisibilityHandler}/>
               </IconButton>
               <IconButton aria-label="clearIcon" component="span">
-                <ClearIcon />
+                <ClearIcon onClick={onPasswordClearHandler}/>
               </IconButton>
             </div>
           </div>
