@@ -53,7 +53,7 @@ function MenuBar(props) {
             aria-labelledby="nested-list-subheader"
             className={classes.root}
           >
-            <ListItem button onClick={ () => { history.push('/dashboard'); }}>
+            <ListItem button onClick={ () => { history.push('/portfolio'); }}>
               <ListItemText primary="홈"  style={{fontWeight:"700"}}/>
               <ListItemIcon>
                 <NavigateNextIcon />

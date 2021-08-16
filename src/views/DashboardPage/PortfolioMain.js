@@ -1,12 +1,20 @@
 import React, { useState } from 'react'; 
 import { useHistory } from 'react-router-dom'; 
+import { useDispatch } from 'react-redux';
+import { auth } from '_actions/user_action'; 
+import axios from 'axios';
 
 import { withRouter } from 'react-router';
 
 import { IconButton, Divider } from '@material-ui/core';
 import Menu from '@material-ui/icons/Menu';
 import { Row, Col, Modal, Button, Container } from 'react-bootstrap'; 
-import logo_img from 'static/img/logo_img.png';
+
+import F_icon from 'static/img/etc_icon/F_icon.png'; 
+import D_icon from 'static/img/etc_icon/D_icon.png'; 
+import S_icon from 'static/img/etc_icon/S_icon.png'; 
+import KRW_icon from 'static/img/etc_icon/KRW_icon.png'; 
+
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Header from 'components/Header';
 
@@ -14,18 +22,51 @@ import StackedBarChart from '../../components/charts/StackedBarChart'
 
 import './PortfolioMain.css';
 
+function numberWithCommas(x) {
+  return Math.floor(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 function PortfolioMain(props) {
 
-  const [ isEmpty, setEmpty ] = useState(true);
+  const [ isEmpty, setEmpty ] = useState(false);
+  const [ userName, setUserName ] = useState(''); 
+  const [ summaryInfo, setSummaryInfo ] = useState({
+    total_price: 0, 
+    wallet: {total_price: 0}, 
+    farming: {total_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}, 
+    staking: {total_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}
+  }); 
 
   const history = useHistory(); 
+  const dispatch = useDispatch(); 
+
+  React.useEffect(() => { 
+    dispatch(auth()).then(res => { 
+      if (res.payload.isAuth) { 
+        const { name, _id } = res.payload; 
+        setUserName(name);
+        
+        axios.get(`/api/wallets/${_id}/summary`)
+          .then(res => res.data) 
+          .then(res => { 
+            if (!res || res.length === 0) {
+              setEmpty(true); 
+              return ;
+            } 
+            if (res.status) setSummaryInfo(res.result); 
+
+        })
+      }
+    })
+  }, [])
 
   return ( 
     <>
       <Header />
       <Row>
         <Col style={{ marginTop: '20px', marginLeft: '10px', textAlign: 'left' }}>
-          <h5 style={{ fontWeight: '600' }}>반가워요, 춤추는 올빼미 님</h5>
+          <h5 style={{ fontWeight: '600' }}>반가워요, {userName} 님</h5>
         </Col>
       </Row>
       <Row>
@@ -43,7 +84,7 @@ function PortfolioMain(props) {
             >
               <p style={{ margin: 'auto 0', fontSize: '1em', alignSelf: 'center' }}>순자산</p>
               <span style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center'}}>
-                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}>0원&nbsp;</p>
+                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}> {numberWithCommas(summaryInfo.total_price)} 원&nbsp;</p>
                 <NavigateNextIcon style={{alignSelf:'center'}} />
               </span>
             </span>
@@ -59,7 +100,7 @@ function PortfolioMain(props) {
             >
               <p style={{ margin: 'auto 0', fontSize: '1em', alignSelf: 'center' }}>총자산</p>
               <span style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center'}}>
-                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}>0원&nbsp;</p>
+                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}> {numberWithCommas(summaryInfo.total_price)} 원&nbsp;</p>
                 <NavigateNextIcon style={{alignSelf:'center'}} />
               </span>
             </span>
@@ -75,7 +116,7 @@ function PortfolioMain(props) {
             >
               <p style={{ margin: 'auto 0', fontSize: '1em', alignSelf: 'center' }}>총부채</p>
               <span style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center'}}>
-                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}>0원&nbsp;</p>
+                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}>--- 원&nbsp;</p>
                 <NavigateNextIcon style={{alignSelf:'center'}} />
               </span>
             </span>
@@ -85,7 +126,7 @@ function PortfolioMain(props) {
 
       <Row>
         <Col style={{ margin: '20px 0' }}>
-          <StackedBarChart />
+          <StackedBarChart summaryInfo={summaryInfo} />
         </Col>
       </Row>
 
@@ -100,15 +141,16 @@ function PortfolioMain(props) {
         <Row style={{ margin: '10px auto', height: '4rem'}} onClick={() => { history.push('/portfolio/wallet') }}>
           <Col xs='2' style={{ alignSelf: 'center', padding: '5px'}}>
             {/* 아이콘으로 대체해야함 */}
-            <div style={{ backgroundColor: '#DDE8FC', width: '31px', height: '31px', borderRadius: '50%', color: '#615EFF', fontWeight: 'bold' }}>₩</div> 
+            {/* <div style={{ backgroundColor: '#DDE8FC', width: '31px', height: '31px', borderRadius: '50%', color: '#615EFF', fontWeight: 'bold' }}>₩</div>  */}
+            <img src={KRW_icon} /> 
           </Col>
           <Col xs='3' style={{ padding:'0' ,fontWeight: '500', textAlign: 'left', display: 'flex', alignSelf: 'center'}}>
             지갑
           </Col>
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
-              <span>2,000,000원</span>
-              <span class='rise' style={{fontSize: '12px'}}>+1,000,000원 (200.0%)</span>
+              <span> {numberWithCommas(summaryInfo.wallet.total_price)} 원</span>
+              <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
             </div>
           </Col>
           <Col xs='2' style={{alignSelf: 'center', paddingRight: '0', color: '#BDBDBD'}}>
@@ -123,15 +165,16 @@ function PortfolioMain(props) {
         <Row style={{ margin: '10px auto', height: '4rem'}}>
           <Col xs='2' style={{ alignSelf: 'center', padding: '5px'}}>
             {/* 아이콘으로 대체해야함 */}
-            <div style={{ backgroundColor: '#FFE6B3', width: '31px', height: '31px', borderRadius: '50%', color: '#FFAF31', fontWeight: 'bold' }}>D</div> 
+            {/* <div style={{ backgroundColor: '#FFE6B3', width: '31px', height: '31px', borderRadius: '50%', color: '#FFAF31', fontWeight: 'bold' }}>D</div>  */}
+            <img src={D_icon} /> 
           </Col>
           <Col xs='3' style={{ padding:'0' ,fontWeight: '500', textAlign: 'left', display: 'flex', alignSelf: 'center'}}>
             디파이
           </Col>
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
-            <span>2,000,000원</span>
-              <span class='rise' style={{fontSize: '12px'}}>+1,000,000원 (200.0%)</span>
+            <span> {numberWithCommas(summaryInfo.farming.total_price+summaryInfo.staking.total_price)} 원</span>
+              <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
             </div>
           </Col>
           {/* <Col xs='2' style={{alignSelf: 'center', paddingRight: '0'}}>
@@ -143,16 +186,17 @@ function PortfolioMain(props) {
         <Row style={{ margin: '10px auto', height: '5rem'}}>
           <Col xs='2' style={{ alignSelf: 'center', padding: '0 0 0 1em'}}>
             {/* 아이콘으로 대체해야함 */}
-            <div style={{ backgroundColor: '#F2F2F2', width: '31px', height: '31px', borderRadius: '50%', color: '#BDBDBD', fontWeight: 'bold' }}>F</div> 
+            {/* <div style={{ backgroundColor: '#F2F2F2', width: '31px', height: '31px', borderRadius: '50%', color: '#BDBDBD', fontWeight: 'bold' }}>F</div>  */}
+            <img src={F_icon} /> 
           </Col>
           <Col xs='3' style={{ padding:'0 0 0 1em' ,fontWeight: '500', textAlign: 'left', display: 'flex', alignSelf: 'center'}}>
             파밍
           </Col>
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
-              <span>3,600,000원</span>
-              <span class='rise' style={{fontSize: '12px'}}>+2,000,000원 (200.0%)</span>
-              <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : 20,000 원</span>
+              <span> {numberWithCommas(summaryInfo.farming.total_price)} 원</span>
+              <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
+              <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : {numberWithCommas(summaryInfo.farming.rewarded_price)} 원</span>
             </div>
           </Col>
           <Col xs='2' style={{alignSelf: 'center', paddingRight: '0', color: '#BDBDBD'}}>
@@ -163,16 +207,17 @@ function PortfolioMain(props) {
         <Row style={{ margin: '10px auto', height: '5rem'}}>
           <Col xs='2' style={{ alignSelf: 'center', padding: '0 0 0 1em'}}>
             {/* 아이콘으로 대체해야함 */}
-            <div style={{ backgroundColor: '#F2F2F2', width: '31px', height: '31px', borderRadius: '50%', color: '#BDBDBD', fontWeight: 'bold' }}>S</div> 
+            {/* <div style={{ backgroundColor: '#F2F2F2', width: '31px', height: '31px', borderRadius: '50%', color: '#BDBDBD', fontWeight: 'bold' }}>S</div>  */}
+            <img src={S_icon} /> 
           </Col>
           <Col xs='3' style={{ padding:'0 0 0 1em' ,fontWeight: '500', textAlign: 'left', display: 'flex', alignSelf: 'center'}}>
             스테이킹
           </Col>
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
-              <span>4,000,000원</span>
-              <span class='rise' style={{fontSize: '12px'}}>+2,000,000원 (200.0%)</span>
-              <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : 20,000 원</span>
+              <span> {numberWithCommas(summaryInfo.staking.total_price)} 원</span>
+              <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
+              <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : {numberWithCommas(summaryInfo.staking.rewarded_price)} 원</span>
             </div>
           </Col>
           <Col xs='2' style={{ alignSelf: 'center', paddingRight: '0', color: '#BDBDBD' }}>

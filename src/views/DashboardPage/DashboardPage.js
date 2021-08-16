@@ -93,7 +93,8 @@ function DashboardPage(props) {
   // const onNetworkTypeHandler = (_, newType) => {
   //   setNetworkType(newType);
   // };
-  const [summaryType, setSummaryType] = useState(props.location.state.summaryType || "netWorth");
+  console.log("??: ", props.location)
+  const [summaryType, setSummaryType] = useState(props.location.state ?  props.location.state.summaryType : "netWorth");
 
   const onSummaryTypeHandler = (event) => {
     setSummaryType(event.target.value);
