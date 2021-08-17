@@ -72,7 +72,6 @@ class App extends React.Component {
               <Route path="/signup" component={Auth(SignupPage, false)} />
               <Route path="/signin" component={Auth(SigninPage, false)} />
               <Route path="/resetpassword" component={Auth(ResetpasswordPage, false)} />
-              {/* <Route path="/dashboard" component={Auth(DashboardPage, true)} /> */}
 
               <Route
                 path="/FarmingDetailInfo"

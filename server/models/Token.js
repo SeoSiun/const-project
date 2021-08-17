@@ -20,11 +20,21 @@ var TokenSchema = new Schema({
         type: String, 
         required: true, 
     }, 
+    defi: { 
+        type: String, 
+    }, 
+    pool_id: { 
+        type: Number,
+        default: -1
+    }, 
     price: { 
         type: Number, 
     }, 
     decimal: {
         type: Number,
+    }, 
+    etc: { 
+        type: String, 
     }, 
     update_at: { 
         type: Date, 

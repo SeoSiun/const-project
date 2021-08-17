@@ -3,25 +3,32 @@ import React, {useState} from 'react';
 import { Line } from "react-chartjs-2";
 import { Row, Col } from 'react-bootstrap'; 
 
+function convertPercentage(val, total) { 
+  return Number((val/total).toFixed(4) * 100); 
+}
 
 function StackedBarChart(props) { 
+  const { total_price, wallet, farming, staking } = props.summaryInfo; 
+
+  console.log(total_price, wallet, farming, staking); 
+
   const data = [
     {
       color: "#7492FC",
-      ratio: 2,
-      value: 0,
+      ratio: convertPercentage(wallet.total_price, total_price),
+      value: convertPercentage(wallet.total_price, total_price),
       label: "지갑"
     },
     {
       color: "#A2B9FC",
-      ratio: 1,
-      value: 0,
+      ratio: convertPercentage(farming.total_price, total_price),
+      value: convertPercentage(farming.total_price, total_price),
       label: "파밍"
     },
     {
       color: "#C1D0FE",
-      ratio: 1,
-      value: 0,
+      ratio: convertPercentage(staking.total_price, total_price),
+      value: convertPercentage(staking.total_price, total_price),
       label: "스테이킹"
     },
   ];
