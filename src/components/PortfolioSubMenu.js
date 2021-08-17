@@ -11,7 +11,7 @@ function PortfolioSubMenu(props) {
     { title: "요약", path: "summary" },
     { title: "지갑", path: "wallet" },
     { title: "파밍", path: "summary" },
-    { title: "스테이킹", path: "wallet" },
+    { title: "스테이킹", path: "staking" },
   ];
 
   const history = useHistory(); 
