@@ -10,7 +10,7 @@ function PortfolioSubMenu(props) {
   const menuOptions = [ 
     { title: "요약", path: "summary" },
     { title: "지갑", path: "wallet" },
-    { title: "파밍", path: "summary" },
+    { title: "파밍", path: "farming" },
     { title: "스테이킹", path: "staking" },
   ];
 

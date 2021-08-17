@@ -23,6 +23,7 @@ import MyInfoRouter from "views/MyInfoPage/MyInfoRouter";
 import FarmingDetailInfo from "views/DashboardPage/FarmingDetailInfo";
 import PortfolioMain from "views/DashboardPage/PortfolioMain";
 import WalletSummary from "views/DashboardPage/WalletSummary";
+import FarmingSummary from "views/DashboardPage/FarmingSummary";
 import StakingSummary from "views/DashboardPage/StakingSummary";
 
 // import WalletAddMainPage from "views/MyInfoPage/WalletAdd/WalletAddMainPage";
@@ -82,7 +83,7 @@ class App extends React.Component {
               <Route exact path="/portfolio" component={Auth(PortfolioMain, true)} />
               <Route path="/portfolio/summary" component={Auth(DashboardPage, true)} />
               <Route path="/portfolio/wallet" component={Auth(WalletSummary, true)} />
-
+              <Route path="/portfolio/farming" component={Auth(FarmingSummary, true)} />
               <Route path="/portfolio/staking" component={Auth(StakingSummary, true)} />
               
               <MyInfoRouter />
