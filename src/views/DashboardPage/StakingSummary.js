@@ -14,7 +14,7 @@ import { auth } from "_actions/user_action";
 import Header from "components/Header"; 
 import PortfolioSubMenu from "components/PortfolioSubMenu";
 
-import FarmingInfo from "./FarmingInfo";
+import StakingInfo from "./StakingInfo";
 
 import LineChart from "components/charts/LineChart";
 import DoughnutChart from "components/charts/DoughnutChart";
@@ -136,9 +136,8 @@ function StakingSummary(props) {
         </div>
         <LineChart />
       </div>
-
+      <p style={{ fontSize: "1em", textAlign: 'left' }}>종합 요약</p>
       <div className="container-border">
-        <p style={{ fontSize: "0.8rem" }}>종합 요약</p>
         <div className="farming-grid">
           <p>총 매수 금액</p> <AlertInfo />
           <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
@@ -165,15 +164,15 @@ function StakingSummary(props) {
     </div>
   </div>
 
-  <div className="container-border">
-    <p style={{ fontSize: "0.8rem" }}>프로토콜별 요약</p>
+  <p style={{ fontSize: "1em", textAlign: 'left' }}>프로토콜별 요약</p>
     {KlayBalance && (
-      <FarmingInfo balance={KlayBalance} atype="Klaytn" />
+      <StakingInfo balance={KlayBalance} atype="Klaytn" />
     )}
-    {BSCBalance && <FarmingInfo balance={BSCBalance} atype="BSC" />}
-  </div>
+    {BSCBalance && <StakingInfo balance={BSCBalance} atype="BSC" />}
     </>
+    
   );
+  
 }
 
 export default withRouter(StakingSummary);
