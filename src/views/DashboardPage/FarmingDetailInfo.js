@@ -60,7 +60,7 @@ function FarmingDetailInfo(props) {
         style={{
           padding: "20px 0",
           position: "relative",
-        }}s
+        }}
       >
         <Link to="./dashboard">
           <IconButton aria-label="before" component="span">
