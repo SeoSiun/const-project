@@ -12,7 +12,7 @@ import MenuBar from "components/MenuBar";
 
 import ksp_img from "static/img/token_icon/ksp_logo.png";
 
-function FarmingDetailInfo(props) {
+function StakingDetailInfo(props) {
   function AlertInfo() {
     const [show, setShow] = useState(false);
     if (show) {
@@ -144,12 +144,12 @@ function FarmingDetailInfo(props) {
                 width: "100%"
               }}
             >
-              쌓인 리워드 수학
+              쌓인 리워드 받기
             </Button>
           </div>
 
           {/* <div className="container-border grid-row-offset"> */}
-            <p style={{ fontSize: "0.8rem" }}>풀</p>
+            <p style={{ fontSize: "0.8rem" }}>스테이킹 풀</p>
 
             <div className="wallet-coin-item">
               <div className="container-border" style={{ margin: "0" }}>
@@ -167,9 +167,7 @@ function FarmingDetailInfo(props) {
                         padding: "1px 3px",
                         fontSize: "12px",
                         display: "inline",
-                        color: "#615EFF",
-                        border: "0.5px solid #615EFF",
-                        borderRadius: "5px",
+                        color: "#615EFF"
                       }}
                     >
                       ▾ 89.30 %
@@ -180,14 +178,16 @@ function FarmingDetailInfo(props) {
                       variant="secondary"
                       size="sm"
                       style={{
-                        backgroundColor: "#B5B4FF",
-                        color: "#fff",
+                        backgroundColor: "#F2F2F2",
+                        color: "#828282",
                         borderStyle: "none",
-                        borderRadius: "10px",
+                        borderRadius: "1px",
                         float: "right",
+                        width:"78px",
+                        height:"26px"
                       }}
                     >
-                      리워드 수확
+                      관리
                     </Button>
                   </Col>
                 </Row>
@@ -212,7 +212,7 @@ function FarmingDetailInfo(props) {
                   <p style={{ textAlign: "right" }}> 1.0000 KSP (₩100,000)</p>
                 </div>
                 <div className="farming-grid">
-                  <p style={{ flex: "1" }}>수확된 리워드</p>{" "}
+                  <p style={{ flex: "1" }}>누적된 리워드</p>{" "}
                   <p style={{ textAlign: "right" }}> 0.5600 KSP (₩5,037)</p>
                 </div>
                 <div className="farming-grid">
@@ -223,6 +223,78 @@ function FarmingDetailInfo(props) {
                   <p style={{ flex: "1" }}>현재 수익률</p>{" "}
                   <p style={{ textAlign: "right" }}> 77.11%</p>
                 </div>
+                <div className="farming-grid">
+                  <p style={{ flex: "1" }}>현재 APR</p>{" "}
+                  <p style={{ textAlign: "right" }}> 77.11%</p>
+                </div>
+              </div>
+            </div>
+            <p style={{ fontSize: "0.8rem" }}>투표한 풀</p>
+
+            <div className="wallet-coin-item">
+              <div className="container-border" style={{ margin: "0" }}>
+                <Row style={{ height: "40px" }}>
+                  <Col xs={1}>{<img src={ksp_img} />}</Col>
+                  <Col xs={7}>
+                    {
+                      <span style={{ fontSize: "15px", fontWeight: "bold" }}>
+                        KSP + ETH
+                      </span>
+                    }
+                    <div
+                      style={{
+                        margin: "0 0 0 10px",
+                        padding: "1px 3px",
+                        fontSize: "12px",
+                        display: "inline",
+                        color: "#615EFF"
+                      }}
+                    >
+                      ▾ 89.30 %
+                    </div>
+                  </Col>
+                  <Col>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      style={{
+                        backgroundColor: "#F2F2F2",
+                        color: "#828282",
+                        borderStyle: "none",
+                        borderRadius: "1px",
+                        float: "right",
+                        width:"78px",
+                        height:"26px"
+                      }}
+                    >
+                      관리
+                    </Button>
+                  </Col>
+                </Row>
+
+                <div className="farming-grid">
+                  <p style={{ flex: "1" }}>투표 수량</p>{" "}
+                  <p style={{ textAlign: "right" }}>
+                    {" "}
+                    1 vKSP (보유 투표권의 50%)
+                  </p>
+                </div>
+                <div className="farming-grid">
+                  <p style={{ flex: "1" }}>리워드</p>{" "}
+                  <p style={{ textAlign: "right" }}> 0.0100KLAY + 0.0030 sKAI</p>
+                </div>
+                <div className="farming-grid">
+                  <p style={{ flex: "1" }}>누적된 투표 리워드</p>{" "}
+                  <p style={{ textAlign: "right" }}> 100,000원</p>
+                </div>
+                <div className="farming-grid">
+                  <p style={{ flex: "1" }}>예상 APR</p>{" "}
+                  <p style={{ textAlign: "right" }}> 14.36%</p>
+                </div>
+                <div className="farming-grid">
+                  <p style={{ flex: "1" }}>현재 APR</p>{" "}
+                  <p style={{ textAlign: "right" }}> 14.36%</p>
+                </div>
               </div>
             </div>
           {/* </div> */}
@@ -232,4 +304,4 @@ function FarmingDetailInfo(props) {
   );
 }
 
-export default withRouter(FarmingDetailInfo);
+export default withRouter(StakingDetailInfo);

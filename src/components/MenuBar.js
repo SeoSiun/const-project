@@ -53,7 +53,7 @@ function MenuBar(props) {
             aria-labelledby="nested-list-subheader"
             className={classes.root}
           >
-            <ListItem button onClick={ () => { history.push('/dashboard'); }}>
+            <ListItem button onClick={ () => { history.push('/portfolio'); }}>
               <ListItemText primary="홈"  style={{fontWeight:"700"}}/>
               <ListItemIcon>
                 <NavigateNextIcon />
@@ -67,13 +67,13 @@ function MenuBar(props) {
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem button className={classes.nested} >
+                <ListItem button className={classes.nested} onClick={() => { history.push('/portfolio/summary') }} >
                   <ListItemText primary="종합 요약" />
                   <ListItemIcon>
                     <NavigateNextIcon />
                   </ListItemIcon>
                 </ListItem>
-                <ListItem button className={classes.nested}>
+                <ListItem button className={classes.nested} onClick={() => { history.push('/portfolio/wallet') }}>
                   <ListItemText primary="지갑" />
                   <ListItemIcon>
                     <NavigateNextIcon />

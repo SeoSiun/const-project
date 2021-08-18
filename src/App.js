@@ -23,6 +23,9 @@ import MyInfoRouter from "views/MyInfoPage/MyInfoRouter";
 import FarmingDetailInfo from "views/DashboardPage/FarmingDetailInfo";
 import StakingDetailInfo from "views/DashboardPage/StakingDetailInfo";
 import PortfolioMain from "views/DashboardPage/PortfolioMain";
+import WalletSummary from "views/DashboardPage/WalletSummary";
+import FarmingSummary from "views/DashboardPage/FarmingSummary";
+import StakingSummary from "views/DashboardPage/StakingSummary";
 
 // import WalletAddMainPage from "views/MyInfoPage/WalletAdd/WalletAddMainPage";
 // import WalletImportPage from "views/MyInfoPage/WalletAdd/WalletImportPage";
@@ -72,7 +75,6 @@ class App extends React.Component {
               <Route path="/signup" component={Auth(SignupPage, false)} />
               <Route path="/signin" component={Auth(SigninPage, false)} />
               <Route path="/resetpassword" component={Auth(ResetpasswordPage, false)} />
-              <Route path="/dashboard" component={Auth(DashboardPage, true)} />
 
               <Route
                 path="/FarmingDetailInfo"
@@ -81,10 +83,14 @@ class App extends React.Component {
               <Route
                 path="/StakingDetailInfo"
                 component={Auth(StakingDetailInfo, true)}
-              
               />
 
-              <Route path="/portfolio" component={Auth(PortfolioMain, true)} />
+              <Route exact path="/portfolio" component={Auth(PortfolioMain, true)} />
+              <Route path="/portfolio/summary" component={Auth(DashboardPage, true)} />
+              <Route path="/portfolio/wallet" component={Auth(WalletSummary, true)} />
+              <Route path="/portfolio/farming" component={Auth(FarmingSummary, true)} />
+
+              <Route path="/portfolio/staking" component={Auth(StakingSummary, true)} />
               
               <MyInfoRouter />
               {/* <Route exact path="/myinfo" component={Auth(MyInfoPage, true)} />
