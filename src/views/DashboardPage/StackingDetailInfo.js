@@ -22,6 +22,7 @@ import './Modal.css'
 function StackingDetailInfo(props) {
     const [stackingModal, setStackingModal] = useState(false);
     const [votingModal, setVotingModal] = useState(false);
+    const [rewardModal, setRewardModal] = useState(false);
 
 
     function AlertInfo() {
@@ -143,7 +144,7 @@ function StackingDetailInfo(props) {
                                 fontSize: "14px",
                                 width: "100%",
                             }}
-                            
+                            onClick={() => { setRewardModal(true) }}
                         >
                             쌓인 리워드 받기
                         </Button>
@@ -549,6 +550,85 @@ function StackingDetailInfo(props) {
             </Row>
           </Modal.Body>
         </Modal>
+
+        <Modal
+          show={stackingModal}
+         
+          keyboard={false}
+          onHide={() => { setStackingModal(false) }}
+        >
+          <Modal.Header closeButton style={{ border: 'none', fontWeight:"bold" }}>
+            스테이킹 관리
+          </Modal.Header>
+          <Modal.Body style={{ fontSize: '14px', textAlign: 'center', padding: '1em 0' }}>
+            <Row>
+              <Col xs={{ span: 5, offset: 1}}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  //block
+                  style={{
+                    color: "#FFFFFF",
+                    backgroundColor: "#615EFF",
+                    border: "#E0E0E0",
+                    fontSize: "14px",
+                    width: "100%",
+                                      
+                  }}
+                  onClick={() => { setStackingModal(true) }}
+                >
+                  <div className="stacking-button">
+                    <p style={{ flex: "1", textAlign: "center" }}>스테이킹</p>
+                  </div>
+                </Button >
+              </Col >
+              <Col xs={{ span: 5, offset: 0}}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  //block
+                  style={{
+                    color: "#FFFFFF",
+                    backgroundColor: "#615EFF",
+                    border: "#E0E0E0",
+                    fontSize: "14px",
+                    width: "100%",
+                  
+                  }}
+                  onClick={() => { setStackingModal(true) }}
+                >
+                  <div className="stacking-button">
+                    <p style={{ flex: "1", textAlign: "center" }}>언스테이킹</p>
+                  </div>
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={{ span: 10, offset: 1}}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  //block
+                  style={{
+                    color: "#FFFFFF",
+                    backgroundColor: "#615EFF",
+                    border: "#E0E0E0",
+                    fontSize: "14px",
+                    marginTop: "1em",
+                    width: "100%",
+                  }}
+                  onClick={() => { setStackingModal(true) }}
+                >
+                  <div className="stacking-button">
+                    <p style={{ flex: "1", textAlign: "center" }}>리워드 받기</p>
+                  </div>
+                </Button>
+              </Col>
+
+            </Row>
+          </Modal.Body>
+        </Modal>
+
         </Container>
 
     );
