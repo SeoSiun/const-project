@@ -8,11 +8,11 @@ import klaytn_img from "static/img/token_icon/klaytn_logo.png";
 import bsc_img from "static/img/token_icon/bsc_logo.png";
 
 
-function StackingInfo(props) {
+function StakingInfo(props) {
   const { balance, atype } = props;
 
   return (
-    <div className="stacking-coin-item">
+    <div className="staking-coin-item">
       <div className="container-border" style={{ margin: "0" }}>
         <Row style={{ height: "40px" }}>
           <Col xs={1}>
@@ -47,7 +47,7 @@ function StackingInfo(props) {
             </div>
           </Col>
           <Col style={{ textAlign: "right" }}>
-            <Link to="./StackingDetailInfo">
+            <Link to="./StakingDetailInfo">
               <Button
                 size="sm"
                 style={{
@@ -63,15 +63,15 @@ function StackingInfo(props) {
           </Col>
         </Row>
 
-        <div className="stacking-grid">
+        <div className="staking-grid">
           <p style={{ flex: "1" }}>총 매수 금액</p>{" "}
           <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
         </div>
-        <div className="stacking-grid">
+        <div className="staking-grid">
           <p style={{ flex: "1" }}>총 평가 금액</p>{" "}
           <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
         </div>
-        <div className="stacking-grid">
+        <div className="staking-grid">
           <p style={{ flex: "1" }}>리워드 합계</p>{" "}
           <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
         </div>
@@ -88,7 +88,7 @@ function StackingInfo(props) {
           }}
     
         >
-          <div className="stacking-button">
+          <div className="staking-button">
             <p style={{ flex: "1", textAlign: "left" }}>쌓인 리워드</p>
             <p style={{ flex: "1", textAlign: "center" }}> 4,000,000원</p>
             <p style={{ flex: "1", textAlign: "right" }}> 받기</p>
@@ -101,4 +101,4 @@ function StackingInfo(props) {
   );
 }
 
-export default withRouter(StackingInfo);
+export default withRouter(StakingInfo);

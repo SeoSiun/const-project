@@ -19,8 +19,8 @@ import { style } from "@material-ui/system";
 import './Modal.css'
 
 
-function StackingDetailInfo(props) {
-    const [stackingModal, setStackingModal] = useState(false);
+function StakingDetailInfo(props) {
+    const [stakingModal, setStakingModal] = useState(false);
     const [votingModal, setVotingModal] = useState(false);
     const [rewardModal, setRewardModal] = useState(false);
 
@@ -109,27 +109,27 @@ function StackingDetailInfo(props) {
                 <Col style={{ padding: "0" }}>
                     <p style={{ fontSize: "0.8rem" }}>요약</p>
                     <div className="container-border" style={{ backgroundColor: '#f2f2f2' }}>
-                        <div className="stacking-grid">
+                        <div className="staking-grid">
                             <p>총 매수 금액</p> <AlertInfo />
                             <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
                         </div>
-                        <div className="stacking-grid">
+                        <div className="staking-grid">
                             <p>총 평가 금액</p> <AlertInfo />
                             <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
                         </div>
-                        <div className="stacking-grid">
+                        <div className="staking-grid">
                             <p>리워드 합계</p> <AlertInfo />
                             <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
                         </div>
-                        <div className="stacking-grid">
+                        <div className="staking-grid">
                             <p>수확된 리워드</p> <AlertInfo />
                             <p style={{ flex: "1", textAlign: "right" }}> ₩600,000</p>
                         </div>
-                        <div className="stacking-grid">
+                        <div className="staking-grid">
                             <p>예상 APR 평균</p> <AlertInfo />
                             <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
                         </div>
-                        <div className="stacking-grid">
+                        <div className="staking-grid">
                             <p>현재 수익륜 평균</p> <AlertInfo />
                             <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
                         </div>
@@ -184,51 +184,51 @@ function StackingDetailInfo(props) {
                                             width: "50%",
                                             float: "right",
                                         }}
-                                        onClick={() => { setStackingModal(true) }}
+                                        onClick={() => { setStakingModal(true) }}
                                     >
                                         관리
                                     </Button>
                                 </Col>
                             </Row>
 
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>예치 수량</p>{" "}
                                 <p style={{ textAlign: "right" }}>
                                     {" "}
                                     123.0000 KSP + 2.0000 ETH
                                 </p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>매수 금액</p>{" "}
                                 <p style={{ textAlign: "right" }}> ₩900,000</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>평가 금액</p>{" "}
                                 <p style={{ textAlign: "right" }}> ₩1,000,000</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>리워드</p>{" "}
                                 <p style={{ textAlign: "right" }}> 1.0000 KSP (₩100,000)</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>수확된 리워드</p>{" "}
                                 <p style={{ textAlign: "right" }}> 0.5600 KSP (₩5,037)</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>예상 APR</p>{" "}
                                 <p style={{ textAlign: "right" }}> 77.11%</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>현재 수익률</p>{" "}
                                 <p style={{ textAlign: "right" }}> 77.11%</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>현재 APR</p>{" "}
                                 <p style={{ textAlign: "right" }}> 77.11%</p>
                             </div>
                         </div>
                     </div>
-                    <div className="stacking-vote">
+                    <div className="staking-vote">
                     <p style={{ fontSize: "0.8rem" }}>투표한 풀</p>
                     <p style={{ flex: "2",fontSize: "0.8rem", textAlign: "right"}}>보유 투표권 </p>
                     <p style={{fontSize: "0.8rem", textAlign: "right"}}>2 vKSP</p>
@@ -268,45 +268,45 @@ function StackingDetailInfo(props) {
                                             width: "50%",
                                             float: "right",
                                         }}
-                                        onClick={() => { setStackingModal(true) }}
+                                        onClick={() => { setStakingModal(true) }}
                                     >
                                         관리
                                     </Button>
                                 </Col>
                             </Row>
 
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>예치 수량</p>{" "}
                                 <p style={{ textAlign: "right" }}>
                                     {" "}
                                     123.0000 KSP + 2.0000 ETH
                                 </p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>매수 금액</p>{" "}
                                 <p style={{ textAlign: "right" }}> ₩900,000</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>평가 금액</p>{" "}
                                 <p style={{ textAlign: "right" }}> ₩1,000,000</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>리워드</p>{" "}
                                 <p style={{ textAlign: "right" }}> 1.0000 KSP (₩100,000)</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>수확된 리워드</p>{" "}
                                 <p style={{ textAlign: "right" }}> 0.5600 KSP (₩5,037)</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>예상 APR</p>{" "}
                                 <p style={{ textAlign: "right" }}> 77.11%</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>현재 수익률</p>{" "}
                                 <p style={{ textAlign: "right" }}> 77.11%</p>
                             </div>
-                            <div className="stacking-grid">
+                            <div className="staking-grid">
                                 <p style={{ flex: "1" }}>현재 APR</p>{" "}
                                 <p style={{ textAlign: "right" }}> 77.11%</p>
                             </div>
@@ -395,6 +395,7 @@ function StackingDetailInfo(props) {
         <>
 
         </>
+        {/*투표 모달*/}
         <Modal
           show={votingModal}
          
@@ -421,7 +422,7 @@ function StackingDetailInfo(props) {
                   }}
                   onClick={() => { setVotingModal(true) }}
                 >
-                  <div className="stacking-button">
+                  <div className="staking-button">
                     <p style={{ flex: "1", textAlign: "center" }}>투표하기</p>
                   </div>
                 </Button >
@@ -441,7 +442,7 @@ function StackingDetailInfo(props) {
                   }}
                   onClick={() => { setVotingModal(true) }}
                 >
-                  <div className="stacking-button">
+                  <div className="staking-button">
                     <p style={{ flex: "1", textAlign: "center" }}>철회하기</p>
                   </div>
                 </Button>
@@ -463,7 +464,7 @@ function StackingDetailInfo(props) {
                   }}
                   onClick={() => { setVotingModal(true) }}
                 >
-                  <div className="stacking-button">
+                  <div className="staking-button">
                     <p style={{ flex: "1", textAlign: "center" }}>리워드 받기</p>
                   </div>
                 </Button>
@@ -473,11 +474,12 @@ function StackingDetailInfo(props) {
           </Modal.Body>
         </Modal>
 
+        {/*스테이킹 모달*/}
         <Modal
-          show={stackingModal}
+          show={stakingModal}
          
           keyboard={false}
-          onHide={() => { setStackingModal(false) }}
+          onHide={() => { setStakingModal(false) }}
         >
           <Modal.Header closeButton style={{ border: 'none', fontWeight:"bold" }}>
             스테이킹 관리
@@ -497,9 +499,9 @@ function StackingDetailInfo(props) {
                     width: "100%",
                                       
                   }}
-                  onClick={() => { setStackingModal(true) }}
+                  onClick={() => { setStakingModal(true) }}
                 >
-                  <div className="stacking-button">
+                  <div className="staking-button">
                     <p style={{ flex: "1", textAlign: "center" }}>스테이킹</p>
                   </div>
                 </Button >
@@ -517,9 +519,9 @@ function StackingDetailInfo(props) {
                     width: "100%",
                   
                   }}
-                  onClick={() => { setStackingModal(true) }}
+                  onClick={() => { setStakingModal(true) }}
                 >
-                  <div className="stacking-button">
+                  <div className="staking-button">
                     <p style={{ flex: "1", textAlign: "center" }}>언스테이킹</p>
                   </div>
                 </Button>
@@ -539,9 +541,9 @@ function StackingDetailInfo(props) {
                     marginTop: "1em",
                     width: "100%",
                   }}
-                  onClick={() => { setStackingModal(true) }}
+                  onClick={() => { setStakingModal(true) }}
                 >
-                  <div className="stacking-button">
+                  <div className="staking-button">
                     <p style={{ flex: "1", textAlign: "center" }}>리워드 받기</p>
                   </div>
                 </Button>
@@ -551,80 +553,37 @@ function StackingDetailInfo(props) {
           </Modal.Body>
         </Modal>
 
+        {/*리워드 모달*/}
         <Modal
-          show={stackingModal}
+          show={rewardModal}
          
           keyboard={false}
-          onHide={() => { setStackingModal(false) }}
+          onHide={() => { setRewardModal(false) }}
         >
-          <Modal.Header closeButton style={{ border: 'none', fontWeight:"bold" }}>
-            스테이킹 관리
-          </Modal.Header>
           <Modal.Body style={{ fontSize: '14px', textAlign: 'center', padding: '1em 0' }}>
             <Row>
-              <Col xs={{ span: 5, offset: 1}}>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  //block
-                  style={{
-                    color: "#FFFFFF",
-                    backgroundColor: "#615EFF",
-                    border: "#E0E0E0",
-                    fontSize: "14px",
-                    width: "100%",
-                                      
-                  }}
-                  onClick={() => { setStackingModal(true) }}
-                >
-                  <div className="stacking-button">
-                    <p style={{ flex: "1", textAlign: "center" }}>스테이킹</p>
-                  </div>
-                </Button >
+              <Col>
+                  <p style={{textAlign: "center"}}>준비 중인 기능입니다. 기대해주세요 :)</p>
               </Col >
-              <Col xs={{ span: 5, offset: 0}}>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  //block
-                  style={{
-                    color: "#FFFFFF",
-                    backgroundColor: "#615EFF",
-                    border: "#E0E0E0",
-                    fontSize: "14px",
-                    width: "100%",
-                  
-                  }}
-                  onClick={() => { setStackingModal(true) }}
-                >
-                  <div className="stacking-button">
-                    <p style={{ flex: "1", textAlign: "center" }}>언스테이킹</p>
-                  </div>
-                </Button>
-              </Col>
             </Row>
             <Row>
-              <Col xs={{ span: 10, offset: 1}}>
+              <Col >
                 <Button
                   variant="primary"
                   size="lg"
                   //block
                   style={{
-                    color: "#FFFFFF",
-                    backgroundColor: "#615EFF",
-                    border: "#E0E0E0",
+                    color: "#615EFF",
                     fontSize: "14px",
-                    marginTop: "1em",
                     width: "100%",
                   }}
-                  onClick={() => { setStackingModal(true) }}
+                  onClick={() => { setRewardModal(true) }}
                 >
-                  <div className="stacking-button">
-                    <p style={{ flex: "1", textAlign: "center" }}>리워드 받기</p>
+                  <div >
+                    <p style={{ flex: "1", textAlign: "center" }}>확인</p>
                   </div>
                 </Button>
               </Col>
-
             </Row>
           </Modal.Body>
         </Modal>
@@ -634,4 +593,4 @@ function StackingDetailInfo(props) {
     );
 }
 
-export default withRouter(StackingDetailInfo);
+export default withRouter(StakingDetailInfo);

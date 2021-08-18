@@ -21,7 +21,7 @@ import DashboardPage from "views/DashboardPage/DashboardPage";
 import MyInfoRouter from "views/MyInfoPage/MyInfoRouter"; 
 
 import FarmingDetailInfo from "views/DashboardPage/FarmingDetailInfo";
-import StackingDetailInfo from "views/DashboardPage/StackingDetailInfo";
+import StakingDetailInfo from "views/DashboardPage/StakingDetailInfo";
 import PortfolioMain from "views/DashboardPage/PortfolioMain";
 
 // import WalletAddMainPage from "views/MyInfoPage/WalletAdd/WalletAddMainPage";
@@ -79,8 +79,8 @@ class App extends React.Component {
                 component={Auth(FarmingDetailInfo, true)}
               />
               <Route
-                path="/StackingDetailInfo"
-                component={Auth(StackingDetailInfo, true)}
+                path="/StakingDetailInfo"
+                component={Auth(StakingDetailInfo, true)}
               
               />
 

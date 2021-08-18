@@ -38,7 +38,7 @@ import {
 
 
 import "./dashboard_page.css";
-import StackingInfo from "./StackingInfo";
+import StakingInfo from "./StakingInfo";
 
 
 function a11yProps(index) {
@@ -559,27 +559,27 @@ function DashboardPage(props) {
                 </div>
                 <p style={{ fontSize: "0.8rem" }}>종합 요약</p>
                 <div className="container-border" style={{backgroundColor: '#f2f2f2'}} >
-                      <div className="stacking-grid">
+                      <div className="staking-grid">
                         <p>총 매수 금액</p> <AlertInfo />
                         <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
                       </div>
-                      <div className="stacking-grid">
+                      <div className="staking-grid">
                         <p>총 평가 금액</p> <AlertInfo />
                         <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
                       </div>
-                      <div className="stacking-grid">
+                      <div className="staking-grid">
                         <p>리워드 합계</p> <AlertInfo />
                         <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
                       </div>
-                      <div className="stacking-grid">
+                      <div className="staking-grid">
                         <p>수확된 리워드</p> <AlertInfo />
                         <p style={{ flex: "1", textAlign: "right" }}> ₩600,000</p>
                   </div>
-                  <div className="stacking-grid">
+                  <div className="staking-grid">
                     <p>예상 APR 평균</p> <AlertInfo />
                     <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
                   </div>
-                  <div className="stacking-grid">
+                  <div className="staking-grid">
                     <p>현재 수익륜 평균</p> <AlertInfo />
                     <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
                   </div>
@@ -588,9 +588,9 @@ function DashboardPage(props) {
                 <div className="container-border">
                   <p style={{ fontSize: "0.8rem" }}>프로토콜별 요약</p>
                   {KlayBalance && (
-                    <StackingInfo balance={KlayBalance} atype="Klaytn" />
+                    <StakingInfo balance={KlayBalance} atype="Klaytn" />
                   )}
-                  {BSCBalance && <StackingInfo balance={BSCBalance} atype="BSC" />}
+                  {BSCBalance && <StakingInfo balance={BSCBalance} atype="BSC" />}
                 </div>
 
               </TabPanel>

@@ -108,7 +108,7 @@ div[class*="MuiBox-root-"] {
 
 /* 스태킹 css */
 
-.stacking-grid-container {
+.staking-grid-container {
 	/* padding: 10px; */
 	display: grid;
 	grid-template-columns: auto auto;
@@ -117,22 +117,22 @@ div[class*="MuiBox-root-"] {
 	font-size: 0.8em;
 }
 
-.stacking-grid {
+.staking-grid {
 	display: flex; 
 	padding:5px 0;
 	flex-direction: row;
 	justify-content: space-between;
 }
 
-.stacking-grid p {
+.staking-grid p {
 	margin: 0;
 }
 
-.stacking-grid > p:first-child {
+.staking-grid > p:first-child {
 	color: #828282;
 }
 
-.stacking-coin-item:not(:last-child)::after {
+.staking-coin-item:not(:last-child)::after {
 	content: '';
     width: 70vw;
     height: 0.5px;
@@ -141,28 +141,28 @@ div[class*="MuiBox-root-"] {
     display: block;
 }
 
-.stacking-button {
+.staking-button {
 	display: flex; 
 	padding:5px 0;
 	flex-direction: row;
 	justify-content: space-between;
 }
 
-.stacking-button p {
+.staking-button p {
 	margin: 0;
 }
 
-.stacking-vote {
+.staking-vote {
 	display: flex; 
 	padding:5px 0;
 	flex-direction: row;
 	justify-content: space-between;
 }
-.stacking-vote p {
+.staking-vote p {
 	margin:0;
 }
 
-.stacking-vote > p:nth-child(2n){
+.staking-vote > p:nth-child(2n){
 	color: #828282;
 	margin-inline-end: 5px ;
 }
