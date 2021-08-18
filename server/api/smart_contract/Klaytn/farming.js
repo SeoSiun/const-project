@@ -70,30 +70,14 @@ async function depositOnlyKLAY(USER_DATA){
   }
 };
 
-//사용자의 자산이 예치되어있는 모든 pool에 대해 여태까지 수령한 보상의 총 합을 출력합니다.
-async function getEarnedReward(USER_ADDRESS){
-    const USER_DATA = [
-        {
-            type: 'address',
-            value: USER_ADDRESS,
-        }
-    ]
-    const tokens = await Token.find({network: 'Klaytn'}); 
-    const KSLP_TOKEN = tokens.filter(token => token.atype === 'LP'); 
+async function getEarnedReward(address, USER_ADDRESS) { 
+    return await callContract(address, 'userRewardSum', [
+        {type: 'address', value: USER_ADDRESS}
+    ]).then(res => res.result) 
+    .then(res => decodeParameter(res, 0, 66, added=false, divided=true))
+}
 
-    const arrayPromises = KSLP_TOKEN.map(async function(lp_token) { 
-            let { token:token_name, address } = lp_token; 
-            let res = await callContract(address, 'userRewardSum', USER_DATA)
-                                .then(res => res.result) 
-                                .then(res => decodeParameter(res, 0, 66, added=false, divided=true))
-            return {token: token_name, value: res}; 
-    }); 
-    let total_rewarded = await Promise.all(arrayPromises);
-    return total_rewarded.filter(token => token.value > 0);
-};
-
-// async function identifyPool(USER_DATA, contract_address, decimal){
-async function identifyPool(USER_ADDRESS) {
+async function getUserFarmingPool(USER_ADDRESS) {
 
     const USER_DATA = [
         {
@@ -122,8 +106,13 @@ async function identifyPool(USER_ADDRESS) {
             return {token: token_name, value: LPBalance_num};
         }
 
-        let [current_pool, total_supply, mining_decimal, minable_reward_ksp] = await Promise.all([ 
-        getCurrentPool(address), getTotalSupply(address), getMiningDecimal(address), minableRewardKSPNow(address,  USER_DATA, LPBalance_num) ]); 
+        let [current_pool, total_supply, mining_decimal, minable_reward_ksp, rewarded_ksp] = await Promise.all([ 
+            getCurrentPool(address), 
+            getTotalSupply(address), 
+            getMiningDecimal(address), 
+            minableRewardKSPNow(address,  USER_DATA, LPBalance_num), 
+            getEarnedReward(address, USER_ADDRESS) 
+        ]); 
         let tokenA_decimal = current_pool[0] / Math.pow(10, SINGLE_TOKEN[tokenA_name].decimal); 
         let tokenB_decimal = current_pool[1] / Math.pow(10, SINGLE_TOKEN[tokenB_name].decimal); 
 
@@ -136,15 +125,19 @@ async function identifyPool(USER_ADDRESS) {
         let tokenB_price = tokenB_num * SINGLE_TOKEN[tokenB_name].price;
         let total_price = tokenA_price + tokenB_price; 
 
+        if (decimal && decimal !== 18) {
+            minable_reward_ksp /= Math.pow(10, 18-decimal);  // Not sure, temporary debugging...
+        }
+        let minable_reward_ksp_price = minable_reward_ksp * ksp_price; 
+
+
+        let rewarded_ksp_price = rewarded_ksp * ksp_price; 
+
         // find APR ( ONLY APR of KSP reward )
         let total_LP_price = tokenA_decimal * SINGLE_TOKEN[tokenA_name].price + tokenB_decimal * SINGLE_TOKEN[tokenB_name].price;
         let apr = (Math.floor((mining_decimal/10000) * 86400) * ksp_price*365) / (total_LP_price) * 100;
         apr = Number(apr.toFixed(2)); 
-        // apr = Math.floor(apr * 1e2)/1e2;
 
-        if (decimal && decimal !== 18) {
-            minable_reward_ksp /= Math.pow(10, 18-decimal);  // Not sure, temporary debugging...
-        }
 
         return {
             token: token_name, value: LPBalance_num, 
@@ -152,11 +145,58 @@ async function identifyPool(USER_ADDRESS) {
             tokenA_price, tokenB_price, 
             total_price, 
             minable_reward_ksp, 
+            minable_reward_ksp_price, 
+            rewarded_ksp, 
+            rewarded_ksp_price, 
             apr
         }; 
     })
     let total_pool = await Promise.all(arrayPromises).catch(err => console.log(err));
+
+    const single_klay = await depositOnlyKLAY(USER_DATA).catch(err => console.log(err));
+    if (single_klay.deposited >= 0) {
+        const {deposited, earned, minable, apr} = single_klay; 
+        const klay_price = SINGLE_TOKEN.KLAY.price; 
+        total_pool.push({
+            token: "KLAY_SINGLE", 
+            value: deposited, 
+            token_price: klay_price,
+            total_price: deposited*klay_price,
+            minable_reward_ksp: minable, 
+            minable_reward_ksp_price: minable*ksp_price, 
+            rewarded_ksp: earned, 
+            rewarded_ksp_price: earned*ksp_price, 
+            apr
+        })
+    }
     return total_pool.filter(token => token.value > 0);
 };
 
-module.exports = { identifyPool, depositOnlyKLAY, getEarnedReward }; 
+async function staticsUserFarmingPool(USER_ADDRESS) { 
+    const farming_pool_arr = await getUserFarmingPool(USER_ADDRESS); 
+    let total_price = 0;
+    let minable_price = 0;
+    let rewarded_price = 0;
+    let avg_apr = 0; 
+    farming_pool_arr.forEach(farming_pool => {
+        let {
+            total_price: elem_total_price, 
+            minable_reward_ksp_price, 
+            rewarded_ksp_price, 
+            apr
+        } = farming_pool; 
+        total_price += elem_total_price; 
+        minable_price += minable_reward_ksp_price; 
+        rewarded_price += rewarded_ksp_price; 
+        avg_apr += (elem_total_price * apr / 100); 
+    });
+    avg_apr *= (100 / total_price); 
+    return {
+        total_price, 
+        minable_price, 
+        rewarded_price, 
+        avg_apr,
+    }
+}
+
+module.exports = { getUserFarmingPool, staticsUserFarmingPool }; 

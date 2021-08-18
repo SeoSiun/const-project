@@ -28,7 +28,7 @@ export default function (SpecificComponent, option, adminRoute = null) {
             }
             if (!option) { 
               alert('이미 로그인 되어 있습니다')
-              props.history.push('/dashboard')
+              props.history.push('/portfolio')
             } 
           }
         })

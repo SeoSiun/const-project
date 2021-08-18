@@ -18,7 +18,7 @@ function Header(props) {
       }}
     >
       <Col xs={2} style={{ height: '40px' }}>
-        <Link to="./dashboard">
+        <Link to="/portfolio">
           <img src={logo_img} style={{ height: '100%' }} alt='logo'/>
         </Link>
       </Col>
