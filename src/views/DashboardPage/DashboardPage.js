@@ -81,6 +81,43 @@ TabPanel.propTypes = {
 //   { type: "3M" },
 // ];
 
+const summaryInfo = {
+  money: {
+    netWorth: 10000000,
+    totalAssets: 10000000,
+    totalDebts: 0
+  },
+  rate: {
+    netWorth: 200.0,
+    totalAssets: 200.0,
+    totalDebts: 0.0
+  },
+  growth: {
+    netWorth: 5000000,
+    totalAssets: 5000000,
+    totalDebts: 0
+  },
+  getMoney: function(summaryType) {
+    const money = this.money[summaryType].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return money + "원";
+  },
+  getRate: function(summaryType) {    
+    if(this.rate[summaryType] >= 0) return "▴ " + this.rate[summaryType] + ".0 %";
+    else return "▾ " + -this.rate[summaryType] + ".0 %";
+  },
+  getGrowth: function(summaryType){
+    const growth = this.growth[summaryType].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if(this.growth[summaryType] >= 0) return "+" + growth + "원";
+    else return growth + "원";
+  }
+};
+
+const getClass = function(num){
+  if(num > 0) return "rise";
+  else if(num < 0) return "drop";
+  return "keep";
+}
+
 function DashboardPage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -296,15 +333,15 @@ function DashboardPage(props) {
                       }}
                     >
                       <div
+                        className = {getClass(summaryInfo.rate[summaryType])}
                         style={{
                           margin: "0 0 0 10px",
                           padding: "1px 3px",
                           fontSize: "12px",
                           display: "inline",
-                          color: "#615EFF",
                         }}
                       >
-                        ▾ 3.2 %
+                        {summaryInfo.getRate(summaryType)}
                       </div>
                       <div
                         style={{
@@ -312,13 +349,13 @@ function DashboardPage(props) {
                           display: "inline",
                         }}
                       >
-                        ₩ 31,000,000
+                        {summaryInfo.getMoney(summaryType)}
                       </div>
                       {/* 상승시 */}
                     </div>
                   </div>
 
-                  <LineChart />
+                  <LineChart summaryType = {summaryType} />
                 </div>
 
                 <div
@@ -336,9 +373,9 @@ function DashboardPage(props) {
                       </span>
                     </Col>
                     <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-                      <span style={{ flex: "1", marginTop: "5px" }}>₩ 31,000,000</span>
+                      <span style={{ flex: "1", marginTop: "5px" }}>{summaryInfo.getMoney("netWorth")}</span>
                       <span
-                        className="rise"
+                        className={getClass(summaryInfo.growth["netWorth"])}
                         style={{
                           flex: "1",
                           textAlign: "right",
@@ -347,7 +384,7 @@ function DashboardPage(props) {
                           marginTop: "5px",
                         }}
                       >
-                        + ₩ 30,000
+                        {summaryInfo.getGrowth("netWorth")}
                       </span>
                     </Col>
                   </Row>
@@ -366,9 +403,9 @@ function DashboardPage(props) {
                       </span>
                     </Col>
                     <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-                      <span style={{ flex: "1", marginTop: "5px" }}>₩ 34,000,000</span>
+                      <span style={{ flex: "1", marginTop: "5px" }}>{summaryInfo.getMoney("totalAssets")}</span>
                       <span
-                        className="rise"
+                        className={getClass(summaryInfo.growth["totalAssets"])}
                         style={{
                           flex: "1",
                           textAlign: "right",
@@ -377,7 +414,7 @@ function DashboardPage(props) {
                           marginTop: "5px",
                         }}
                       >
-                        + ₩ 30,000
+                        {summaryInfo.getGrowth("totalAssets")}
                       </span>
                     </Col>
                   </Row>
@@ -396,9 +433,9 @@ function DashboardPage(props) {
                       </span>
                     </Col>
                     <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-                      <span style={{ flex: "1", marginTop: "5px" }}>₩ 3,000,000</span>
+                      <span style={{ flex: "1", marginTop: "5px" }}>{summaryInfo.getMoney("totalDebts")}</span>
                       <span
-                        className="drop"
+                        className={getClass(summaryInfo.growth["totalDebts"])}
                         style={{
                           flex: "1",
                           textAlign: "right",
@@ -407,7 +444,7 @@ function DashboardPage(props) {
                           marginTop: "5px",
                         }}
                       >
-                        - ₩ 30,000
+                        {summaryInfo.getGrowth("totalDebts")}
                       </span>
                     </Col>
                   </Row>

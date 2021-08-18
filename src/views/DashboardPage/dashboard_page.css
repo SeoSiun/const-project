@@ -133,3 +133,7 @@ div[class*="MuiBox-root-"] {
 .drop {
 	color: #615EFF;
 }
+
+.keep {
+  color: #8f8e8e;
+}
