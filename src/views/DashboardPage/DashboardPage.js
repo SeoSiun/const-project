@@ -38,6 +38,7 @@ import {
 
 
 import "./dashboard_page.css";
+import StackingInfo from "./StackingInfo";
 
 
 function a11yProps(index) {
@@ -502,8 +503,96 @@ function DashboardPage(props) {
                   {BSCBalance && <FarmingInfo balance={BSCBalance} atype="BSC" />}
                 </div>
               </TabPanel>
+              {/* 스테이킹 */}
               <TabPanel value={cardIndex} index={3}>
-                스테이킹
+                <div className="container-border">
+                  <div                     
+                    style={{
+                      height: "2rem",
+                      display: "flex",
+                      flexDirection: "row",
+                      // padding: '5px',
+                      justifyContent: "space-between",
+                    }}
+                  >
+                      <div
+                      style={{
+                        // padding: '5px',
+                        fontSize: "14px",
+                        flex: "1",
+                      }}
+                    >
+                      총 평가 금액
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      padding: "5px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "18px",
+                        display: "inline",
+                      }}
+                    >
+                      ₩ 10,000,000
+                    </div>
+                    {/* 상승시 */}
+                    <div                     
+                      style={{
+                        margin: "0 0 0 10px",
+                        padding: "1px 3px",
+                        fontSize: "12px",
+                        display: "inline",
+                        color: "#E64743",
+                        border: "0.5px solid #E64743",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      ▴ 100.00 %
+                    </div>
+                </div>
+                <LineChart />
+                </div>
+                <p style={{ fontSize: "0.8rem" }}>종합 요약</p>
+                <div className="container-border" style={{backgroundColor: '#f2f2f2'}} >
+                      <div className="stacking-grid">
+                        <p>총 매수 금액</p> <AlertInfo />
+                        <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
+                      </div>
+                      <div className="stacking-grid">
+                        <p>총 평가 금액</p> <AlertInfo />
+                        <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
+                      </div>
+                      <div className="stacking-grid">
+                        <p>리워드 합계</p> <AlertInfo />
+                        <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
+                      </div>
+                      <div className="stacking-grid">
+                        <p>수확된 리워드</p> <AlertInfo />
+                        <p style={{ flex: "1", textAlign: "right" }}> ₩600,000</p>
+                  </div>
+                  <div className="stacking-grid">
+                    <p>예상 APR 평균</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
+                  </div>
+                  <div className="stacking-grid">
+                    <p>현재 수익륜 평균</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
+                  </div>
+                </div>
+
+                <div className="container-border">
+                  <p style={{ fontSize: "0.8rem" }}>프로토콜별 요약</p>
+                  {KlayBalance && (
+                    <StackingInfo balance={KlayBalance} atype="Klaytn" />
+                  )}
+                  {BSCBalance && <StackingInfo balance={BSCBalance} atype="BSC" />}
+                </div>
+
               </TabPanel>
               <TabPanel value={cardIndex} index={4}>
                 예금

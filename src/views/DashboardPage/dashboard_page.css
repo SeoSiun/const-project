@@ -106,6 +106,68 @@ div[class*="MuiBox-root-"] {
     display: block;
 }
 
+/* 스태킹 css */
+
+.stacking-grid-container {
+	/* padding: 10px; */
+	display: grid;
+	grid-template-columns: auto auto;
+	column-gap: 20px;
+	grid-row-gap: 10px;
+	font-size: 0.8em;
+}
+
+.stacking-grid {
+	display: flex; 
+	padding:5px 0;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.stacking-grid p {
+	margin: 0;
+}
+
+.stacking-grid > p:first-child {
+	color: #828282;
+}
+
+.stacking-coin-item:not(:last-child)::after {
+	content: '';
+    width: 70vw;
+    height: 0.5px;
+	left: 0;
+	margin: 5px auto;
+    display: block;
+}
+
+.stacking-button {
+	display: flex; 
+	padding:5px 0;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.stacking-button p {
+	margin: 0;
+}
+
+.stacking-vote {
+	display: flex; 
+	padding:5px 0;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.stacking-vote p {
+	margin:0;
+}
+
+.stacking-vote > p:nth-child(2n){
+	color: #828282;
+	margin-inline-end: 5px ;
+}
+
+
 
 
 .grid-row-offset {
