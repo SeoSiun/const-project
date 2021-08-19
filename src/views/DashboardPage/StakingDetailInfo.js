@@ -572,11 +572,15 @@ function StakingDetailInfo(props) {
                   variant="primary"
                   size="lg"
                   //block
+                  
                   style={{
                     color: "#615EFF",
+                    backgroundColor: "#FFFFFF",
+                    border: "#FFFFFF",
                     fontSize: "14px",
-                    width: "100%",
+                    width: "50%",
                   }}
+                  
                   onClick={() => { setRewardModal(true) }}
                 >
                   <div >
