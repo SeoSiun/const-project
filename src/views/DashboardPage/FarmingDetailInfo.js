@@ -8,7 +8,9 @@ import IconButton from "@material-ui/core/IconButton";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import SvgIcon from "@material-ui/core/SvgIcon";
 
-import bsc_img from "static/img/token_icon/bsc_logo.png";
+import MenuBar from "components/MenuBar";
+
+import ksp_img from "static/img/token_icon/ksp_logo.png";
 
 function FarmingDetailInfo(props) {
   function AlertInfo() {
@@ -39,13 +41,13 @@ function FarmingDetailInfo(props) {
         onClick={() => setShow(true)}
         variant="outline-dark"
         style={{
-          width: "18px",
-          height: "18px",
+          width: "15px",
+          height: "15px",
           padding: "0",
-          fontSize: "11px",
+          fontSize: "10px",
           margin: "auto",
           marginLeft: "5px",
-          borderRadius: "18px",
+          borderRadius: "15px",
         }}
       >
         i
@@ -56,62 +58,79 @@ function FarmingDetailInfo(props) {
   return (
     <Container style={{ padding: "0" }}>
       <Row
-        className="align-items-end"
+        className="align-items-center"
         style={{
-          padding: "20px 0",
+          padding: "20px 0 0",
           position: "relative",
         }}
       >
-        <Link to="./dashboard">
-          <IconButton aria-label="before" component="span">
-            <NavigateBeforeIcon />
-          </IconButton>
-        </Link>
+        <Col xs={1}>
+          <Link to="./portfolio">
+            <IconButton aria-label="before" component="span">
+              <NavigateBeforeIcon />
+            </IconButton>
+          </Link>
+        </Col>
         <Col>
-          {<img src={bsc_img} />}
+          {<img src={ksp_img} />}
           <span style={{ fontWeight: "700", paddingLeft: "5px" }}>
             KLAY SWAP
           </span>
         </Col>
+        <Col xs={1} style={{marginRight: '40px'}}> 
+          <MenuBar /> 
+        </Col>
       </Row>
 
+      <Row 
+        style={{
+          textAlign: "left", 
+          paddingLeft: "5px"
+        }}
+      > 
+        <Col>
+          <p style={{ fontSize: "0.8rem" }}>요약</p>
+        </Col>
+      </Row>
       <Row
         className="align-items-center"
         style={{
           textAlign: "left",
           margin: "0 auto",
           height: "60px",
-          // position: 'absolute',
           left: "0",
           width: "100%",
         }}
       >
         <Col style={{ padding: "0" }}>
-          <div className="container-border">
-            <p style={{ fontSize: "0.8rem" }}>요약</p>
+          <div className="container-border" style={{
+            fontSize: '13px', 
+            backgroundColor: '#F2F2F2'
+          }}>
+            
             <div className="farming-grid">
               <p>총 매수 금액</p> <AlertInfo />
-              <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
+              <p style={{ flex: "1", textAlign: "right" }}> ₩--------</p>
             </div>
             <div className="farming-grid">
               <p>총 평가 금액</p> <AlertInfo />
-              <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
+              <p style={{ flex: "1", textAlign: "right", fontWeight: "bold" }}>4,000,000원</p>
             </div>
             <div className="farming-grid">
               <p>리워드 합계</p> <AlertInfo />
-              <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
+              <p style={{ flex: "1", textAlign: "right", fontWeight: "bold" }}>4,000,000원</p>
             </div>
             <div className="farming-grid">
               <p>수확된 리워드</p> <AlertInfo />
-              <p style={{ flex: "1", textAlign: "right" }}> ₩600,000</p>
+              <p style={{ flex: "1", textAlign: "right", fontWeight: "bold" }}>4,000,000원</p>
             </div>
             <div className="farming-grid">
               <p>예상 APR 평균</p> <AlertInfo />
-              <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
+              <p style={{ flex: "1", textAlign: "right", fontWeight: "bold" }}>11%</p>
             </div>
             <div className="farming-grid">
-              <p>현재 수익륜 평균</p> <AlertInfo />
-              <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
+              <p>현재 수익률 평균</p> <AlertInfo />
+              <p style={{ flex: "1", textAlign: "right", fontWeight: "bold" }}>11%</p>
             </div>
             <Button
               variant="primary"
@@ -119,21 +138,23 @@ function FarmingDetailInfo(props) {
               block
               style={{
                 color: "#FFFFFF",
-                backgroundColor: "#95B1F9",
+                backgroundColor: "#615EFF",
                 border: "#E0E0E0",
                 fontSize: "14px",
+                width: "100%"
               }}
             >
-              리워드 일괄 수확
+              쌓인 리워드 수학
             </Button>
           </div>
 
-          <div className="container-border grid-row-offset">
+          {/* <div className="container-border grid-row-offset"> */}
             <p style={{ fontSize: "0.8rem" }}>풀</p>
+
             <div className="wallet-coin-item">
               <div className="container-border" style={{ margin: "0" }}>
                 <Row style={{ height: "40px" }}>
-                  <Col xs={1}>{<img src={bsc_img} />}</Col>
+                  <Col xs={1}>{<img src={ksp_img} />}</Col>
                   <Col xs={7}>
                     {
                       <span style={{ fontSize: "15px", fontWeight: "bold" }}>
@@ -204,7 +225,7 @@ function FarmingDetailInfo(props) {
                 </div>
               </div>
             </div>
-          </div>
+          {/* </div> */}
         </Col>
       </Row>
     </Container>

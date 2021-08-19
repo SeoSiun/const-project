@@ -77,7 +77,7 @@ function SigninPage(props) {
         if (autoLogin) {
           window.localStorage.setItem("user", JSON.stringify(res.payload))
         }
-        history.push("/dashboard");
+        history.push("/portfolio");
       } else {
         setStatusMessage(
           setFormStatusMessage(

@@ -2,11 +2,11 @@ const CaverExtKAS = require('caver-js-ext-kas');
 const caver = new CaverExtKAS();
 
 const access_key_array = ["KASKQO63SLJW75Q0FJB61B4N", "KASKBDIFAXVXK14IEVRJDFVS", "KASKQOPVI2ZMJW4UM1VV871R"]; //  
-const ACCESS_KEY = access_key_array[2]; 
+const ACCESS_KEY = access_key_array[1]; 
 
 const private_key_array = ["QAXbYjYlXCf5BAgax7Dm-C0j-kk8RRcW0yfJYNcH", "xW5VfL4rS6lOuEENPBs5jt0UeVDYMxgRIA14EAoS",
                             "LdvsS4SJUFLPgS8-a_6vE177NI2hIJmojVeII4tr"]; 
-const PRIVATE_KEY = private_key_array[2]; 
+const PRIVATE_KEY = private_key_array[1]; 
 
 caver.initKASAPI(8217, ACCESS_KEY, PRIVATE_KEY);
 

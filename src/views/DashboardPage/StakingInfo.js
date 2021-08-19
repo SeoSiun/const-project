@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Row, Col, Button } from "react-bootstrap";
+
+import { Row, Col, Button, Alert } from "react-bootstrap";
+
 
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
@@ -12,6 +14,7 @@ function StakingInfo(props) {
   const { balance, atype } = props;
 
   return (
+
     <div className="staking-coin-item">
       <div className="container-border" style={{ margin: "0" }}>
         <Row style={{ height: "40px" }}>
@@ -41,6 +44,7 @@ function StakingInfo(props) {
                 color: "#615EFF",
                 border: "0.5px solid #615EFF",
                 borderRadius: "5px",
+
               }}
             >
               ▾ 89.30 %
@@ -62,6 +66,7 @@ function StakingInfo(props) {
             </Link>
           </Col>
         </Row>
+
 
         <div className="staking-grid">
           <p style={{ flex: "1" }}>총 매수 금액</p>{" "}
@@ -95,7 +100,6 @@ function StakingInfo(props) {
           </div>
 
         </Button>
-
       </div>
     </div>
   );
