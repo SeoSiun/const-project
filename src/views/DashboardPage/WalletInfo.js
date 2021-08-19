@@ -99,7 +99,7 @@ function WalletInfo(props) {
         </Row>
 
         <Modal
-          style={{width: '100vw'}}
+          className="modalOnBottom"
           show={doTrade}
           backdrop="static"
           keyboard={false}

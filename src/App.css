@@ -28,4 +28,18 @@
   color: #61dafb;
 }
 
+/* 하단에 띄우는 모달창 */
+.modalOnBottom .modal-dialog {
+  position: absolute;
+  margin: 0;
+  width: 100vw;
+  height: 240px;
+  bottom: 0;
+}
 
+.modalOnBottom .modal-content {
+  border: none;
+  border-radius: 10px 10px 0 0 ;
+  height: inherit;
+  width: 100vw;
+}

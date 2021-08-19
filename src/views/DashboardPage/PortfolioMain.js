@@ -20,8 +20,6 @@ import Header from 'components/Header';
 
 import StackedBarChart from '../../components/charts/StackedBarChart'
 
-import './PortfolioMain.css';
-
 function numberWithCommas(x) {
   return Math.floor(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -29,7 +27,7 @@ function numberWithCommas(x) {
 
 function PortfolioMain(props) {
 
-  const [ isEmpty, setEmpty ] = useState(false);
+  const [ isEmpty, setEmpty ] = useState(true);
   const [ userName, setUserName ] = useState(''); 
   const [ summaryInfo, setSummaryInfo ] = useState({
     total_price: 0, 
@@ -226,6 +224,7 @@ function PortfolioMain(props) {
         </Row>
 
         <Modal
+          className="modalOnBottom"
           show={isEmpty}
           backdrop="static"
           keyboard={false}
