@@ -158,9 +158,8 @@ function StakingSummary(props) {
         </div>
         <LineChart />
       </div>
-
+      <p style={{ fontSize: "1em", textAlign: 'left' }}>종합 요약</p>
       <div className="container-border">
-        <p style={{ fontSize: "0.8rem" }}>종합 요약</p>
         <div className="farming-grid">
           <p>총 매수 금액</p> <AlertInfo index={0} />
           <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
@@ -174,7 +173,7 @@ function StakingSummary(props) {
           <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
         </div>
         <div className="farming-grid">
-          <p>수확된 리워드</p> <AlertInfo index={3} />
+          <p>누적된 리워드</p> <AlertInfo index={3} />
           <p style={{ flex: "1", textAlign: "right" }}> ₩600,000</p>
         </div>
         <div className="farming-grid">
@@ -182,18 +181,15 @@ function StakingSummary(props) {
           <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
         </div>
         <div className="farming-grid">
-          <p>현재 수익륜 평균</p> <AlertInfo index={5} />
+          <p>현재 수익률 평균</p> <AlertInfo index={5} />
           <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
         </div>
       </div>
-
-  <div className="container-border">
-    <p style={{ fontSize: "0.8rem" }}>프로토콜별 요약</p>
+  <p style={{ fontSize: "1em", textAlign: 'left' }}>프로토콜별 요약</p>
     {KlayBalance && (
       <FarmingInfo balance={KlayBalance} atype="Klaytn" />
     )}
     {BSCBalance && <FarmingInfo balance={BSCBalance} atype="BSC" />}
-  </div>
     </>
   );
 }

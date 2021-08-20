@@ -38,15 +38,13 @@ function FarmingInfo(props) {
                 fontSize: "12px",
                 display: "inline",
                 color: "#615EFF",
-                border: "0.5px solid #615EFF",
-                borderRadius: "5px",
               }}
             >
               ▾ 89.30 %
             </div>
           </Col>
           <Col style={{ textAlign: "right" }}>
-            <Link to="./FarmingDetailInfo">
+            <Link to="/FarmingDetailInfo">
               <Button
                 size="sm"
                 style={{
@@ -76,16 +74,22 @@ function FarmingInfo(props) {
         </div>
         <Button
           variant="primary"
-          size="lg"
-          block
+          size="md"
+          //block
           style={{
             color: "#FFFFFF",
-            backgroundColor: "#95B1F9",
+            backgroundColor: "#615EFF",
             border: "#E0E0E0",
             fontSize: "14px",
+            width: '100%',
           }}
+    
         >
-          리워드 일괄 수확
+           <div className="staking-button">
+            <p style={{ flex: "1", textAlign: "left" }}>쌓인 리워드</p>
+            <p style={{ flex: "1", textAlign: "center" }}> 4,000,000원</p>
+            <p style={{ flex: "1", textAlign: "right" }}> 받기</p>
+          </div>
         </Button>
       </div>
     </div>

@@ -51,7 +51,7 @@ function StakingInfo(props) {
             </div>
           </Col>
           <Col style={{ textAlign: "right" }}>
-            <Link to="./StakingDetailInfo">
+            <Link to="/StakingDetailInfo">
               <Button
                 size="sm"
                 style={{
