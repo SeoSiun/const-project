@@ -106,6 +106,68 @@ div[class*="MuiBox-root-"] {
     display: block;
 }
 
+/* 스태킹 css */
+
+.staking-grid-container {
+	/* padding: 10px; */
+	display: grid;
+	grid-template-columns: auto auto;
+	column-gap: 20px;
+	grid-row-gap: 10px;
+	font-size: 0.8em;
+}
+
+.staking-grid {
+	display: flex; 
+	padding:5px 0;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.staking-grid p {
+	margin: 0;
+}
+
+.staking-grid > p:first-child {
+	color: #828282;
+}
+
+.staking-coin-item:not(:last-child)::after {
+	content: '';
+    width: 70vw;
+    height: 0.5px;
+	left: 0;
+	margin: 5px auto;
+    display: block;
+}
+
+.staking-button {
+	display: flex; 
+	padding:5px 0;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.staking-button p {
+	margin: 0;
+}
+
+.staking-vote {
+	display: flex; 
+	padding:5px 0;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.staking-vote p {
+	margin:0;
+}
+
+.staking-vote > p:nth-child(2n){
+	color: #828282;
+	margin-inline-end: 5px ;
+}
+
+
 
 
 .grid-row-offset {

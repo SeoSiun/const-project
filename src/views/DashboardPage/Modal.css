@@ -1,0 +1,27 @@
+.modal {
+
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.modal_button {
+    font-variant: initial;
+    size: large;
+    outline: none;
+    cursor: pointer;
+    border: 0;
+    color: #fff;
+    background-color: #615EFF;
+    border: #E0E0E0;
+    font-size: 14px;
+    width: 100%;
+}
+.modal > header {
+    border: none;
+    font-weight: bold;
+
+}
+.modal > body {
+    font-size: 14px;
+    text-align: center;
+    padding: 1em 0;
+}
+
