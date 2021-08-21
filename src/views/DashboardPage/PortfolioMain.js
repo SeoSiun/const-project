@@ -27,7 +27,7 @@ function numberWithCommas(x) {
 
 function PortfolioMain(props) {
 
-  const [ isEmpty, setEmpty ] = useState(true);
+  const [ isEmpty, setEmpty ] = useState(false);
   const [ userName, setUserName ] = useState(''); 
   const [ summaryInfo, setSummaryInfo ] = useState({
     total_price: 0, 
@@ -48,7 +48,7 @@ function PortfolioMain(props) {
         axios.get(`/api/wallets/${_id}/summary`)
           .then(res => res.data) 
           .then(res => { 
-            if (!res || res.length === 0) {
+            if (!res.status && res.result) {
               setEmpty(true); 
               return ;
             } 

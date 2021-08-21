@@ -1,10 +1,9 @@
 // import "./styles.css";
-import React, {useState} from 'react'; 
-import { Line } from "react-chartjs-2";
-import { Row, Col } from 'react-bootstrap'; 
+import React from 'react'; 
 
-function convertPercentage(val, total) { 
-  return Number((val/total).toFixed(4) * 100); 
+function convertPercentage(val, total) {
+  const  percentage = total > 0 ? (val/total) * 100 : 0; 
+  return percentage.toFixed(2); 
 }
 
 function StackedBarChart(props) { 
@@ -32,12 +31,6 @@ function StackedBarChart(props) {
       label: "스테이킹"
     },
   ];
-
-  // const data = {
-  //   colors: [ "#7492FC", "#A2B9FC" ,"#C1D0FE" ],  // 지갑, 파밍, 스테이킹
-  //   ratios: [ 1, 1, 1 ],
-  //   values: [ 0, 0, 0 ],
-  // };
 
   return (
     <>
