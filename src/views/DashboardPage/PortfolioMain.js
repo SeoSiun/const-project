@@ -29,12 +29,10 @@ function PortfolioMain(props) {
 
   const [ isEmpty, setEmpty ] = useState(false);
   const [ userName, setUserName ] = useState(''); 
-  const [ summaryInfo, setSummaryInfo ] = useState({
-    total_price: 0, 
-    wallet: {total_price: 0}, 
-    farming: {total_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}, 
-    staking: {total_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}
-  }); 
+
+  const [ assetSummaryInfo, setAssetSummaryInfo ] = useState({total_price: 0}); 
+  const [ farmingSummaryInfo, setFarmingSummaryInfo ] = useState({total_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}); 
+  const [ stakingSummaryInfo, setStakingSummaryInfo ] = useState({total_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}); 
 
   const history = useHistory(); 
   const dispatch = useDispatch(); 
@@ -43,18 +41,37 @@ function PortfolioMain(props) {
     dispatch(auth()).then(res => { 
       if (res.payload.isAuth) { 
         const { name, _id } = res.payload; 
-        setUserName(name);
         
-        axios.get(`/api/wallets/${_id}/summary`)
-          .then(res => res.data) 
-          .then(res => { 
-            if (!res.status && res.result) {
-              setEmpty(true); 
-              return ;
-            } 
-            if (res.status) setSummaryInfo(res.result); 
+        setUserName(name);
+        axios.get(`/api/wallets/${_id}`).then(res => res.data)
+          .then(res => {
+            if (res.result && res.result.length > 0) { 
+              axios.get(`/api/wallets/${_id}/summary`, {params: {atype: 'asset'}})
+                .then(res => res.data) 
+                .then(res => { setAssetSummaryInfo(res.result); })
 
-        })
+              axios.get(`/api/wallets/${_id}/summary`, {params: {atype: 'farming'}})
+                .then(res => res.data) 
+                .then(res => { setFarmingSummaryInfo(res.result); })
+
+              axios.get(`/api/wallets/${_id}/summary`, {params: {atype: 'staking'}})
+                .then(res => res.data) 
+                .then(res => { setStakingSummaryInfo(res.result); })
+            } else { 
+              setEmpty(true); 
+              return; 
+            }
+          }); 
+
+        // axios.get(`/api/wallets/${_id}/summary`)
+        //   .then(res => res.data) 
+        //   .then(res => { 
+        //     if (!res.status && res.result) {
+        //       setEmpty(true); 
+        //       return ;
+        //     } 
+        //     if (res.status) setSummaryInfo(res.result); 
+        // })
       }
     })
   }, [])
@@ -82,7 +99,9 @@ function PortfolioMain(props) {
             >
               <p style={{ margin: 'auto 0', fontSize: '1em', alignSelf: 'center' }}>순자산</p>
               <span style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center'}}>
-                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}> {numberWithCommas(summaryInfo.total_price)} 원&nbsp;</p>
+                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}> {
+                    numberWithCommas(assetSummaryInfo.total_price+farmingSummaryInfo.total_price+stakingSummaryInfo.total_price)
+                  } 원&nbsp;</p>
                 <NavigateNextIcon style={{alignSelf:'center'}} />
               </span>
             </span>
@@ -98,7 +117,9 @@ function PortfolioMain(props) {
             >
               <p style={{ margin: 'auto 0', fontSize: '1em', alignSelf: 'center' }}>총자산</p>
               <span style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center'}}>
-                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}> {numberWithCommas(summaryInfo.total_price)} 원&nbsp;</p>
+                <p style={{ margin: 'auto 0', color: '#F2F2F2', fontSize: '1.2em' }}> {
+                    numberWithCommas(assetSummaryInfo.total_price+farmingSummaryInfo.total_price+stakingSummaryInfo.total_price)
+                  } 원&nbsp;</p>
                 <NavigateNextIcon style={{alignSelf:'center'}} />
               </span>
             </span>
@@ -124,7 +145,11 @@ function PortfolioMain(props) {
 
       <Row>
         <Col style={{ margin: '20px 0' }}>
-          <StackedBarChart summaryInfo={summaryInfo} />
+          <StackedBarChart 
+            assetSummaryInfo={assetSummaryInfo}
+            farmingSummaryInfo={farmingSummaryInfo}
+            stakingSummaryInfo={stakingSummaryInfo}
+           />
         </Col>
       </Row>
 
@@ -147,7 +172,7 @@ function PortfolioMain(props) {
           </Col>
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
-              <span> {numberWithCommas(summaryInfo.wallet.total_price)} 원</span>
+              <span> {numberWithCommas(assetSummaryInfo.total_price)} 원</span>
               <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
             </div>
           </Col>
@@ -171,7 +196,7 @@ function PortfolioMain(props) {
           </Col>
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
-            <span> {numberWithCommas(summaryInfo.farming.total_price+summaryInfo.staking.total_price)} 원</span>
+            <span> {numberWithCommas(farmingSummaryInfo.total_price+stakingSummaryInfo.total_price)} 원</span>
               <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
             </div>
           </Col>
@@ -192,9 +217,9 @@ function PortfolioMain(props) {
           </Col>
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
-              <span> {numberWithCommas(summaryInfo.farming.total_price)} 원</span>
+              <span> {numberWithCommas(farmingSummaryInfo.total_price)} 원</span>
               <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
-              <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : {numberWithCommas(summaryInfo.farming.rewarded_price)} 원</span>
+              <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : {numberWithCommas(farmingSummaryInfo.rewarded_price)} 원</span>
             </div>
           </Col>
           <Col xs='2' style={{alignSelf: 'center', paddingRight: '0', color: '#BDBDBD'}}>
@@ -213,9 +238,9 @@ function PortfolioMain(props) {
           </Col>
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
-              <span> {numberWithCommas(summaryInfo.staking.total_price)} 원</span>
+              <span> {numberWithCommas(stakingSummaryInfo.total_price)} 원</span>
               <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
-              <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : {numberWithCommas(summaryInfo.staking.rewarded_price)} 원</span>
+              <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : {numberWithCommas(stakingSummaryInfo.rewarded_price)} 원</span>
             </div>
           </Col>
           <Col xs='2' style={{ alignSelf: 'center', paddingRight: '0', color: '#BDBDBD' }}>

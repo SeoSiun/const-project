@@ -78,7 +78,7 @@ function StakingDetailInfo(props) {
                 }}
             >
                 <Col xs={1} style={{ height: '40px' }}>
-                    <Link to="./dashboard">
+                    <Link to="/portfolio">
                         <IconButton aria-label="before" component="span">
                             <NavigateBeforeIcon />
                         </IconButton>

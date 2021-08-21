@@ -7,27 +7,26 @@ function convertPercentage(val, total) {
 }
 
 function StackedBarChart(props) { 
-  const { total_price, wallet, farming, staking } = props.summaryInfo; 
-
-  console.log(total_price, wallet, farming, staking); 
+  const {assetSummaryInfo, farmingSummaryInfo, stakingSummaryInfo} = props; 
+  const total_price = assetSummaryInfo.total_price + farmingSummaryInfo.total_price + stakingSummaryInfo.total_price;
 
   const data = [
     {
       color: "#7492FC",
-      ratio: convertPercentage(wallet.total_price, total_price),
-      value: convertPercentage(wallet.total_price, total_price),
+      ratio: convertPercentage(assetSummaryInfo.total_price, total_price),
+      value: convertPercentage(assetSummaryInfo.total_price, total_price),
       label: "지갑"
     },
     {
       color: "#A2B9FC",
-      ratio: convertPercentage(farming.total_price, total_price),
-      value: convertPercentage(farming.total_price, total_price),
+      ratio: convertPercentage(farmingSummaryInfo.total_price, total_price),
+      value: convertPercentage(farmingSummaryInfo.total_price, total_price),
       label: "파밍"
     },
     {
       color: "#C1D0FE",
-      ratio: convertPercentage(staking.total_price, total_price),
-      value: convertPercentage(staking.total_price, total_price),
+      ratio: convertPercentage(stakingSummaryInfo.total_price, total_price),
+      value: convertPercentage(stakingSummaryInfo.total_price, total_price),
       label: "스테이킹"
     },
   ];
