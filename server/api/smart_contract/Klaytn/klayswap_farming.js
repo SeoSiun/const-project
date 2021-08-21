@@ -86,7 +86,7 @@ async function getUserFarmingPool(USER_ADDRESS) {
         }
     ]
     const tokens = await Token.find({network: 'Klaytn'}); 
-    const KSLP_TOKEN = tokens.filter(token => token.atype === 'LP' && token.defi !== 'DEFINIX'); 
+    const KSLP_TOKEN = tokens.filter(token => token.atype === 'LP' && token.defi === 'KLAYSWAP'); 
     let SINGLE_TOKEN = tokens.filter(token => token.atype === 'SINGLE'); 
     SINGLE_TOKEN = SINGLE_TOKEN.reduce((obj, t) => Object.assign(obj, { [t.token]: t}), {})
 

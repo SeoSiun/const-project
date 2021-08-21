@@ -1,12 +1,14 @@
 const CaverExtKAS = require('caver-js-ext-kas');
+const { abi } = require('caver-js-ext-kas');
+
 const caver = new CaverExtKAS();
 
 const access_key_array = ["KASKQO63SLJW75Q0FJB61B4N", "KASKBDIFAXVXK14IEVRJDFVS", "KASKQOPVI2ZMJW4UM1VV871R"]; //  
-const ACCESS_KEY = access_key_array[1]; 
+const ACCESS_KEY = access_key_array[2]; 
 
 const private_key_array = ["QAXbYjYlXCf5BAgax7Dm-C0j-kk8RRcW0yfJYNcH", "xW5VfL4rS6lOuEENPBs5jt0UeVDYMxgRIA14EAoS",
                             "LdvsS4SJUFLPgS8-a_6vE177NI2hIJmojVeII4tr"]; 
-const PRIVATE_KEY = private_key_array[1]; 
+const PRIVATE_KEY = private_key_array[2]; 
 
 caver.initKASAPI(8217, ACCESS_KEY, PRIVATE_KEY);
 
@@ -25,6 +27,13 @@ async function callContract(contract_address, method, USER_DATA=null){
 
 function decodeParameterSimple(astring) { 
     return web3.eth.abi.decodeParameter("uint256", astring); 
+}
+
+function abiDecodeParameter(value) { 
+    return abi.decodeParameter('uint256', value); 
+}
+function abiDecodeParameters(arr, val) { 
+    return abi.decodeParameters(arr, val); 
 }
   
 function decodeParameter(astring, start_str, end_str, added=true, divided=true) { 
@@ -57,7 +66,7 @@ async function getMiningDecimal(address) {
             .then(res => decodeParameter(res, 0, 66, added=false, divided=false))
 }
 
-//사용자의 자산이 예치되어있는 모든 pool을 조회하고 해당 pool에서 지금 수령이 가능한 보상을 출력합니다.
+
 async function minableRewardKSPNow(address, USER_DATA, LPBalance_num){
 
     const promise_minable_reward_lastIdx = callContract(address, 'userLastIndex', USER_DATA)
@@ -83,6 +92,6 @@ async function isAddress(address) {
     return await caver.utils.isAddress(address); 
 }
 
-module.exports = { callContract, decodeParameter, decodeParameterSimple, 
+module.exports = { callContract, decodeParameter, decodeParameterSimple, abiDecodeParameter, abiDecodeParameters, 
     getCurrentPool, getTotalSupply, getMiningDecimal, minableRewardKSPNow, 
     caverGetBalance, isAddress }; 

@@ -3,9 +3,10 @@ var router = express.Router();
 
 const { Wallet } = require('../models/Wallet'); 
 const { checkAddress, getKlaytnBalanceWallet, staticsUserWallet } = require('./smart_contract/Klaytn/wallet'); 
-const { getUserFarmingPool, staticsUserFarmingPool } = require('./smart_contract/Klaytn/farming'); 
-const { getUserStakedKSP, getUserVotingPool, staticsUserStakingPool } = require('./smart_contract/Klaytn/staking'); 
+const { getUserStakedKSP, getUserVotingPool, staticsUserStakingPool } = require('./smart_contract/Klaytn/klayswap_staking'); 
 
+const { getUserFarmingPool: getUserKLAYSWAPFarmingPool, staticsUserFarmingPool } = require('./smart_contract/Klaytn/klayswap_farming'); 
+const { getUserFarmingPool: getUserDEFINIXFarmingPool } = require('./smart_contract/Klaytn/definix_farming'); 
 
 router.get('/check', (req, res) => { 
     const {wallet_address: address} = req.query; 
@@ -58,7 +59,7 @@ router.get('/:user_id/summary', async (req, res) => {
     }
 
     const { address } = wallet;
-    
+
     switch (atype) {
         case 'asset': 
             staticsUserWallet(address) 
@@ -132,12 +133,22 @@ router.get('/:user_id/asset', async (req, res) => {
 
 router.get('/:user_id/farming', async (req, res) => { 
     const { user_id } = req.params; 
+    const { defi } = req.query; 
     const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
                                 .then(wallet => wallet.address) 
                                 .catch(err => res.json({status: false, err})); 
-    await getUserFarmingPool(address) 
+
+    if (!defi) {
+        getUserKLAYSWAPFarmingPool(address) 
                     .then(result => res.json({status: true, result}))
                     .catch(err => res.json({status: false, err}))
+        return; 
+    } else if (defi === 'DEFINIX') { 
+        getUserDEFINIXFarmingPool(address) 
+                    .then(result => res.json({status: true, result}))
+                    .catch(err => res.json({status: false, err}))
+        return ;
+    }
 })
 
 
@@ -157,7 +168,6 @@ router.get('/:user_id/staking', async (req, res) => {
         votingPool: user_voting_pool
     }})
 })
-
 
 
 
