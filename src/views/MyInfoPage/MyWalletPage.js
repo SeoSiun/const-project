@@ -28,6 +28,7 @@ import {
 } from '@material-ui/core'
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import etu_token_img from 'static/img/token_icon/eth_token.png'; 
 import klaytn_img from 'static/img/token_icon/klaytn_logo.png'; 
@@ -83,8 +84,8 @@ const ImportedBox = (
     }}>
       imported
     </span>
-
-  </div>
+    
+    </div>
 
   
 );
@@ -104,7 +105,8 @@ function MyWalletPage(props) {
   React.useEffect(() => { 
     dispatch(auth()).then(res => { 
       if (res.payload) { 
-        const { _id } = res.payload; 
+        // const { _id } = res.payload; 
+        const _id = "60be02fb4a66b50395465407";
         axios.get(`/api/wallets/${_id}`)
              .then(res => res.data)
              .then(res => { 
@@ -123,17 +125,18 @@ function MyWalletPage(props) {
                   return (
                     <Row 
                       key={wallet.address} 
-                      className='align-items-center'
+                      className='justify-content-center align-items-center container-border'
                       style={{
-                        height: '30px'
+                        margin: '0 auto 10px auto',
+                        width: '90vw'
                       }}
                     >
                       <Col style={{fontSize: '13px', textDecoration: 'underline'}}>
                         {addressParsing(wallet.address)}
                       </Col>
-                      <Col style={{textAlign: 'right', padding: '0 15px 5px 0'}}>
+                      <Col style={{textAlign: 'right', padding: '5px'}}>
                         {/* {wallet.new ? 'new' : 'imported'} */}
-                        {ImportedBox}
+                        <MoreVertIcon style={{color: '#828282'}} />
                       </Col>
                     </Row>
                   );
@@ -144,17 +147,18 @@ function MyWalletPage(props) {
                   return (
                     <Row 
                       key={wallet.address} 
-                      className='align-items-center'
+                      className='justify-content-center align-items-center container-border'
                       style={{
-                        height: '30px'
+                        margin: '0 auto 10px auto',
+                        width: '90vw'
                       }}
                     >
                       <Col style={{fontSize: '13px', textDecoration: 'underline'}}>
                         {addressParsing(wallet.address)}
                       </Col>
-                      <Col style={{textAlign: 'right', padding: '0 15px 5px 0'}}>
+                      <Col style={{textAlign: 'right', padding: '5px'}}>
                         {/* {wallet.new ? 'new' : 'imported'} */}
-                        {ImportedBox}
+                        <MoreVertIcon style={{color: '#828282'}} />
                       </Col>
                     </Row>
                   );
