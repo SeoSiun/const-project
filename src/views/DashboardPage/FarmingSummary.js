@@ -59,12 +59,14 @@ function StakingSummary(props) {
             </p>
           </Alert>
           <div style={{
-            position: "absolute", 
+            position: "fixed", 
+            overflowX: "hidden",
+            overflowY: "auto",
             top: "0", 
             left: "0", 
             width: "100vw", 
             height: "100vh", 
-            backgroundColor: "rgb(0 0 0 / 39%)", 
+            backgroundColor: "rgba(0, 0, 0, 0.6)", 
             zIndex: "1" 
           }}> </div>
         </>
