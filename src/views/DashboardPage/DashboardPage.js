@@ -39,6 +39,7 @@ import {
 
 
 import "./dashboard_page.css";
+import StakingInfo from "./StakingInfo";
 
 
 function a11yProps(index) {
@@ -74,6 +75,43 @@ TabPanel.propTypes = {
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };
+
+const summaryInfo = {
+  money: {
+    netWorth: 10000000,
+    totalAssets: 10000000,
+    totalDebts: 0
+  },
+  rate: {
+    netWorth: 200.0,
+    totalAssets: 200.0,
+    totalDebts: 0.0
+  },
+  growth: {
+    netWorth: 5000000,
+    totalAssets: 5000000,
+    totalDebts: 0
+  },
+  getMoney: function(summaryType) {
+    const money = this.money[summaryType].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return money + "원";
+  },
+  getRate: function(summaryType) {    
+    if(this.rate[summaryType] >= 0) return "▴ " + this.rate[summaryType] + ".0 %";
+    else return "▾ " + -this.rate[summaryType] + ".0 %";
+  },
+  getGrowth: function(summaryType){
+    const growth = this.growth[summaryType].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if(this.growth[summaryType] >= 0) return "+" + growth + "원";
+    else return growth + "원";
+  }
+};
+
+const getClass = function(num){
+  if(num > 0) return "rise";
+  else if(num < 0) return "drop";
+  return "keep";
+}
 
 function DashboardPage(props) {
   const dispatch = useDispatch();
@@ -221,15 +259,15 @@ function DashboardPage(props) {
               }}
             >
               <div
+                className = {getClass(summaryInfo.rate[summaryType])}
                 style={{
                   margin: "0 0 0 10px",
                   padding: "1px 3px",
                   fontSize: "12px",
                   display: "inline",
-                  color: "#615EFF",
                 }}
               >
-                ▾ 3.2 %
+                {summaryInfo.getRate(summaryType)}
               </div>
               <div
                 style={{
@@ -237,13 +275,12 @@ function DashboardPage(props) {
                   display: "inline",
                 }}
               >
-                ₩ 31,000,000
+                {summaryInfo.getMoney(summaryType)}
               </div>
               {/* 상승시 */}
             </div>
           </div>
-
-          <LineChart />
+          <LineChart summaryType = {summaryType} />
         </div>
 
         <div
@@ -261,9 +298,9 @@ function DashboardPage(props) {
               </span>
             </Col>
             <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-              <span style={{ flex: "1", marginTop: "5px" }}>₩ 31,000,000</span>
+              <span style={{ flex: "1", marginTop: "5px" }}>{summaryInfo.getMoney("netWorth")}</span>
               <span
-                className="rise"
+                className={getClass(summaryInfo.growth["netWorth"])}
                 style={{
                   flex: "1",
                   textAlign: "right",
@@ -272,7 +309,7 @@ function DashboardPage(props) {
                   marginTop: "5px",
                 }}
               >
-                + ₩ 30,000
+                {summaryInfo.getGrowth("netWorth")}
               </span>
             </Col>
           </Row>
@@ -290,9 +327,9 @@ function DashboardPage(props) {
               </span>
             </Col>
             <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-              <span style={{ flex: "1", marginTop: "5px" }}>₩ 34,000,000</span>
+              <span style={{ flex: "1", marginTop: "5px" }}>{summaryInfo.getMoney("totalAssets")}</span>
               <span
-                className="rise"
+                className={getClass(summaryInfo.growth["totalAssets"])}
                 style={{
                   flex: "1",
                   textAlign: "right",
@@ -301,7 +338,7 @@ function DashboardPage(props) {
                   marginTop: "5px",
                 }}
               >
-                + ₩ 30,000
+                {summaryInfo.getGrowth("totalAssets")}
               </span>
             </Col>
           </Row>
@@ -320,9 +357,9 @@ function DashboardPage(props) {
               </span>
             </Col>
             <Col style={{ display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-              <span style={{ flex: "1", marginTop: "5px" }}>₩ 3,000,000</span>
+              <span style={{ flex: "1", marginTop: "5px" }}>{summaryInfo.getMoney("totalDebts")}</span>
               <span
-                className="drop"
+                className={getClass(summaryInfo.growth["totalDebts"])}
                 style={{
                   flex: "1",
                   textAlign: "right",
@@ -331,7 +368,7 @@ function DashboardPage(props) {
                   marginTop: "5px",
                 }}
               >
-                - ₩ 30,000
+                {summaryInfo.getGrowth("totalDebts")}
               </span>
             </Col>
           </Row>
@@ -427,8 +464,96 @@ function DashboardPage(props) {
                   {BSCBalance && <FarmingInfo balance={BSCBalance} atype="BSC" />}
                 </div>
               </TabPanel>
+              {/* 스테이킹 */}
               <TabPanel value={cardIndex} index={3}>
-                스테이킹
+                <div className="container-border">
+                  <div                     
+                    style={{
+                      height: "2rem",
+                      display: "flex",
+                      flexDirection: "row",
+                      // padding: '5px',
+                      justifyContent: "space-between",
+                    }}
+                  >
+                      <div
+                      style={{
+                        // padding: '5px',
+                        fontSize: "14px",
+                        flex: "1",
+                      }}
+                    >
+                      총 평가 금액
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      padding: "5px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "18px",
+                        display: "inline",
+                      }}
+                    >
+                      ₩ 10,000,000
+                    </div>
+                    {/* 상승시 */}
+                    <div                     
+                      style={{
+                        margin: "0 0 0 10px",
+                        padding: "1px 3px",
+                        fontSize: "12px",
+                        display: "inline",
+                        color: "#E64743",
+                        border: "0.5px solid #E64743",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      ▴ 100.00 %
+                    </div>
+                </div>
+                <LineChart />
+                </div>
+                <p style={{ fontSize: "0.8rem" }}>종합 요약</p>
+                <div className="container-border" style={{backgroundColor: '#f2f2f2'}} >
+                      <div className="staking-grid">
+                        <p>총 매수 금액</p> <AlertInfo />
+                        <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
+                      </div>
+                      <div className="staking-grid">
+                        <p>총 평가 금액</p> <AlertInfo />
+                        <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
+                      </div>
+                      <div className="staking-grid">
+                        <p>리워드 합계</p> <AlertInfo />
+                        <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
+                      </div>
+                      <div className="staking-grid">
+                        <p>수확된 리워드</p> <AlertInfo />
+                        <p style={{ flex: "1", textAlign: "right" }}> ₩600,000</p>
+                  </div>
+                  <div className="staking-grid">
+                    <p>예상 APR 평균</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
+                  </div>
+                  <div className="staking-grid">
+                    <p>현재 수익륜 평균</p> <AlertInfo />
+                    <p style={{ flex: "1", textAlign: "right" }}> 11.11%</p>
+                  </div>
+                </div>
+
+                <div className="container-border">
+                  <p style={{ fontSize: "0.8rem" }}>프로토콜별 요약</p>
+                  {KlayBalance && (
+                    <StakingInfo balance={KlayBalance} atype="Klaytn" />
+                  )}
+                  {BSCBalance && <StakingInfo balance={BSCBalance} atype="BSC" />}
+                </div>
+
               </TabPanel>
               <TabPanel value={cardIndex} index={4}>
                 예금

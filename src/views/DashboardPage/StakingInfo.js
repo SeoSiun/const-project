@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+
 import { Row, Col, Button, Alert } from "react-bootstrap";
+
 
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
@@ -7,11 +9,13 @@ import { Link } from "react-router-dom";
 import klaytn_img from "static/img/token_icon/klaytn_logo.png";
 import bsc_img from "static/img/token_icon/bsc_logo.png";
 
+
 function StakingInfo(props) {
   const { balance, atype } = props;
 
   return (
-    <div className="farming-coin-item">
+
+    <div className="staking-coin-item">
       <div className="container-border" style={{ margin: "0" }}>
         <Row style={{ height: "40px" }}>
           <Col xs={1}>
@@ -38,6 +42,9 @@ function StakingInfo(props) {
                 fontSize: "12px",
                 display: "inline",
                 color: "#615EFF",
+                border: "0.5px solid #615EFF",
+                borderRadius: "5px",
+
               }}
             >
               ▾ 89.30 %
@@ -60,28 +67,39 @@ function StakingInfo(props) {
           </Col>
         </Row>
 
-        <div className="farming-grid">
+
+        <div className="staking-grid">
           <p style={{ flex: "1" }}>총 매수 금액</p>{" "}
           <p style={{ flex: "1", textAlign: "right" }}> ₩3,600,000</p>
         </div>
-        <div className="farming-grid">
+        <div className="staking-grid">
           <p style={{ flex: "1" }}>총 평가 금액</p>{" "}
           <p style={{ flex: "1", textAlign: "right" }}> ₩4,000,000</p>
         </div>
+        <div className="staking-grid">
+          <p style={{ flex: "1" }}>리워드 합계</p>{" "}
+          <p style={{ flex: "1", textAlign: "right" }}> ₩400,000</p>
+        </div>
         <Button
-              variant="primary"
-              size="lg"
-              block
-              style={{
-                color: "#FFFFFF",
-                backgroundColor: "#615EFF",
-                border: "#E0E0E0",
-                fontSize: "14px",
-                width: "100%"
-              }}
-            >
-              리워드 일괄 수확&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1,6,00,000원&nbsp;&nbsp;&nbsp;&nbsp;받기
-            </Button>
+          variant="primary"
+          size="md"
+          //block
+          style={{
+            color: "#FFFFFF",
+            backgroundColor: "#615EFF",
+            border: "#E0E0E0",
+            fontSize: "14px",
+            width: '100%',
+          }}
+    
+        >
+          <div className="staking-button">
+            <p style={{ flex: "1", textAlign: "left" }}>쌓인 리워드</p>
+            <p style={{ flex: "1", textAlign: "center" }}> 4,000,000원</p>
+            <p style={{ flex: "1", textAlign: "right" }}> 받기</p>
+          </div>
+
+        </Button>
       </div>
     </div>
   );
