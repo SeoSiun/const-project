@@ -45,9 +45,20 @@ router.post('/import', (req, res) => {
 router.get('/:user_id/summary', async (req, res) => { 
     const { atype } = req.query; 
     const { user_id } = req.params; 
-    const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
-                                .then(wallet => wallet.address) 
-                                .catch(err => res.json({status: false, err})); 
+    const wallet = await Wallet.findOne({user_id, atype: 'Klaytn'});
+
+    if (!wallet) {
+        res.json({status: false, result: {
+            total_price: 0, 
+            wallet: 0, 
+            farming: 0, 
+            staking: 0 
+        }})
+        return;
+    }
+
+    const { address } = wallet;
+    
     switch (atype) {
         case 'asset': 
             staticsUserWallet(address) 
