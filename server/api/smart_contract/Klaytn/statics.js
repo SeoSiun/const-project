@@ -4,7 +4,6 @@ const { getUserFarmingPool: getUserDEFINIXFarmingPool } = require('./definix_far
 const { getUserFarmingPool: getUserKAIFarmingPool } = require('./kai_farming'); 
 
 async function staticsUserFarmingPool(USER_ADDRESS) { 
-
     const [ klayswap_farming, definix_farming, kai_farming ] = await Promise.all([
         getUserKLAYSWAPFarmingPool(USER_ADDRESS), 
         getUserDEFINIXFarmingPool(USER_ADDRESS), 
@@ -42,11 +41,11 @@ async function staticsUserFarmingPool(USER_ADDRESS) {
 
     let { 
         total_price: skai_total_price, 
-        rewarded_kai_price, 
+        minable_kai_price, 
         apr
     } = kai_farming; 
     total_price += skai_total_price; 
-    rewarded_price += rewarded_kai_price; 
+    total_price += minable_kai_price; 
     avg_apr += (skai_total_price * apr / 100);
 
     avg_apr *= (100 / total_price); 
