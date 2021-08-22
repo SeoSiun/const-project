@@ -12,12 +12,21 @@ var HistorySchema = new Schema({
         type: String, 
         required: true
     },
-    total_value: { 
+    total: {
+        type: Object 
+    }, 
+    asset: {
+        type: Object 
+    }, 
+    farming: {
+        type: Object 
+    }, 
+    staking: {
+        type: Object 
+    }, 
+    ledning: { 
         type: Object
-    }, 
-    detail: {
-        type: Object, 
-    }, 
+    },
     update_at: { 
         type: Date, 
         default: Date.now

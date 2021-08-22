@@ -61,6 +61,10 @@ app.use('/api/wallets', walletRouter)
 var tokenRouter = require('./api/tokens'); 
 app.use('/api/tokens', tokenRouter)
 
+var historyRouter = require('./api/history'); 
+app.use('/api/history', historyRouter)
+
+
 const port = process.env.PORT || 5000; 
 app.listen(port, () => { 
     console.log(`express is running on ${port}`); 

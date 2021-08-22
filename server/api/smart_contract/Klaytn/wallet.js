@@ -72,7 +72,7 @@ async function getKlaytnBalanceWallet(USER_ADDRESS){
 
     let tokens = await Token.find({atype: 'SINGLE', network: 'Klaytn'}) 
     
-    let {klay_price} = tokens.filter(t => t.token === 'KLAY')[0]; 
+    let { price: klay_price } = tokens.filter(t => t.token === 'KLAY')[0];
     let KLAY_balance = {
         token: 'KLAY', 
         amount: KLAY_amount, 

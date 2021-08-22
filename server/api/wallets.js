@@ -140,7 +140,7 @@ router.get('/:user_id/farming', async (req, res) => {
     const wallet = await Wallet.findOne({user_id, atype: 'Klaytn'})
                                 .catch(err => res.json({status: false, err})); 
     
-    const { addresss } = wallet;
+    const { address } = wallet;
     if (!address) {
         res.json({status: false, err: "not exist wallet address"})
         return ;

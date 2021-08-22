@@ -48,8 +48,8 @@ async function getUserFarmingPool(USER_ADDRESS) {
         token: 'sKAI_SINGLE', 
         value: staked_sKAI,
         total_price: staked_sKAI_price, 
-        rewarded_kai: earned_KAI,
-        rewarded_kai_price: earned_KAI_price, 
+        minable_kai: earned_KAI,
+        minable_kai_price: earned_KAI_price, 
         apr
     }
 };
