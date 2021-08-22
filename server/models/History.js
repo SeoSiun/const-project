@@ -15,6 +15,18 @@ var HistorySchema = new Schema({
     total_price: {
         type: Number 
     }, 
+    wallet_price: { 
+        type: Number
+    },
+    farming_price: { 
+        type: Number
+    },
+    staking_price: { 
+        type: Number
+    },
+    lending_price: { 
+        type: Number
+    },
     wallet: {
         type: Object 
     }, 
@@ -24,7 +36,7 @@ var HistorySchema = new Schema({
     staking: {
         type: Object 
     }, 
-    ledning: { 
+    lending: { 
         type: Object
     },
     update_at: { 

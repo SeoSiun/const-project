@@ -170,9 +170,10 @@ async function getUserFarmingPool(USER_ADDRESS) {
             token: token_name, value: user_LPBalance, 
             tokenA_num, tokenB_num, 
             tokenA_price, tokenB_price, 
-            total_price, 
+            lp_price: total_price, 
             minable_reward_finix:  pending_Finix, 
             minable_reward_finix_price, 
+            total_price: total_price+minable_reward_finix_price, 
             apr
         }; 
     });

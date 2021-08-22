@@ -143,11 +143,12 @@ async function getUserFarmingPool(USER_ADDRESS) {
             token: token_name, value: LPBalance_num, 
             tokenA_num, tokenB_num, 
             tokenA_price, tokenB_price, 
-            total_price, 
+            lp_price: total_price,
             minable_reward_ksp, 
             minable_reward_ksp_price, 
             rewarded_ksp, 
             rewarded_ksp_price, 
+            total_price: total_price+minable_reward_ksp_price,  
             apr
         }; 
     })
@@ -157,15 +158,17 @@ async function getUserFarmingPool(USER_ADDRESS) {
     if (single_klay.deposited >= 0) {
         const {deposited, earned, minable, apr} = single_klay; 
         const klay_price = SINGLE_TOKEN.KLAY.price; 
+        const single_klay_price = deposited*klay_price;
         total_pool.push({
             token: "KLAY_SINGLE", 
             value: deposited, 
             token_price: klay_price,
-            total_price: deposited*klay_price,
+            lp_price: single_klay_price,
             minable_reward_ksp: minable, 
             minable_reward_ksp_price: minable*ksp_price, 
             rewarded_ksp: earned, 
             rewarded_ksp_price: earned*ksp_price, 
+            total_price: single_klay_price + minable*ksp_price, 
             apr
         })
     }

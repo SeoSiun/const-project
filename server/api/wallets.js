@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const { Wallet } = require('../models/Wallet'); 
+const { History } = require('../models/History'); 
 const { checkAddress, getKlaytnBalanceWallet, staticsUserWallet } = require('./smart_contract/Klaytn/wallet'); 
 const { getUserStakedKSP, getUserVotingPool, staticsUserStakingPool } = require('./smart_contract/Klaytn/klayswap_staking'); 
 
@@ -10,6 +11,8 @@ const { getUserFarmingPool: getUserDEFINIXFarmingPool } = require('./smart_contr
 const { getUserFarmingPool: getUserKAIFarmingPool } = require('./smart_contract/Klaytn/kai_farming'); 
 
 const { staticsUserFarmingPool } = require('./smart_contract/Klaytn/statics'); 
+
+const { addRecentValues } = require('./utils'); 
 
 router.get('/check', (req, res) => { 
     const {wallet_address: address} = req.query; 
@@ -139,8 +142,17 @@ router.get('/:user_id/farming', async (req, res) => {
     const { defi } = req.query; 
     const wallet = await Wallet.findOne({user_id, atype: 'Klaytn'})
                                 .catch(err => res.json({status: false, err})); 
-    
+
     const { address } = wallet;
+    const recent_history = await History.find({address, network: 'Klaytn'})
+                                        .sort({upadte_at: -1})
+                                        .then(result => result[0]); 
+
+    // addRecentValues(recent_history.farming.KLAYSWAP)
+    // res.json({status: true, recent_history}); 
+    // return; 
+
+
     if (!address) {
         res.json({status: false, err: "not exist wallet address"})
         return ;
@@ -151,6 +163,11 @@ router.get('/:user_id/farming', async (req, res) => {
             getUserDEFINIXFarmingPool(address), 
             getUserKAIFarmingPool(address)
         ]); 
+        // const add_result = addRecentValues(klayswap_farming, recent_history.farming.KLAYSWAP, 'farming'); 
+        // console.log(add_result); 
+        // res.json({status: true, add_result}); 
+        // return ;
+
         res.json({status: true, result: {
             KLAYSWAP: klayswap_farming,
             DEFINIX: definix_farming, 

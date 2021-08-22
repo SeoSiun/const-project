@@ -125,7 +125,8 @@ async function getUserStakedKSP(USER_ADDRESS) {
         minable_ksp_price, 
         rewarded_ksp, 
         rewarded_ksp_price, 
-        ksp_APR
+        ksp_APR, 
+        total_price: locked_ksp_price + minable_ksp_price
     }
 }
 
@@ -177,7 +178,8 @@ async function getUserVotingPool(USER_ADDRESS) {
             minable_price,  
             rewarded_tokenA, 
             rewarded_tokenB, 
-            rewarded_price 
+            rewarded_price, 
+            
         }; 
     })
     let total_rewarded = await Promise.all(arrPromises).catch(err => console.log(err)); 
