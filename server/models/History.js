@@ -12,10 +12,10 @@ var HistorySchema = new Schema({
         type: String, 
         required: true
     },
-    total: {
-        type: Object 
+    total_price: {
+        type: Number 
     }, 
-    asset: {
+    wallet: {
         type: Object 
     }, 
     farming: {
