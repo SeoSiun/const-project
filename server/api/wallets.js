@@ -7,6 +7,7 @@ const { getUserStakedKSP, getUserVotingPool, staticsUserStakingPool } = require(
 
 const { getUserFarmingPool: getUserKLAYSWAPFarmingPool, staticsUserFarmingPool } = require('./smart_contract/Klaytn/klayswap_farming'); 
 const { getUserFarmingPool: getUserDEFINIXFarmingPool } = require('./smart_contract/Klaytn/definix_farming'); 
+const { getUserFarmingPool: getUserKAIFarmingPool } = require('./smart_contract/Klaytn/kai_farming'); 
 
 router.get('/check', (req, res) => { 
     const {wallet_address: address} = req.query; 
@@ -145,6 +146,11 @@ router.get('/:user_id/farming', async (req, res) => {
         return; 
     } else if (defi === 'DEFINIX') { 
         getUserDEFINIXFarmingPool(address) 
+                    .then(result => res.json({status: true, result}))
+                    .catch(err => res.json({status: false, err}))
+        return ;
+    } else if (defi === 'KAI') { 
+        getUserKAIFarmingPool(address) 
                     .then(result => res.json({status: true, result}))
                     .catch(err => res.json({status: false, err}))
         return ;
