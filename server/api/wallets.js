@@ -5,9 +5,11 @@ const { Wallet } = require('../models/Wallet');
 const { checkAddress, getKlaytnBalanceWallet, staticsUserWallet } = require('./smart_contract/Klaytn/wallet'); 
 const { getUserStakedKSP, getUserVotingPool, staticsUserStakingPool } = require('./smart_contract/Klaytn/klayswap_staking'); 
 
-const { getUserFarmingPool: getUserKLAYSWAPFarmingPool, staticsUserFarmingPool } = require('./smart_contract/Klaytn/klayswap_farming'); 
+const { getUserFarmingPool: getUserKLAYSWAPFarmingPool } = require('./smart_contract/Klaytn/klayswap_farming'); 
 const { getUserFarmingPool: getUserDEFINIXFarmingPool } = require('./smart_contract/Klaytn/definix_farming'); 
 const { getUserFarmingPool: getUserKAIFarmingPool } = require('./smart_contract/Klaytn/kai_farming'); 
+
+const { staticsUserFarmingPool } = require('./smart_contract/Klaytn/statics'); 
 
 router.get('/check', (req, res) => { 
     const {wallet_address: address} = req.query; 
@@ -135,26 +137,51 @@ router.get('/:user_id/asset', async (req, res) => {
 router.get('/:user_id/farming', async (req, res) => { 
     const { user_id } = req.params; 
     const { defi } = req.query; 
-    const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
-                                .then(wallet => wallet.address) 
+    const wallet = await Wallet.findOne({user_id, atype: 'Klaytn'})
                                 .catch(err => res.json({status: false, err})); 
-
-    if (!defi) {
-        getUserKLAYSWAPFarmingPool(address) 
-                    .then(result => res.json({status: true, result}))
-                    .catch(err => res.json({status: false, err}))
-        return; 
-    } else if (defi === 'DEFINIX') { 
-        getUserDEFINIXFarmingPool(address) 
-                    .then(result => res.json({status: true, result}))
-                    .catch(err => res.json({status: false, err}))
-        return ;
-    } else if (defi === 'KAI') { 
-        getUserKAIFarmingPool(address) 
-                    .then(result => res.json({status: true, result}))
-                    .catch(err => res.json({status: false, err}))
+    
+    const { addresss } = wallet;
+    if (!address) {
+        res.json({status: false, err: "not exist wallet address"})
         return ;
     }
+    if (!defi) {
+        const [klayswap_farming, definix_farming, kai_farming] = await Promise.all([
+            getUserKLAYSWAPFarmingPool(address), 
+            getUserDEFINIXFarmingPool(address), 
+            getUserKAIFarmingPool(address)
+        ]); 
+        res.json({status: true, result: {
+            KLAYSWAP: klayswap_farming,
+            DEFINIX: definix_farming, 
+            KAI: kai_farming 
+        }})
+        return; 
+    }
+
+    switch (defi) {
+        case 'KLAYSWAP':
+            getUserKLAYSWAPFarmingPool(address) 
+                .then(result => res.json({status: true, result}))
+                .catch(err => res.json({status: false, err}))
+            break;
+
+        case 'DEFINIX': 
+            getUserDEFINIXFarmingPool(address) 
+                .then(result => res.json({status: true, result}))
+                .catch(err => res.json({status: false, err}))
+            break; 
+
+        case 'KAI': 
+            getUserKAIFarmingPool(address) 
+                .then(result => res.json({status: true, result}))
+                .catch(err => res.json({status: false, err}))
+            break; 
+        default:
+            res.json({status: false, err: "bad params: 'defi'"})
+            break;
+    }
+    return; 
 })
 
 

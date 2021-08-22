@@ -45,11 +45,12 @@ async function getUserFarmingPool(USER_ADDRESS) {
     let apr = (rewardPer_sKAI / KAI_decimal * KAI.price) / sKAI.price * 1e2;
 
     return {
-      staked_sKAI,
-      staked_sKAI_price, 
-      earned_KAI,
-      earned_KAI_price, 
-      apr
+        token: 'sKAI_SINGLE', 
+        value: staked_sKAI,
+        total_price: staked_sKAI_price, 
+        rewarded_kai: earned_KAI,
+        rewarded_kai_price: earned_KAI_price, 
+        apr
     }
 };
 

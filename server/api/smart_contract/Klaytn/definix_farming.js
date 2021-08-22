@@ -179,27 +179,5 @@ async function getUserFarmingPool(USER_ADDRESS) {
     let total_pool = await Promise.all(arrayPromises).catch(err => console.log(err));
     return total_pool.filter(token => token.value > 0);
 };
-async function staticsUserFarmingPool(USER_ADDRESS) { 
-    const farming_pool_arr = await getUserFarmingPool(USER_ADDRESS); 
-    let total_price = 0;
-    let minable_price = 0;
-    let avg_apr = 0; 
-    farming_pool_arr.forEach(farming_pool => {
-        let {
-            total_price: elem_total_price, 
-            minable_reward_finix_price, 
-            apr
-        } = farming_pool; 
-        total_price += elem_total_price; 
-        minable_price += minable_reward_finix_price; 
-        avg_apr += (elem_total_price * apr / 100); 
-    });
-    avg_apr *= (100 / total_price); 
-    return {
-        total_price, 
-        minable_price, 
-        avg_apr,
-    }
-}
 
-module.exports = { getUserFarmingPool, staticsUserFarmingPool }; 
+module.exports = { getUserFarmingPool }; 
