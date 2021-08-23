@@ -18,6 +18,7 @@ async function getKLAYCurrency() {
 }
 
 async function calcTokenPriceB(address, tokenA_price, diff_decimal, to_fixed=2) { 
+    
     let [tokenA_decimal, tokenB_decimal] = await getCurrentPool(address);
     let tokenAB_ratio = tokenA_decimal / tokenB_decimal; 
     let tokenB_price = tokenA_price * tokenAB_ratio; 
@@ -28,6 +29,7 @@ async function calcTokenPriceB(address, tokenA_price, diff_decimal, to_fixed=2) 
 async function getKlaytnTokenPrice(){
 
     let tokens = await Token.find({network: 'Klaytn'})
+    tokens = tokens.filter(token => token.defi !== 'DEFINIX'); 
     let tokens_obj = tokens.reduce((obj, t) => Object.assign(obj, { [t.token]: t}), {}); 
     let price_obj = {}; 
 
