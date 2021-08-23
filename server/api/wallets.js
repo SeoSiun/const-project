@@ -119,20 +119,23 @@ router.get('/:user_id/asset', async (req, res) => {
     const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
                                 .then(wallet => wallet.address) 
                                 .catch(err => res.json({status: false, err})); 
-    try{ 
-        let wallet_result = await getKlaytnBalanceWallet(address); 
-        wallet_result.sort(function(a, b) {return b.value - a.value})
-        if (atype === 'chart' && wallet_result.length > 6) { 
-            let top_tokens = wallet_result.slice(0, 5); 
-            let value = wallet_result.slice(5).reduce((sum, token) => sum + token.value, 0); 
-            let result = top_tokens.concat({token: 'OTHERS', value});
-            res.json({status: true, result})
-        } else{ 
-            res.json({status: true, result: wallet_result})
-        }
-    } catch(err) { 
-        res.json({status: false, err})
+
+    let wallet_result = await getKlaytnBalanceWallet(address); 
+    wallet_result.sort(function(a, b) {return b.value - a.value})
+    if (atype === 'chart' && wallet_result.length > 6) { 
+        let top_tokens = wallet_result.slice(0, 5); 
+        let value = wallet_result.slice(5).reduce((sum, token) => sum + token.value, 0); 
+        let result = top_tokens.concat({token: 'OTHERS', value});
+        res.json({status: true, result})
+        return; 
     }
+
+    const recent_history = await History.find({address, network: 'Klaytn'})
+                                        .sort({update_at: -1})
+                                        .then(result => result[0]);
+    res.json({status: true, result: addRecentValues(wallet_result, recent_history.wallet, 'wallet')})
+    return;
+        
 })
 
 
@@ -212,8 +215,12 @@ router.get('/:user_id/staking', async (req, res) => {
         getUserStakedKSP(address), 
         getUserVotingPool(address) 
     ]).catch(err => res.json({status: false, err}))
+
+    const recent_history = await History.find({address, network: 'Klaytn'})
+                                        .sort({update_at: -1})
+                                        .then(result => result[0]);
     res.json({status: true, result: {
-        stakedKSP: user_staked_KSP, 
+        stakedKSP: addRecentValues(user_staked_KSP, recent_history.staking.staked_ksp, 'staking'), 
         votingPool: user_voting_pool
     }})
 })
