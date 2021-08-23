@@ -148,11 +148,6 @@ router.get('/:user_id/farming', async (req, res) => {
                                         .sort({upadte_at: -1})
                                         .then(result => result[0]); 
 
-    // addRecentValues(recent_history.farming.KLAYSWAP)
-    // res.json({status: true, recent_history}); 
-    // return; 
-
-
     if (!address) {
         res.json({status: false, err: "not exist wallet address"})
         return ;
@@ -163,15 +158,10 @@ router.get('/:user_id/farming', async (req, res) => {
             getUserDEFINIXFarmingPool(address), 
             getUserKAIFarmingPool(address)
         ]); 
-        // const add_result = addRecentValues(klayswap_farming, recent_history.farming.KLAYSWAP, 'farming'); 
-        // console.log(add_result); 
-        // res.json({status: true, add_result}); 
-        // return ;
-
         res.json({status: true, result: {
-            KLAYSWAP: klayswap_farming,
-            DEFINIX: definix_farming, 
-            KAI: kai_farming 
+            KLAYSWAP: addRecentValues(klayswap_farming, recent_history.farming.KLAYSWAP, atype='farming'),
+            DEFINIX: addRecentValues(definix_farming, recent_history.farming.DEFINIX, atype='farming'), 
+            KAI: addRecentValues([kai_farming], recent_history.farming.KAI, atype='farming') 
         }})
         return; 
     }
@@ -179,19 +169,28 @@ router.get('/:user_id/farming', async (req, res) => {
     switch (defi) {
         case 'KLAYSWAP':
             getUserKLAYSWAPFarmingPool(address) 
-                .then(result => res.json({status: true, result}))
+                .then(result => res.json({
+                    status: true, 
+                    result: addRecentValues(result, recent_history.farming.KLAYSWAP, atype='farming')
+                }))
                 .catch(err => res.json({status: false, err}))
             break;
 
         case 'DEFINIX': 
             getUserDEFINIXFarmingPool(address) 
-                .then(result => res.json({status: true, result}))
+                .then(result => res.json({
+                    status: true, 
+                    result: addRecentValues(result, recent_history.farming.DEFINIX, atype='farming')
+                }))
                 .catch(err => res.json({status: false, err}))
             break; 
 
         case 'KAI': 
             getUserKAIFarmingPool(address) 
-                .then(result => res.json({status: true, result}))
+                .then(result => res.json({
+                    status: true, 
+                    result: addRecentValues([result], recent_history.farming.KAI, atype='farming') 
+                }))
                 .catch(err => res.json({status: false, err}))
             break; 
         default:
