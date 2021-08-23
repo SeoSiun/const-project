@@ -178,7 +178,7 @@ function PortfolioMain(props) {
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
               <span> {numberWithCommas(assetSummaryInfo.total_price)} 원</span>
               <span 
-                class={assetSummaryInfo.total_price-assetSummaryInfo.prev_price ? 'rise' : 'drop'} 
+                class={assetSummaryInfo.total_price-assetSummaryInfo.prev_price > 0 ? 'rise' : 'drop'} 
                 style={{fontSize: '12px'}}
               > {assetSummaryInfo.total_price-assetSummaryInfo.prev_price > 0 ? '+' : ''}
                 {numberWithCommas(assetSummaryInfo.total_price-assetSummaryInfo.prev_price)}원 ({variationRatio(assetSummaryInfo.total_price, assetSummaryInfo.prev_price)}%)
