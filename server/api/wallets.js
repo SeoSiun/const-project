@@ -53,7 +53,7 @@ router.get('/:user_id/summary', async (req, res) => {
     const { atype } = req.query; 
     const { user_id } = req.params; 
     const wallet = await Wallet.findOne({user_id, atype: 'Klaytn'});
-
+    
     if (!wallet) {
         res.json({status: false, result: {
             total_price: 0, 
@@ -65,23 +65,35 @@ router.get('/:user_id/summary', async (req, res) => {
     }
 
     const { address } = wallet;
+    const recent_history = await History.find({address, network: 'Klaytn'})
+                                        .sort({update_at: -1})
+                                        .then(result => result[0]);
 
     switch (atype) {
         case 'asset': 
             staticsUserWallet(address) 
-                .then(result => res.json({statis: true, result}))
+                .then(result => {
+                    result.prev_price = recent_history.wallet_price; 
+                    res.json({statis: true, result}
+                )})
                 .catch(err => res.json({status: false, err}));
             break; 
 
         case 'farming':
             staticsUserFarmingPool(address)
-                .then(result => res.json({status: true, result}))
+                .then(result => {
+                    result.prev_price = recent_history.farming_price; 
+                    res.json({status: true, result})
+                })
                 .catch(err => res.json({status: false, err}))
             break;
 
         case 'staking': 
             staticsUserStakingPool(address)
-                .then(result => res.json({status: true, result}))
+                .then(result => {
+                    result.prev_price = recent_history.staking_price; 
+                    res.json({status: true, result})
+                })
                 .catch(err => res.json({status: false, err}))
             break; 
 
