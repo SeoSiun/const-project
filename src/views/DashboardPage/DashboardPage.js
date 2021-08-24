@@ -557,7 +557,7 @@ function DashboardPage(props) {
               </TabPanel>
               <TabPanel value={cardIndex} index={4}>
                 예금
-              </TabPanel> */}
+              </TabPanel> 
       </Container>
     </>
   );

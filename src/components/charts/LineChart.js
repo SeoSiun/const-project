@@ -2,19 +2,30 @@
 import React, {useState} from 'react'; 
 import { Line } from "react-chartjs-2";
 
-const borderColor = {
-  netWorth: "rgba(149, 191, 255, 1)",
-  totalAssets: "rgba(188, 188, 188, 1)",
-  totalDebts: "rgba(250, 198, 14, 1)"
-};
-
-const backgroundColor = {
-  netWorth: "rgba(149, 191, 255, 0.2)",
-  totalAssets: "rgba(188, 188, 188, 0.2)",
-  totalDebts: "rgba(250, 198, 14, 0.2)"
-};
+const color = {
+  netWorth: ["221, 232, 252", "rgba(116, 146, 252, 1)"],
+  totalAssets: ["224, 224, 224", "rgba(130, 130, 130, 1)"],
+  totalDebts: ["255, 230, 179", "rgba(255, 175, 49, 1)"],
+  getColor: function(summaryType, a) {
+    return "rgba(" + this[summaryType][0] + ", " + a + ")";
+  },
+  getPointColor: function(summaryType) {
+    return this[summaryType][1];
+  }
+}
 
 function LineChart(props) { 
+  const data = [33, 85, 41, 65];
+
+  function getPointColor(ctx) {
+    var index = ctx.dataIndex;
+    return index === data.length-1 ? color.getPointColor(props.summaryType) : 'transparent';
+  }
+  function getPointBorderColor(ctx) {
+    var index = ctx.dataIndex;
+    return index === data.length-1 ? color.getColor(props.summaryType, 0.3) : 'transparent';
+  }
+
   return (
     <div>
       <Line 
@@ -24,12 +35,20 @@ function LineChart(props) {
             datasets: [
               {
                 label: "First dataset",
-                data: [33, 85, 41, 65],
+                data: data,
                 fill: true,
-                backgroundColor: backgroundColor[props.summaryType],
-                borderColor: borderColor[props.summaryType],
-                pointRadius: 1,
-                pointHoverRadius: 1
+                lineTension: 0,
+                backgroundColor: color.getColor(props.summaryType, 1),
+                borderColor: color.getColor(props.summaryType, 1),
+                borderWidth: 0.2,
+
+                pointBackgroundColor: getPointColor,
+                pointRadius: 5,
+                pointHoverRadius: 5,
+
+                pointBorderColor : getPointBorderColor,
+                pointBorderWidth: 21,
+                pointHoverBorderWidth: 21
               }
             ]
           }
@@ -40,12 +59,19 @@ function LineChart(props) {
           }, 
           scales: {
             xAxes: [{
+              display: false,
               gridLines: {display:false}
             }],
             yAxes: [{
               ticks: {display: false}, 
               gridLines: {display:false}
             }]
+          },
+          layout: {
+            padding: {
+                right: 100,
+                top: 60
+            } 
           }
         }}
       />
