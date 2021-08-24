@@ -14,16 +14,16 @@ const color = {
   }
 }
 
-function LineChart(props) { 
+function LineChart({ summaryType = "netWorth" }) { 
   const data = [33, 85, 41, 65];
 
   function getPointColor(ctx) {
     var index = ctx.dataIndex;
-    return index === data.length-1 ? color.getPointColor(props.summaryType) : 'transparent';
+    return index === data.length-1 ? color.getPointColor(summaryType) : 'transparent';
   }
   function getPointBorderColor(ctx) {
     var index = ctx.dataIndex;
-    return index === data.length-1 ? color.getColor(props.summaryType, 0.3) : 'transparent';
+    return index === data.length-1 ? color.getColor(summaryType, 0.3) : 'transparent';
   }
 
   return (
@@ -38,8 +38,8 @@ function LineChart(props) {
                 data: data,
                 fill: true,
                 lineTension: 0,
-                backgroundColor: color.getColor(props.summaryType, 1),
-                borderColor: color.getColor(props.summaryType, 1),
+                backgroundColor: color.getColor(summaryType, 1),
+                borderColor: color.getColor(summaryType, 1),
                 borderWidth: 0.2,
 
                 pointBackgroundColor: getPointColor,
