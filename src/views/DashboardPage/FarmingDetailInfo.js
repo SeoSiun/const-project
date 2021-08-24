@@ -15,7 +15,9 @@ import ksp_img from "static/img/token_icon/ksp_logo.png";
 function FarmingDetailInfo(props) {
   const [farmingModal, setFarmingModal] = useState(false);
   const [rewardModal, setRewardModal] = useState(false);
-
+  const [text, setText] = useState('수정');
+  const [status, setStatus] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const helpMsgs = [
     { type: "총 매수 금액", description: "'매수 금액'은 풀에 처음 유동성 공급을 했을 당시 예치한 토큰의 원화 환산 금액입니다." },
     { type: "총 평가 금액", description: "'평가 금액'은 예치한 토큰의 현재 원화 환산 가치입니다." },
@@ -25,6 +27,14 @@ function FarmingDetailInfo(props) {
     { type: "현재 수익률 평균", description: "'현재 수익률'은 해당 풀에 처음 예치한 이후 발생한 이익을 백분율로 표시한 수치입니다. 예치한 토큰의 가치 변동에 따라 수시로 변화합니다." },
     { type: "현재 APR 평균", description: "'현재 APR'은 현재 수익률을 365일로 환산한 수치입니다. 예치한 토큰의 가치 변동에 따라 수시로 변화합니다." },
   ];
+  const setPurchaseAmount = () => {
+    if(text == '수정'){
+      setStatus(!status);
+      setText('저장');
+    }else if(text == '저장'){
+      setDisabled(true);
+    }
+  }
   function AlertInfo(nTh) {
     const [show, setShow] = useState(false);
     if (show) {
@@ -229,7 +239,11 @@ function FarmingDetailInfo(props) {
                 </div>
                 <div className="farming-grid">
                   <p style={{ flex: "1" }}>매수 금액</p>{" "}
-                  <p style={{ textAlign: "right", paddingRight:"10px" }}>900,000원</p>   
+                  <p style={{ textAlign: "right", paddingRight:"10px", display:status?'block':'none' }}>900,000</p>
+                  <input type="number" disabled={disabled} style={{display:'none', border:"none", backgroundColor:"#f2f2f2", display:!status? 'block':'none'}}
+                    />  
+
+                   원
                   <Button
                       variant="secondary"
                       size="sm"
@@ -241,8 +255,9 @@ function FarmingDetailInfo(props) {
                         float: "right",
                         borderRadius:"1px"
                     }}
+                    onClick={setPurchaseAmount}
                     >
-                      수정
+                      {text}
                     </Button>
                 </div>
                 <div className="farming-grid">

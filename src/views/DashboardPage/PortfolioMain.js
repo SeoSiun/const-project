@@ -24,15 +24,19 @@ function numberWithCommas(x) {
   return Math.floor(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function variationRatio(curr, prev) { 
+  return prev > 0 ? ((curr-prev)/prev * 100).toFixed(1) : 0; 
+}
+
 
 function PortfolioMain(props) {
 
   const [ isEmpty, setEmpty ] = useState(false);
   const [ userName, setUserName ] = useState(''); 
 
-  const [ assetSummaryInfo, setAssetSummaryInfo ] = useState({total_price: 0}); 
-  const [ farmingSummaryInfo, setFarmingSummaryInfo ] = useState({total_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}); 
-  const [ stakingSummaryInfo, setStakingSummaryInfo ] = useState({total_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}); 
+  const [ assetSummaryInfo, setAssetSummaryInfo ] = useState({total_price: 0, prev_price: 0, }); 
+  const [ farmingSummaryInfo, setFarmingSummaryInfo ] = useState({total_price: 0, prev_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}); 
+  const [ stakingSummaryInfo, setStakingSummaryInfo ] = useState({total_price: 0, prev_price: 0, minable_price: 0, rewarded_price: 0, avg_apr: 0}); 
 
   const history = useHistory(); 
   const dispatch = useDispatch(); 
@@ -173,7 +177,12 @@ function PortfolioMain(props) {
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
               <span> {numberWithCommas(assetSummaryInfo.total_price)} 원</span>
-              <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
+              <span 
+                class={assetSummaryInfo.total_price-assetSummaryInfo.prev_price > 0 ? 'rise' : 'drop'} 
+                style={{fontSize: '12px'}}
+              > {assetSummaryInfo.total_price-assetSummaryInfo.prev_price > 0 ? '+' : ''}
+                {numberWithCommas(assetSummaryInfo.total_price-assetSummaryInfo.prev_price)}원 ({variationRatio(assetSummaryInfo.total_price, assetSummaryInfo.prev_price)}%)
+              </span>
             </div>
           </Col>
           <Col xs='2' style={{alignSelf: 'center', paddingRight: '0', color: '#BDBDBD'}}>
@@ -197,7 +206,12 @@ function PortfolioMain(props) {
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
             <span> {numberWithCommas(farmingSummaryInfo.total_price+stakingSummaryInfo.total_price)} 원</span>
-              <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
+            <span 
+                class={farmingSummaryInfo.total_price-farmingSummaryInfo.prev_price + stakingSummaryInfo.total_price-stakingSummaryInfo.prev_price > 0 ? 'rise' : 'drop'} 
+                style={{fontSize: '12px'}}
+              > {farmingSummaryInfo.total_price-farmingSummaryInfo.prev_price+stakingSummaryInfo.total_price-stakingSummaryInfo.prev_price > 0 ? '+' : ''}
+                {numberWithCommas(farmingSummaryInfo.total_price-farmingSummaryInfo.prev_price + stakingSummaryInfo.total_price-stakingSummaryInfo.prev_price)}원 ({variationRatio(farmingSummaryInfo.total_price+stakingSummaryInfo.total_price, farmingSummaryInfo.prev_price+stakingSummaryInfo.prev_price)}%)
+            </span>
             </div>
           </Col>
           {/* <Col xs='2' style={{alignSelf: 'center', paddingRight: '0'}}>
@@ -218,7 +232,12 @@ function PortfolioMain(props) {
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
               <span> {numberWithCommas(farmingSummaryInfo.total_price)} 원</span>
-              <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
+              <span 
+                  class={farmingSummaryInfo.total_price-farmingSummaryInfo.prev_price > 0 ? 'rise' : 'drop'} 
+                  style={{fontSize: '12px'}}
+                > {farmingSummaryInfo.total_price-farmingSummaryInfo.prev_price > 0 ? '+' : ''}
+                  {numberWithCommas(farmingSummaryInfo.total_price-farmingSummaryInfo.prev_price)}원 ({variationRatio(farmingSummaryInfo.total_price, farmingSummaryInfo.prev_price)}%)
+              </span>
               <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : {numberWithCommas(farmingSummaryInfo.rewarded_price)} 원</span>
             </div>
           </Col>
@@ -239,7 +258,12 @@ function PortfolioMain(props) {
           <Col xs='5' style={{padding: '0', alignSelf: 'center'}}>
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right'}}>
               <span> {numberWithCommas(stakingSummaryInfo.total_price)} 원</span>
-              <span class='rise' style={{fontSize: '12px'}}>+000000원 (0.0%)</span>
+              <span 
+                  class={stakingSummaryInfo.total_price-stakingSummaryInfo.prev_price > 0 ? 'rise' : 'drop'} 
+                  style={{fontSize: '12px'}}
+                > {stakingSummaryInfo.total_price-stakingSummaryInfo.prev_price > 0 ? '+' : ''}
+                  {numberWithCommas(stakingSummaryInfo.total_price-stakingSummaryInfo.prev_price)}원 ({variationRatio(stakingSummaryInfo.total_price, stakingSummaryInfo.prev_price)}%)
+              </span>
               <span style={{fontSize: '12px', color: '#828282'}}>누적 리워드 : {numberWithCommas(stakingSummaryInfo.rewarded_price)} 원</span>
             </div>
           </Col>

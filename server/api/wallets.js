@@ -53,7 +53,7 @@ router.get('/:user_id/summary', async (req, res) => {
     const { atype } = req.query; 
     const { user_id } = req.params; 
     const wallet = await Wallet.findOne({user_id, atype: 'Klaytn'});
-
+    
     if (!wallet) {
         res.json({status: false, result: {
             total_price: 0, 
@@ -65,23 +65,35 @@ router.get('/:user_id/summary', async (req, res) => {
     }
 
     const { address } = wallet;
+    const recent_history = await History.find({address, network: 'Klaytn'})
+                                        .sort({update_at: -1})
+                                        .then(result => result[0]);
 
     switch (atype) {
         case 'asset': 
             staticsUserWallet(address) 
-                .then(result => res.json({statis: true, result}))
+                .then(result => {
+                    result.prev_price = recent_history.wallet_price; 
+                    res.json({statis: true, result}
+                )})
                 .catch(err => res.json({status: false, err}));
             break; 
 
         case 'farming':
             staticsUserFarmingPool(address)
-                .then(result => res.json({status: true, result}))
+                .then(result => {
+                    result.prev_price = recent_history.farming_price; 
+                    res.json({status: true, result})
+                })
                 .catch(err => res.json({status: false, err}))
             break;
 
         case 'staking': 
             staticsUserStakingPool(address)
-                .then(result => res.json({status: true, result}))
+                .then(result => {
+                    result.prev_price = recent_history.staking_price; 
+                    res.json({status: true, result})
+                })
                 .catch(err => res.json({status: false, err}))
             break; 
 
@@ -119,20 +131,23 @@ router.get('/:user_id/asset', async (req, res) => {
     const address = await Wallet.findOne({user_id, atype: 'Klaytn'})
                                 .then(wallet => wallet.address) 
                                 .catch(err => res.json({status: false, err})); 
-    try{ 
-        let wallet_result = await getKlaytnBalanceWallet(address); 
-        wallet_result.sort(function(a, b) {return b.value - a.value})
-        if (atype === 'chart' && wallet_result.length > 6) { 
-            let top_tokens = wallet_result.slice(0, 5); 
-            let value = wallet_result.slice(5).reduce((sum, token) => sum + token.value, 0); 
-            let result = top_tokens.concat({token: 'OTHERS', value});
-            res.json({status: true, result})
-        } else{ 
-            res.json({status: true, result: wallet_result})
-        }
-    } catch(err) { 
-        res.json({status: false, err})
+
+    let wallet_result = await getKlaytnBalanceWallet(address); 
+    wallet_result.sort(function(a, b) {return b.value - a.value})
+    if (atype === 'chart' && wallet_result.length > 6) { 
+        let top_tokens = wallet_result.slice(0, 5); 
+        let value = wallet_result.slice(5).reduce((sum, token) => sum + token.value, 0); 
+        let result = top_tokens.concat({token: 'OTHERS', value});
+        res.json({status: true, result})
+        return; 
     }
+
+    const recent_history = await History.find({address, network: 'Klaytn'})
+                                        .sort({update_at: -1})
+                                        .then(result => result[0]);
+    res.json({status: true, result: addRecentValues(wallet_result, recent_history.wallet, 'wallet')})
+    return;
+        
 })
 
 
@@ -148,11 +163,6 @@ router.get('/:user_id/farming', async (req, res) => {
                                         .sort({upadte_at: -1})
                                         .then(result => result[0]); 
 
-    // addRecentValues(recent_history.farming.KLAYSWAP)
-    // res.json({status: true, recent_history}); 
-    // return; 
-
-
     if (!address) {
         res.json({status: false, err: "not exist wallet address"})
         return ;
@@ -163,15 +173,10 @@ router.get('/:user_id/farming', async (req, res) => {
             getUserDEFINIXFarmingPool(address), 
             getUserKAIFarmingPool(address)
         ]); 
-        // const add_result = addRecentValues(klayswap_farming, recent_history.farming.KLAYSWAP, 'farming'); 
-        // console.log(add_result); 
-        // res.json({status: true, add_result}); 
-        // return ;
-
         res.json({status: true, result: {
-            KLAYSWAP: klayswap_farming,
-            DEFINIX: definix_farming, 
-            KAI: kai_farming 
+            KLAYSWAP: addRecentValues(klayswap_farming, recent_history.farming.KLAYSWAP, atype='farming'),
+            DEFINIX: addRecentValues(definix_farming, recent_history.farming.DEFINIX, atype='farming'), 
+            KAI: addRecentValues([kai_farming], recent_history.farming.KAI, atype='farming') 
         }})
         return; 
     }
@@ -179,19 +184,28 @@ router.get('/:user_id/farming', async (req, res) => {
     switch (defi) {
         case 'KLAYSWAP':
             getUserKLAYSWAPFarmingPool(address) 
-                .then(result => res.json({status: true, result}))
+                .then(result => res.json({
+                    status: true, 
+                    result: addRecentValues(result, recent_history.farming.KLAYSWAP, atype='farming')
+                }))
                 .catch(err => res.json({status: false, err}))
             break;
 
         case 'DEFINIX': 
             getUserDEFINIXFarmingPool(address) 
-                .then(result => res.json({status: true, result}))
+                .then(result => res.json({
+                    status: true, 
+                    result: addRecentValues(result, recent_history.farming.DEFINIX, atype='farming')
+                }))
                 .catch(err => res.json({status: false, err}))
             break; 
 
         case 'KAI': 
             getUserKAIFarmingPool(address) 
-                .then(result => res.json({status: true, result}))
+                .then(result => res.json({
+                    status: true, 
+                    result: addRecentValues([result], recent_history.farming.KAI, atype='farming') 
+                }))
                 .catch(err => res.json({status: false, err}))
             break; 
         default:
@@ -213,8 +227,12 @@ router.get('/:user_id/staking', async (req, res) => {
         getUserStakedKSP(address), 
         getUserVotingPool(address) 
     ]).catch(err => res.json({status: false, err}))
+
+    const recent_history = await History.find({address, network: 'Klaytn'})
+                                        .sort({update_at: -1})
+                                        .then(result => result[0]);
     res.json({status: true, result: {
-        stakedKSP: user_staked_KSP, 
+        stakedKSP: addRecentValues(user_staked_KSP, recent_history.staking.staked_ksp, 'staking'), 
         votingPool: user_voting_pool
     }})
 })
